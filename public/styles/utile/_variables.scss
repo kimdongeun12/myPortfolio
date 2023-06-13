@@ -1,0 +1,48 @@
+
+/*------------------------------------*\
+    #COLOR
+\*------------------------------------*/
+// 테마, 기본 배경 색
+$color-bg: #1E1F25;
+
+// 무채색
+$color-white: #fff;
+$color-grey01: #E9E9E9;
+$color-grey02: #8D8D8D;
+$color-grey03: #606060;
+$color-black: #121212;
+
+$color-red: #FF0266;
+
+// 버튼
+$color-button: #4356FF;
+$color-button-active: #C8CDFF;
+
+/*------------------------------------*\
+    #TYPOGRAPHY
+\*------------------------------------*/
+
+/* 1rem === 16px 기준 */
+
+$font-size-sm: 0.7rem;
+$font-size-sm2: 0.8rem;
+$font-size-md: 1rem;
+$font-size-lg: 1.1rem;
+
+$font-size-h1: 1rem; // 30px
+$font-size-h2: 1rem; // 22px
+$font-size-h3: 1rem; // 17px;
+
+/*------------------------------------*\
+    #SIZES
+\*------------------------------------*/
+// border-radius
+$border-radius01: 5px;
+$border-radius02: 10px;
+$border-radius03: 20px;
+
+// padding
+$padding01: 10px;
+$padding02: 20px;
+
+// margin

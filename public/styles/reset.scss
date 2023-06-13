@@ -1,0 +1,58 @@
+@import './utile/variables';
+@import './fonts.scss';
+
+html,
+body {
+    font-family: "NotoSansKR", sans-serif !important;
+    line-height: 1.25;
+    font-size: 16px;
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+button {
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    background-color: transparent;
+    text-align: left;
+    font-size: 1rem;
+    cursor: pointer;
+
+    :disabled {
+        background-color: #8b8b8b !important;
+        color: #ffffff !important;
+
+        >* {
+            color: #ffffff !important;
+        }
+    }
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+img {
+    vertical-align: top;
+    max-width: 100%;
+}
+
+a {
+    font-size: 1rem;
+    text-decoration: none;
+    color: #000000;
+    cursor: pointer;
+
+    :hover {
+        color: #000000;
+    }
+}
+
+input {
+    border: 0 none;
+}
