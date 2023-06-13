@@ -20,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Visual/>
-        <div>
-          {children}
+        <div id='wrap'>
+          <Visual open={true}/>
+          <div className='contents-wrap'>
+            {children}
+          </div>
         </div>
       </body>
     </html>

@@ -45,11 +45,10 @@ img {
 a {
     font-size: 1rem;
     text-decoration: none;
-    color: #000000;
+    color: $color-black;
     cursor: pointer;
-
-    :hover {
-        color: #000000;
+    &:hover {
+        color: $color-red;
     }
 }
 

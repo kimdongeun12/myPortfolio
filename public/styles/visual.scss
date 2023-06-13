@@ -2,12 +2,29 @@
 
 .visual-wrap {
     position: fixed;
-    left: 0;
+    left: 0%;
     top: 0;
-    width: 100%;
+    width: 400px;
     height: 100%;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
     background-color: $color-bg;
     color: $color-white;
+    z-index: 10;
+    > .dim {
+        opacity: 0;
+        visibility: hidden;
+        z-index: -1;
+        transition: all 0.2s;
+        -webkit-transition: all 0.2s;
+        -moz-transition: all 0.2s;
+        -ms-transition: all 0.2s;
+        -o-transition: all 0.2s;
+    }
+
+
     a {
         color: $color-white;
     }
@@ -21,32 +38,144 @@
     }
     .visual-top {
         position: absolute;
-        right: 0;
-        top: 0;
+        top: 24px;
+        left: 0;
+        padding: 0 48px;
+        width: 100%;
+        text-align: center;
         z-index: 1;
+        font-size: $font-size-md;
+        > div {
+            display: inline-block;
+        }
+        > div + div {
+            margin-left: 16px;
+        }
     }
     .visual-middle {
-        position: absolute;
-        left: 50%;
-        top: 50%;
+        padding: 0 2.5rem;
+        position: relative;
+        text-align: center;
         z-index: 1;
-
-        transform: translate(-50% , -50%);
-        -webkit-transform: translate(-50% , -50%);
-        -moz-transform: translate(-50% , -50%);
-        -ms-transform: translate(-50% , -50%);
-        -o-transform: translate(-50% , -50%);
+        .name-wrap {
+            .dim {
+                animation: dim 1s 2s forwards;
+                -webkit-animation: dim 1s 2s forwards;
+            }
+            .name {
+                svg {
+                    width: 100%;
+                    animation: stroke 4s forwards;
+                    -webkit-animation: stroke 4s forwards;
+                    stroke-dasharray: 500;
+                    filter: drop-shadow(0 0 2px #fff);
+                    -webkit-filter: drop-shadow(0 0 2px #fff);
+                }
+            }
+            .job {
+                font-size: $font-size-xl;
+                color: $color-red;
+                > span {
+                    text-shadow: 0 0 0 $color-red;
+                    animation: loading 2s ease-in-out infinite alternate;
+                    -webkit-animation: loading 2s ease-in-out infinite alternate;
+                    @for $i from 1 to 18 {
+                        &:nth-child(#{$i}) {
+                            animation-delay: ($i * 0.2s);
+                        }
+                    }
+                }
+            }
+        }
+        .nav > a{
+            display: block;
+            font-size: $font-size-lg;
+            margin: 0 8px 8px;
+        }
+        .link-wrap {
+            > a {
+                font-size: $font-size-lg;
+                margin: 0 8px;
+            }
+        }
     }
 
     .copyright {
         position: absolute;
         left: 50%;
-        bottom: 0;
+        bottom: 24px;
+        text-align: center;
         z-index: 1;
+        opacity: 0;
         transform: translateX(-50%);
         -webkit-transform: translateX(-50%);
         -moz-transform: translateX(-50%);
         -ms-transform: translateX(-50%);
         -o-transform: translateX(-50%);
+        animation: copyright 1s 1s forwards;
+        -webkit-animation: copyright 1s 1s forwards;
+    }
+
+    // visual이 열렸을 때 작업
+    &.open {
+        max-width: 100%;
+        width: 100%;
+        .visual-top {
+            text-align: right;
+        }
+        .visual-middle {
+            .name-wrap {
+                .job {
+                    font-size: $font-size-xxl;
+                }
+            }
+            .nav>a {
+                display: inline-block;
+            }
+        }
+        > .dim {
+            opacity: 0.5;
+            visibility: visible;
+        }
+    }
 }
+
+
+// 애니메이션
+
+@keyframes stroke {
+    0% {
+        stroke-dashoffset: 500;
+    }
+
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes loading {
+    to {
+        text-shadow: 20px 0 70px #ff0266;
+        color: #ff0266;
+    }
+}
+@keyframes dim {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        visibility:hidden;
+        z-index:-1;
+    }
+}
+@keyframes copyright {
+    0% {
+        opacity: 0;
+        bottom: -24px;
+    }
+    100% {
+        opacity: 1;
+        bottom: 24px;
+    }
 }
