@@ -1,45 +1,33 @@
  "use client"
+
 import { useEffect, useRef, useState } from 'react';
 import { BsGithub, BsFillBookFill, BsFillEnvelopeHeartFill } from "react-icons/bs";
-import Hammer from 'hammerjs';
-// if (typeof window !== 'undefined') {
-//   require('hammerjs');
-// }
+import ParticlesUI from '@/src/component/unit/visual/Particles';
+import NameUI from '@/src/component/common/Name';
 
-
-import ParticlesUI from '@/src/component/Particles';
-import NameUI from '@/src/component/Name';
-
+// import Hammer from 'hammerjs';
+const Hammer = typeof window !== 'undefined' ? require('hammerjs') : undefined;
 
 import '/public/styles/visual.scss';
 import Link from 'next/link';
 
-interface IVisualProps {
-  open : boolean
-}
 
-export default function Visual({open} : IVisualProps) {
+export default function VisualUI() {
   const visualWrap = useRef<HTMLDivElement | null>(null);
-
-  const [drawer, setDrawer] = useState(true);
-
-  useEffect(() => {
-    setDrawer(open);
-  }, [open]);
-
+  const [drawer, setDrawer] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const visualEl = visualWrap.current;
-
-      if(!visualEl) return;
-      let clientWidth = visualEl.clientWidth;
-      let move = clientWidth;
-      let full = window.innerWidth;
-      let minWidth = 400;
+    const visualEl = visualWrap.current;
+    if(!visualEl) return;
+    let clientWidth = visualEl.clientWidth;
+    let move = clientWidth;
+    let full = window.innerWidth;
+    let minWidth = 400;
+    if(typeof window !== 'undefined') {
       const hammer = new Hammer(visualEl);
       hammer.get('pan').set({ enable: true, direction: Hammer.DIRECTION_HORIZONTAL });
-      hammer.on('pan panstart panend', (event) => {
+      hammer.on('pan panend', (event : HammerInput) => {
+        full = window.innerWidth;
         switch(event.type) {
           case 'panend' :
             if(Math.abs(event.deltaX) > 300) {
@@ -65,7 +53,7 @@ export default function Visual({open} : IVisualProps) {
         visualEl.style.width = `${move}px`;
       });
     }
-  }, [drawer])
+  }, [drawer]);
 
   return (
     <div className={`visual-wrap ${drawer ? 'open' : ''}`} ref={visualWrap}>
