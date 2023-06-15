@@ -6,7 +6,7 @@ export default function Visual() {
   const cookieStore = cookies();
   const getCookie = cookieStore.get('visual') ? cookieStore.get('visual') : false;
   const visual = getCookie ? getCookie.value === 'true' ? true : false
-                            : false;
+                            : true;
   return (
     <VisualUI visual={visual}/>
   )

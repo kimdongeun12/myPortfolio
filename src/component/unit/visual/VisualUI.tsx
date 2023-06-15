@@ -10,7 +10,7 @@ const Hammer = typeof window !== 'undefined' ? require('hammerjs') : undefined;
 
 import '/public/styles/visual.scss';
 import Link from 'next/link';
-import { setCookie } from '@/src/commons/hooks/customs/useCookie';
+import { removeCookie, setCookie } from '@/src/commons/hooks/customs/useCookie';
 
 interface IVisualProps {
   visual : boolean
@@ -24,10 +24,12 @@ export default function VisualUI({visual} : IVisualProps) {
   useEffect(() => {
     const visualEl = visualWrap.current;
     if(!visualEl) return;
+    visualEl.style.removeProperty('width');
     let clientWidth = visualEl.clientWidth;
     let move = clientWidth;
     let full = window.innerWidth;
     let minWidth = 400;
+    console.log(clientWidth,move ,full,minWidth)
     if(typeof window !== 'undefined') {
       const hammer = new Hammer(visualEl);
       hammer.get('pan').set({ enable: true, direction: Hammer.DIRECTION_HORIZONTAL });
@@ -81,8 +83,8 @@ export default function VisualUI({visual} : IVisualProps) {
         </div>
         <div className="nav mt2 kodchasan">
           <Link href="/" onClick={() => setDrawer(false)}>Profile</Link>
-          <Link href="/resume">Resume</Link>
-          <Link href="/portfolio">Portfolio</Link>
+          <Link href="/resume" onClick={() => setDrawer(false)}>Resume</Link>
+          <Link href="/portfolio" onClick={() => setDrawer(false)}>Portfolio</Link>
         </div>
         <div className="link-wrap mt2">
           <a href='https://github.com/kimdongeun12' target='_blank'><BsGithub /></a>
