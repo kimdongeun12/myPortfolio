@@ -1,12 +1,13 @@
-import { GetServerSideProps } from "next";
+import { getCookieParser } from "next/dist/server/api-utils";
 import VisualUI from "../component/unit/visual/VisualUI";
-
-
+import { cookies } from 'next/headers'
 
 export default function Visual() {
-  // const data = await getStaticProps();
-  // console.log(data);
+  const cookieStore = cookies();
+  const getCookie = cookieStore.get('visual') ? cookieStore.get('visual') : false;
+  const visual = getCookie ? getCookie.value === 'true' ? true : false
+                            : false;
   return (
-    <VisualUI/>
+    <VisualUI visual={visual}/>
   )
 }

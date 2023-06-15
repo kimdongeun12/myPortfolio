@@ -10,7 +10,6 @@
     align-content: center;
     align-items: center;
     justify-content: center;
-    background-color: $color-bg;
     color: $color-white;
     z-index: 10;
     > .dim {
@@ -23,18 +22,18 @@
         -ms-transition: all 0.2s;
         -o-transition: all 0.2s;
     }
-
-
     a {
         color: $color-white;
     }
+
     #tsparticles {
         position: absolute;
         left: 0;
         top: 0;
         width: 100%;
         height: 100%;
-        z-index: 0;
+        z-index: 1;
+        background-color: $color-bg;
     }
     .visual-top {
         position: absolute;
@@ -136,6 +135,28 @@
         > .dim {
             opacity: 0.5;
             visibility: visible;
+        }
+    }
+    &.loaded {
+        .visual-middle {
+            .name-wrap {
+                .dim {
+                    display: none;
+                }
+
+                .name {
+                    svg {
+                        animation: none;
+                        -webkit-animation: none;
+                    }
+                }
+            }
+        }
+
+        .copyright {
+            opacity: 1;
+            animation: none;
+            -webkit-animation: none;
         }
     }
 }

@@ -10,11 +10,16 @@ const Hammer = typeof window !== 'undefined' ? require('hammerjs') : undefined;
 
 import '/public/styles/visual.scss';
 import Link from 'next/link';
+import { setCookie } from '@/src/commons/hooks/customs/useCookie';
 
+interface IVisualProps {
+  visual : boolean
+}
 
-export default function VisualUI() {
+export default function VisualUI({visual} : IVisualProps) {
   const visualWrap = useRef<HTMLDivElement | null>(null);
-  const [drawer, setDrawer] = useState(false);
+  const [drawer, setDrawer] = useState(visual);
+  const [loading] = useState(!visual);
 
   useEffect(() => {
     const visualEl = visualWrap.current;
@@ -53,10 +58,11 @@ export default function VisualUI() {
         visualEl.style.width = `${move}px`;
       });
     }
+    setCookie('visual' , `${drawer}`);
   }, [drawer]);
 
   return (
-    <div className={`visual-wrap ${drawer ? 'open' : ''}`} ref={visualWrap}>
+    <div className={`visual-wrap ${drawer ? 'open' : ''} ${loading ? 'loaded' : ''}`} ref={visualWrap}>
       <ParticlesUI/>
       <div className="visual-top">
         <div><span>조회수 : </span><span>0</span></div>
@@ -65,7 +71,7 @@ export default function VisualUI() {
       <div className="visual-middle">
         <div className="img-wrap"><span className='img-box'>이미지 영역</span></div>
         <div className="name-wrap mt3">
-          <div className='dim'/>
+          {<div className='dim'/>}
           <div className="name"><NameUI/></div>
           <div className="job kodchasan">{
             'FrontEnd Developer'.split('').map((el,idx) => (
@@ -74,7 +80,7 @@ export default function VisualUI() {
           }</div>
         </div>
         <div className="nav mt2 kodchasan">
-          <Link href="/">Profile</Link>
+          <Link href="/" onClick={() => setDrawer(false)}>Profile</Link>
           <Link href="/resume">Resume</Link>
           <Link href="/portfolio">Portfolio</Link>
         </div>
