@@ -11,6 +11,7 @@ const Hammer = typeof window !== 'undefined' ? require('hammerjs') : undefined;
 import '/public/styles/visual.scss';
 import Link from 'next/link';
 import { removeCookie, setCookie } from '@/src/commons/hooks/customs/useCookie';
+import useBeforeUnload from '@/src/commons/hooks/customs/useBeforeUnload';
 
 interface IVisualProps {
   visual : boolean
@@ -61,7 +62,10 @@ export default function VisualUI({visual} : IVisualProps) {
       });
     }
     setCookie('visual' , `${drawer}`);
+    
   }, [drawer]);
+  
+  useBeforeUnload();
 
   return (
     <div className={`visual-wrap ${drawer ? 'open' : ''} ${loading ? 'loaded' : ''}`} ref={visualWrap}>
