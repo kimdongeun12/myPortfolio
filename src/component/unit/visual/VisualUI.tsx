@@ -12,6 +12,7 @@ import '/public/styles/visual.scss';
 import Link from 'next/link';
 import { removeCookie, setCookie } from '@/src/commons/hooks/customs/useCookie';
 import useBeforeUnload from '@/src/commons/hooks/customs/useBeforeUnload';
+import { MouseInput } from 'hammerjs';
 
 interface IVisualProps {
   visual : boolean
@@ -64,6 +65,26 @@ export default function VisualUI({visual} : IVisualProps) {
     setCookie('visual' , `${drawer}`);
     
   }, [drawer]);
+
+  useEffect(() => {
+    const visualEl = visualWrap.current;
+    if(!visualEl) return;
+    if(typeof window !== 'undefined') {
+      let number = 0;
+      visualEl.addEventListener('wheel' , (ev) => {
+        // console.log(ev.deltaY);
+
+        scale += ev.deltaY * 0.01;
+        // Restrict scale
+        scale = Math.min(Math.max(0.0000001, scale), 10);
+        
+        number = Math.floor(scale);
+        console.log(number);
+        ev.preventDefault();
+      },{ passive: false })
+      let scale = 1;
+    }
+  })
   
   useBeforeUnload();
 
