@@ -1,0 +1,18 @@
+
+/*------------------------------------*\
+    #COLOR
+\*------------------------------------*/
+
+@mixin setCenterPosion($left, $top) {
+    @if $top == null {
+        left: $left;
+        transform: translateX(-50%);
+    } @else if $left == null {
+        top: $top;
+        transform: translateY(-50%);
+    } @else {
+        top: $top;
+        left: $left;
+        transform: translate(-50%, -50%);
+    }
+}

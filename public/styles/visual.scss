@@ -106,11 +106,7 @@
         text-align: center;
         z-index: 1;
         opacity: 0;
-        transform: translateX(-50%);
-        -webkit-transform: translateX(-50%);
-        -moz-transform: translateX(-50%);
-        -ms-transform: translateX(-50%);
-        -o-transform: translateX(-50%);
+        @include setCenterPosion(50%,null);
         animation: copyright 1s 1s forwards;
         -webkit-animation: copyright 1s 1s forwards;
     }

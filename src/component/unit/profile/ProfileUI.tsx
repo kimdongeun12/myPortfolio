@@ -6,6 +6,8 @@ import '/public/styles/visual.scss';
 import profile from '@/commons/core/profile';
 import Link from 'next/link';
 import ImgWrap from '@/component/common/box/ImgWrap';
+import { BsCaretRightFill } from 'react-icons/bs';
+import PanelWrap from '@/component/common/panel/PanelWrap';
 
 
 export default function ProfileUI() {
@@ -21,7 +23,7 @@ export default function ProfileUI() {
   ];
   const introduceArr = [
     {
-      title : '저는 ____ 엔지니어 입니다.',
+      title : '저는 ________ 엔지니어 입니다.',
       lists : [
         '고객의 시선에서 편리함을 고민 하는',
         '조직에 관심이 많은',
@@ -30,7 +32,7 @@ export default function ProfileUI() {
       ]
     },
     {
-      title : '저는 ____ 조직을 선호합니다.',
+      title : '저는 ________ 조직을 선호합니다.',
       lists : [
         '프로젝트의 의사결정이 투명하게 이뤄지는',
         '프로젝트 기술에 자부심을 갖고있는',
@@ -63,14 +65,10 @@ export default function ProfileUI() {
       </div>
       <div className='d-flex row-2 gap-5 pb-9'>
         {introduceArr.map((cur, idx) => (
-          <div key={idx}>
-            <div className='font-24 bold'>{cur.title}</div>
-            <ul>
-              {cur.lists.map((list, listIdx) => (
-                <li key={listIdx}>{list}</li>
-              ))}
-            </ul>
-          </div>
+          <PanelWrap
+            key={idx}
+            title={cur.title}
+            lists={cur.lists}/>
         ))}
       </div>
       <div className='d-flex row-2 gap-5'>

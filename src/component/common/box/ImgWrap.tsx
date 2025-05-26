@@ -17,7 +17,6 @@ interface IImgWrapProps {
 export default function ImgWrap({children, type, ratioObj} : IImgWrapProps) {
   const isPadding = (ratioObj?.height && ratioObj?.width);
   const ratio = isPadding && `${(ratioObj?.height / ratioObj?.width) * 100}%`;
-  console.log(ratio);
   
   return (
     <div 

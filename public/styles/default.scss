@@ -8,6 +8,14 @@
         margin-bottom: ($i * 0.5rem);
     }
 
+    .pl-#{$i} {
+        padding-left: ($i * 0.5rem);
+    }
+
+    .pr-#{$i} {
+        padding-right: ($i * 0.5rem);
+    }
+
     .pt-#{$i} {
         padding-top: ($i * 0.5rem);
     }
@@ -135,12 +143,45 @@
             content: "";
             position: absolute;
             left: 0;
-            top: 50%;
             display: block;
             width: 8px;
             border: 1px solid #121212;
-            transform: translateY(-50%);
+            @include setCenterPosion(null,50%)
         }
         &:last-child { margin-bottom: 0; }
+    }
+}
+
+.panel-wrap {
+    max-height: 10rem;
+    min-height: 2rem;
+    height: 0;
+    overflow: hidden;
+    transition: all .4s;
+    .pannel-header {
+        position: relative;
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+        padding-left: 1.5rem;
+        .arrow {
+            position: absolute;
+            left: 0;
+            width: 1rem;
+            height: 1rem;
+            @include setCenterPosion(null,50%);
+        }
+        .arrow::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: url(/images/icon/icon_arrow.svg);
+        }
     }
 }
