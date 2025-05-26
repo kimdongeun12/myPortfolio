@@ -4,7 +4,7 @@
     position: fixed;
     left: 0%;
     top: 0;
-    width: 400px;
+    width: 25rem;
     height: 100%;
     display: flex;
     align-content: center;
@@ -37,9 +37,9 @@
     }
     .visual-top {
         position: absolute;
-        top: 24px;
+        top: 1.5rem;
         left: 0;
-        padding: 0 48px;
+        padding: 0 3rem;
         width: 100%;
         text-align: center;
         z-index: 1;
@@ -48,7 +48,7 @@
             display: inline-block;
         }
         > div + div {
-            margin-left: 16px;
+            margin-left: 1rem;
         }
     }
     .visual-middle {
@@ -89,12 +89,12 @@
         .nav > a{
             display: block;
             font-size: $font-size-lg;
-            margin: 0 8px 8px;
+            margin: 0 0.5rem 0.5rem;
         }
         .link-wrap {
             > a {
                 font-size: $font-size-lg;
-                margin: 0 8px;
+                margin: 0 0.5rem;
             }
         }
     }
@@ -102,7 +102,7 @@
     .copyright {
         position: absolute;
         left: 50%;
-        bottom: 24px;
+        bottom: 1.5rem;
         text-align: center;
         z-index: 1;
         opacity: 0;
@@ -159,6 +159,13 @@
             -webkit-animation: none;
         }
     }
+    @media screen and (max-width:767px) {
+        left: -20rem;
+        transition: all 0.3s;
+        &.open {
+            left: 0;
+        }
+    }
 }
 
 
@@ -193,10 +200,10 @@
 @keyframes copyright {
     0% {
         opacity: 0;
-        bottom: -24px;
+        bottom: -1.5rem;
     }
     100% {
         opacity: 1;
-        bottom: 24px;
+        bottom: 1.5rem;
     }
 }

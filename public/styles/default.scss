@@ -1,25 +1,61 @@
-// 간격 생성
-@for $i from 1 to 10 {
-    .mt#{$i} {
-        margin-top: ($i * 8px);
+// 간편 css 생성
+@for $i from 1 to 20 {
+    .mt-#{$i} {
+        margin-top: ($i * 0.5rem);
     }
 
-    .mb#{$i} {
-        margin-bottom: ($i * 8px);
+    .mb-#{$i} {
+        margin-bottom: ($i * 0.5rem);
     }
 
-    .pt#{$i} {
-        padding-top: ($i * 8px);
+    .pt-#{$i} {
+        padding-top: ($i * 0.5rem);
     }
 
-    .pb#{$i} {
-        padding-bottom: ($i * 8px);
+    .pb-#{$i} {
+        padding-bottom: ($i * 0.5rem);
     }
+
+    .font-#{10 + ($i * 2)} {
+        font-size: #{((10 + ($i * 2)) / 16)}rem;
+    }
+}
+
+.d-flex {
+    display: flex;
+    @for $i from 1 to 10 {
+        &.row-#{$i} { 
+            > * {
+                width: (100% / $i);
+            }
+        }
+        &.gap-#{$i} {
+            gap: ($i * 0.5rem);
+        }
+    }
+    
+}
+
+/*------------------------------------*\
+    #TYPOGRAPHY
+\*------------------------------------*/
+
+.title-wrap {
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #121212;
 }
 
 .kodchasan {
     font-family: "Kodchasan", sans-serif !important;
 }
+
+.bold { font-weight: bold; }
+.white-pre { white-space: pre; }
+
+/*------------------------------------*\
+    #dialogs
+\*------------------------------------*/
+
 .dim {
     position: fixed;
     left: 0;
@@ -29,34 +65,82 @@
     background-color: #000000;
 }
 
-.img-wrap {
-    .img-box{
-        display: inline-block;
-        width: 150px;
-        height: 150px;
-        background-color: #121212;
-        overflow: hidden;
-        border-radius: 100%;
-        -webkit-border-radius: 100%;
-        -moz-border-radius: 100%;
-        -ms-border-radius: 100%;
-        -o-border-radius: 100%;
+/*------------------------------------*\
+    #wrap
+\*------------------------------------*/
 
+.img-wrap {
+    overflow: hidden;
+    @at-root {
+        a:hover {
+            .img-box {
+                transform: scale(1.2);
+                transition: all .4s;
+            }
+        }
+    }
+    .img-box {
+        background-color: #121212;
+    }
+    &.type-avatar {
+        .img-box{
+            display: inline-block;
+            width: 10rem;
+            height: 10rem;
+            border-radius: 100%;
+            -webkit-border-radius: 100%;
+            -moz-border-radius: 100%;
+            -ms-border-radius: 100%;
+            -o-border-radius: 100%;
+        }
         &.md {
-            width: 48px;
-            height: 48px;
+            width: 3rem;
+            height: 3rem;
         }
     }
 }
 
 .contents-wrap {
-    padding-left: 440px;
-    padding-right: 40px;
-    padding-top: 56px;
-    padding-bottom: 80px;
+    padding-left: 27.5rem; 
+    padding-right: 2.5rem;
+    padding-top: 3.5rem;
+    padding-bottom: 5rem;
+    .open + & { 
+        overflow: hidden;
+        touch-action: pan-y;
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+    @media screen and (max-width:767px) {
+        padding-left: 6.5rem; 
+        padding-right: 2.5rem;
+        padding-top: 3.5rem;
+        padding-bottom: 5rem;
+    }
 }
 
-.title-wrap {
-    padding-bottom: 16px;
-    border-bottom: 2px solid #121212;
+.box {
+    border: 1px solid #121212;
+    border-radius: .8rem;
+    padding: .5rem 1rem;
+    word-break: keep-all;
+}
+
+.list-wrap {
+    li {
+        padding-left: 1rem;
+        position: relative;
+        margin-bottom: .5rem;
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            display: block;
+            width: 8px;
+            border: 1px solid #121212;
+            transform: translateY(-50%);
+        }
+        &:last-child { margin-bottom: 0; }
+    }
 }

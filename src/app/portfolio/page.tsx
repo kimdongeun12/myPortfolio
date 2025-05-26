@@ -1,5 +1,13 @@
-import PortfolioUI from '@/src/component/unit/portfolio/PortfolioUI'
-import second from 'React'
+import PortfolioUI from '@/component/unit/portfolio/PortfolioUI'
+
+export const generateMetadata = () => {
+  return {
+    title: '포트폴리오',
+    customMeta: {
+      pageTitle: 'Portfolio',
+    },
+  };
+};
 
 export default function Portfolio() {
   return (

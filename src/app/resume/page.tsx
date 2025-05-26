@@ -1,5 +1,13 @@
-import ResumeUI from '@/src/component/unit/resume/ResumeUI'
-import second from 'React'
+import ResumeUI from '@/component/unit/resume/ResumeUI'
+
+export const generateMetadata = () => {
+  return {
+    title: '경력',
+    customMeta: {
+      pageTitle: 'Resume',
+    },
+  };
+};
 
 export default function Resume() {
   return (
