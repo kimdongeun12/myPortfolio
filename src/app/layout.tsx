@@ -4,8 +4,8 @@ import React from 'react';
 import '/public/styles/reset.scss';
 import '/public/styles/default.scss';
 
-// component
-import Visual from './Visual';
+import Link from 'next/link';
+import { UiStoreProvider } from '@/providers/ui-store-provider';
 
 export const metadata = {
   title: {
@@ -23,10 +23,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-          <div id="wrap">
-            <Visual />
-            <div className="contents-wrap">{children}</div>
-          </div>
+            <div id="wrap">
+              <div className="header-wrap kodchasan">
+                <div className='header-inner'>
+                  <Link href="/">Profile</Link>
+                  <Link href="/blog">Blog</Link>
+                  <Link href="/portfolio">Portfolio</Link>
+                </div>
+              </div>
+              <UiStoreProvider>
+               {children}
+              </UiStoreProvider>
+            </div>
       </body>
     </html>
   );

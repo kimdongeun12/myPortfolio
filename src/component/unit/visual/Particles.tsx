@@ -13,7 +13,7 @@ const particleOption : ISourceOptions = {
         },
     },
     fullScreen : false,
-    fpsLimit: 120,
+    fpsLimit: 60,
     interactivity: {
         events: {
             resize: true,

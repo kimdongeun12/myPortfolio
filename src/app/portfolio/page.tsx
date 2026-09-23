@@ -1,4 +1,4 @@
-import PortfolioUI from '@/component/unit/portfolio/PortfolioUI'
+import Portfolio from '@/component/unit/portfolio/Portfolio.index'
 
 export const generateMetadata = () => {
   return {
@@ -9,8 +9,8 @@ export const generateMetadata = () => {
   };
 };
 
-export default function Portfolio() {
+export default function PortfolioPage() {
   return (
-    <PortfolioUI/>
+    <Portfolio/>
   )
 }

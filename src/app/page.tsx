@@ -1,7 +1,13 @@
-import ProfileUI from "../component/unit/profile/ProfileUI";
+import Profile from "@/component/unit/profile/Profile.index";
+// component
+import Visual from './Visual';
 
-export default function Profile() {
+
+export default function ProfilePage() {
   return (
-    <ProfileUI/>
+    <>
+      <Visual />
+      <Profile />
+    </>
   )
 }

@@ -1,11 +1,11 @@
  "use client"
 
 import { useEffect, useRef, useState } from 'react';
+
 import Title from '@/component/common/title/Title';
-import '/public/styles/visual.scss';
 
 
-export default function PortfolioUI() {
+export default function Portfolio() {
 
   return (
     <div>

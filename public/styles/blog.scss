@@ -1,0 +1,50 @@
+.profile-area {
+    display: flex;
+    .profile-wrap {
+        width: calc(100% - 10rem);
+        .info-wrap {
+            margin-bottom: 2rem;
+            .name-wrap {
+                display: flex;
+                align-items: center;
+                margin-bottom: 0.5rem;
+                .name { padding-right: 0.5rem;}
+            }
+            .job-wrap { 
+                position: relative;
+                margin-bottom: 1rem; 
+                padding-bottom: 1rem;
+                &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 50px;
+                    height: 2px;
+                    background-color: $color-black;
+                }
+            }
+            .sns-wrap { 
+                > span { 
+                    position: relative;
+                    display: inline-block; 
+                    padding-right: 1rem;
+                    & + span {
+                        padding-left: 1rem;
+                        &::before {
+                            content: "";
+                            position: absolute;
+                            left: 0;
+                            width: 4px;
+                            height: 4px;
+                            background-color: $color-grey03;
+                            @include setCenterPosion(null,50%)
+                        }
+                    }
+                }
+             }
+            .greeting-wrap { word-break: keep-all; }
+        }
+    }
+    .img-wrap { width: 10rem; }
+}
