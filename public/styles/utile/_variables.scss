@@ -19,16 +19,30 @@ $color-button: #4356FF;
 $color-button-active: #C8CDFF;
 
 
-$color-01 : #FFFFFF;
-$color-02 : #E5E7EB;
-$color-03 : #F7F8FA;
-$color-04 : #F6F7FA;
-$color-04 : #1E1F25;
-$color-06 : #4B4E5A;
-$color-07 : #747884;
-$color-08 : #D90057;
-$color-09 : #FF0266;
+$color-1 : #FFFFFF;
+$color-2 : #E5E7EB;
+$color-3 : #A1A8B3;
+$color-4 : #F6F7FA;
+$color-5 : #1E1F25;
+$color-6 : #4B4E5A;
+$color-7 : #747884;
+$color-8 : #D90057;
+$color-9 : #FF0266;
 $color-10 : #5DBFD4;
+
+$colors: (
+    1 : #FFFFFF,
+    2 : #E5E7EB,
+    3 : #A1A8B3,
+    4 : #F6F7FA,
+    5 : #1E1F25,
+    6 : #4B4E5A,
+    7 : #747884,
+    8 : #D90057,
+    9 : #FF0266,
+    10 : #5DBFD4,
+);
+
 
 // $color-white: #ffffff;
 // $color-grey01: #E9E9E9;

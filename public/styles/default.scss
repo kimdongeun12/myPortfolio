@@ -1,3 +1,4 @@
+
 // 간편 css 생성
 @for $i from 1 to 20 {
     .mt-#{$i} {
@@ -27,20 +28,32 @@
     .font-#{10 + ($i * 2)} {
         font-size: #{((10 + ($i * 2)) / 16)}rem;
     }
+    
+    .color-#{$i} {
+        color: map.get($colors, $i);
+    }
+    
+    
 }
 
 .d-flex {
     display: flex;
+}
+
+.flex-con { 
+    display:flex !important; 
+    display:-webkit-flex !important; 
     @for $i from 1 to 10 {
-        &.row-#{$i} { 
-            > * {
-                width: (100% / $i);
-            }
+        .col-#{$i} {
+            flex-grow:$i; flex: $i;
         }
         &.gap-#{$i} {
-            gap: ($i * 0.5rem);
+            gap : #{$i}rem;
         }
     }
+}
+
+.hr-01 {
     
 }
 
@@ -71,7 +84,7 @@
 \*------------------------------------*/
 
 #wrap {
-    background-color: $color-04;
+    background-color: $color-4;
 }
 
 .img-wrap {
@@ -123,18 +136,28 @@
         > a {
             display: inline-block;
             font-size: $font-size-md;
-            color: $color-01;
+            color: $color-1;
             padding: 0 1rem;
             line-height: 6.25rem;
             &:hover {
-                color: $color-09;
+                color: $color-9;
             }
         }
     }
 }
 
 .contents-wrap {
+    position: relative;
     padding-top: 6.25rem;
+    padding-bottom: 5rem;
+    max-width: 82rem;
+    margin: 0 auto;
+
+    .content {
+        position: relative;
+        z-index: 1;
+        color : $color-2;
+    }
     // @media screen and (max-width:767px) {
     //     padding-left: 6.5rem; 
     //     padding-right: 2.5rem;
@@ -142,6 +165,7 @@
     //     padding-bottom: 5rem;
     // }
 }
+
 
 .box {
     border: 1px solid $color-black;
