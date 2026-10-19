@@ -1,5 +1,5 @@
-import Blog from '@/component/unit/blog/Blog.index'
-import '/public/styles/blog.scss';
+import Blog from '@/features/blog/components/Blog'
+import '@/styles/blog.scss';
 
 export const generateMetadata = () => {
   return {

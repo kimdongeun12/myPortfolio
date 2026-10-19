@@ -1,6 +1,6 @@
-import Profile from "@/component/unit/profile/Profile.index";
+import Profile from "@/features/profile/components/Profile";
 // component
-import Visual from './Visual';
+import Visual from '@/features/visual/components/Visual';
 
 
 export default function ProfilePage() {

@@ -1,13 +1,12 @@
-import React from 'react';
+import type { ReactNode } from 'react';
 
-
-import '/public/styles/reset.scss';
-import '/public/styles/default.scss';
+import '@/styles/reset.scss';
+import '@/styles/default.scss';
 // Import Swiper styles
 import 'swiper/css';
 
-import Link from 'next/link';
-import { UiStoreProvider, useUiStoreApi } from '@/providers/ui-store-provider';
+import Header from '@/components/layout/Header';
+import { UiStoreProvider } from '@/providers/ui-store-provider';
 
 export const metadata = {
   title: {
@@ -17,28 +16,14 @@ export const metadata = {
   description: '김동은 이력서',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const uiStore = useUiStoreApi();
-  console.log(uiStore.getState().isWindowOpen)
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body>
-            <div id="wrap">
-              <div className="header-wrap kodchasan">
-                <div className='header-inner'>
-                  <Link href="/">Profile</Link>
-                  <Link href="/blog">Blog</Link>
-                  <Link href="/portfolio">Portfolio</Link>
-                </div>
-              </div>
-              <UiStoreProvider>
-               {children}
-              </UiStoreProvider>
-            </div>
+        <div id="wrap">
+          <Header />
+          <UiStoreProvider>{children}</UiStoreProvider>
+        </div>
       </body>
     </html>
   );

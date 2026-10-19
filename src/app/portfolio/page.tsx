@@ -1,4 +1,4 @@
-import Portfolio from '@/component/unit/portfolio/Portfolio.index'
+import Portfolio from '@/features/portfolio/components/Portfolio'
 
 export const generateMetadata = () => {
   return {
