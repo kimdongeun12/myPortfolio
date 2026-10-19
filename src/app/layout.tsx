@@ -6,6 +6,7 @@ import '@/styles/default.scss';
 import 'swiper/css';
 
 import Header from '@/components/layout/Header';
+import Wrap from '@/components/layout/Wrap';
 import { UiStoreProvider } from '@/providers/ui-store-provider';
 
 export const metadata = {
@@ -20,10 +21,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
       <body>
-        <div id="wrap">
-          <Header />
-          <UiStoreProvider>{children}</UiStoreProvider>
-        </div>
+        <UiStoreProvider>
+          <Wrap>
+            <Header />
+            {children}
+          </Wrap>
+        </UiStoreProvider>
       </body>
     </html>
   );

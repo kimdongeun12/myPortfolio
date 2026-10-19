@@ -1,30 +1,34 @@
  "use client"
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { BsGithub, BsFillBookFill, BsFillEnvelopeHeartFill } from "react-icons/bs";
 import ParticlesUI from '@/features/visual/components/Particles';
 import NameUI from '@/components/common/Name';
 
 import { useBeforeUnload } from '@/hooks/useWindowEvent';
+import { useUiStore } from '@/providers/ui-store-provider';
 import Link from 'next/link';
 
 
 export default function VisualUI() {
   const visualWrap = useRef<HTMLDivElement | null>(null);
-  const [loading, setLoading] = useState(false);
-  
+  const isWindowOpen = useUiStore((state) => state.isWindowOpen);
+  const openWindow = useUiStore((state) => state.openWindow);
+
   useEffect(() => {
+    console.log(isWindowOpen, 'asdada')
+    if (isWindowOpen) return;
     const dim = document.querySelector('.visual-wrap .dim');
-    if(loading) return;
-    dim?.addEventListener('animationstart', (e) => {
-      setLoading(true)
-    })
-  }, []);
+    if (!dim) return;
+
+    dim.addEventListener('animationstart', openWindow, { once: true });
+    return () => dim.removeEventListener('animationstart', openWindow);
+  }, [isWindowOpen, openWindow]);
 
   useBeforeUnload();
 
   return (
-    <div className={`visual-wrap ${ !loading ? 'loading' : '' }`} ref={visualWrap}>
+    <div className={`visual-wrap ${ !isWindowOpen ? 'loading' : '' }`} ref={visualWrap}>
       <ParticlesUI/>
       {/* <div className="visual-top">
         <div><span>조회수 : </span><span>0</span></div>

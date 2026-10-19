@@ -7,6 +7,9 @@ export type UiState = {
 };
 
 export type UiActions = {
+  openWindow: () => void;
+  closeWindow: () => void;
+  setWindowOpen: (isOpen: boolean) => void;
   toggleMenu: () => void;
   closeMenu: () => void;
   setTheme: (theme: UiState['theme']) => void;
@@ -23,8 +26,10 @@ export const defaultUiState: UiState = {
 export const createUiStore = (initState: UiState = defaultUiState) =>
   createStore<UiStore>()((set) => ({
     ...initState,
-    openWindowSet: () => { set({isWindowOpen : true})  },
+    openWindow: () => set({ isWindowOpen: true }),
+    closeWindow: () => set({ isWindowOpen: false }),
+    setWindowOpen: (isOpen) => set({ isWindowOpen: isOpen }),
     toggleMenu: () => set((state) => ({ isMenuOpen: !state.isMenuOpen })),
     closeMenu: () => set({ isMenuOpen: false }),
     setTheme: (theme) => set({ theme }),
-}));
+  }));
