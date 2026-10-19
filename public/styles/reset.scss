@@ -46,8 +46,9 @@ img {
 a {
     font-size: 1rem;
     text-decoration: none;
-    color: $color-black;
+    color: $color-1;
     cursor: pointer;
+    transition: .4s;
     &:hover {
         color: $color-red;
     }
@@ -60,3 +61,7 @@ input {
 @media screen and (max-width:768px) {
     html,body { font-size: 12px; }
 }
+
+.ta-r { text-align: right; }
+.ta-l { text-align: left; }
+.text-overflow { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }

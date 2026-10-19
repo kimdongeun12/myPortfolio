@@ -6,14 +6,12 @@ import ParticlesUI from '@/component/unit/visual/Particles';
 import NameUI from '@/component/common/Name';
 
 import { useBeforeUnload } from '@/commons/hooks/customs/useWindowEvent';
+import Link from 'next/link';
 
-interface IVisualProps {
-  visual : boolean
-}
 
-export default function VisualUI({visual} : IVisualProps) {
+export default function VisualUI() {
   const visualWrap = useRef<HTMLDivElement | null>(null);
-  const [loading, setLoading] = useState(!visual);
+  const [loading, setLoading] = useState(false);
   
   useEffect(() => {
     const dim = document.querySelector('.visual-wrap .dim');
@@ -21,7 +19,7 @@ export default function VisualUI({visual} : IVisualProps) {
     dim?.addEventListener('animationstart', (e) => {
       setLoading(true)
     })
-  }, [visual]);
+  }, []);
 
   useBeforeUnload();
 
@@ -45,9 +43,9 @@ export default function VisualUI({visual} : IVisualProps) {
           }</div>
         </div>
         <div className="link-wrap mt-2">
-          <a href='https://github.com/kimdongeun12' target='_blank'><BsGithub /></a>
-          <a href='https://velog.io/@kimdongeun12' target='_blank'><BsFillBookFill /></a>
-          <a href='mailto:kdedong12@gmail.com'><BsFillEnvelopeHeartFill /></a>
+          <Link href='https://github.com/kimdongeun12' target='_blank'><BsGithub /></Link>
+          <Link href='https://velog.io/@kimdongeun12' target='_blank'><BsFillBookFill /></Link>
+          <Link href='mailto:kdedong12@gmail.com'><BsFillEnvelopeHeartFill /></Link>
         </div>
       </div>
       {/* <div className='copyright'>© 2023. rlo-orn<br/>All rights reserved.</div> */}

@@ -14,7 +14,7 @@ import type { BackgroundProps } from './types';
  *   → 부모 요소에 position:relative(또는 fixed)를 지정해서 배치하세요.
  */
 export default function AmbientBackground({
-  speed = 1,
+  speed = 2,
   className,
 }: BackgroundProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);

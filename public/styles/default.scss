@@ -33,6 +33,9 @@
         color: map.get($colors, $i);
     }
     
+    .w-#{$i} {
+        width: #{(100% / $i)};
+    }
     
 }
 
@@ -43,9 +46,10 @@
 .flex-con { 
     display:flex !important; 
     display:-webkit-flex !important; 
-    @for $i from 1 to 10 {
+    @for $i from 1 to 12 {
         .col-#{$i} {
             flex-grow:$i; flex: $i;
+            width: #{(100% / $i)};
         }
         &.gap-#{$i} {
             gap : #{$i}rem;
@@ -53,18 +57,16 @@
     }
 }
 
-.hr-01 {
-    
-}
+.hr-01 {}
 
 /*------------------------------------*\
     #TYPOGRAPHY
 \*------------------------------------*/
 
-.title-wrap {
-    padding-bottom: 1rem;
-    border-bottom: 2px solid $color-black;
-}
+// .title-wrap {
+//     padding-bottom: 1rem;
+//     border-bottom: 2px solid $color-black;
+// }
 
 .kodchasan {
     font-family: "Kodchasan", sans-serif !important;
@@ -168,11 +170,50 @@
 
 
 .box {
-    border: 1px solid $color-black;
     border-radius: .8rem;
     padding: .5rem 1rem;
     word-break: keep-all;
+    &.has-border {
+        border: 1px solid $color-9;
+        &.border-02 {
+            border-color: $color-10
+        }
+    }
+    &.has-bg {
+        background-color: rgba(0,0,0, 0.2);
+        backdrop-filter: blur(4px);
+    }
 }
+
+.btn-link {
+    position: relative;
+    display: inline-block;
+    padding: 1rem;
+    border: 1px solid $color-1;
+    .deco {
+        position: absolute;
+        left: -1px;
+        top: -1px;
+        width: calc(100% + 2px);
+        height: calc(100% + 2px);
+    }
+    .deco:before, .deco:after {
+        content: "";
+        position: absolute;
+        background-color: $color-9;
+        transition: all 0.3s cubic-bezier(0.35, 0.1, 0.25, 1);
+    }
+    .deco.top:before, .deco.bottom:after { width: 0; height: 2px; }
+    .deco.top:before, .deco.bottom:before { right: 0; top: 0; transition: all 0.5s cubic-bezier(0.35, 0.1, 0.25, 1); }
+    .deco.bottom:after, .deco.top:after { left: 0; bottom: 0; }
+
+    .deco.top:after, .deco.bottom:before { width: 2px; height: 0; }
+    &:hover {
+        .deco.bottom::after, .deco.top::before { width: 100%; }
+        .deco.top::after, .deco.bottom::before { height: 100%; }
+    }
+}
+
 
 .list-wrap {
     li {

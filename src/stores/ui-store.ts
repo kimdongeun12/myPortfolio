@@ -1,25 +1,30 @@
 import { createStore } from 'zustand/vanilla';
 
+export type UiState = {
+  isMenuOpen: boolean;
+  isWindowOpen: boolean;
+  theme: 'light' | 'dark';
+};
 
-interface UiState {
-    selectedProjectId: string | null;
-  }
-  
-  interface UiActions {
-    openProjectPanel: (projectId: string) => void;
-    closeProjectPanel: () => void;
-  }
-  
-  export type UiStore = UiState & UiActions;
-  
-  export function createUiStore() {
-    return createStore<UiStore>()((set) => ({
-      selectedProjectId: null,
-  
-      openProjectPanel: (projectId) =>
-        set({ selectedProjectId: projectId }),
-  
-      closeProjectPanel: () =>
-        set({ selectedProjectId: null }),
-    }));
-  }
+export type UiActions = {
+  toggleMenu: () => void;
+  closeMenu: () => void;
+  setTheme: (theme: UiState['theme']) => void;
+};
+
+export type UiStore = UiState & UiActions;
+
+export const defaultUiState: UiState = {
+  isMenuOpen: false,
+  isWindowOpen: false,
+  theme: 'light',
+};
+
+export const createUiStore = (initState: UiState = defaultUiState) =>
+  createStore<UiStore>()((set) => ({
+    ...initState,
+    openWindowSet: () => { set({isWindowOpen : true})  },
+    toggleMenu: () => set((state) => ({ isMenuOpen: !state.isMenuOpen })),
+    closeMenu: () => set({ isMenuOpen: false }),
+    setTheme: (theme) => set({ theme }),
+}));

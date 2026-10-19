@@ -3,9 +3,11 @@ import React from 'react';
 
 import '/public/styles/reset.scss';
 import '/public/styles/default.scss';
+// Import Swiper styles
+import 'swiper/css';
 
 import Link from 'next/link';
-import { UiStoreProvider } from '@/providers/ui-store-provider';
+import { UiStoreProvider, useUiStoreApi } from '@/providers/ui-store-provider';
 
 export const metadata = {
   title: {
@@ -20,6 +22,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const uiStore = useUiStoreApi();
+  console.log(uiStore.getState().isWindowOpen)
   return (
     <html lang="en">
       <body>
