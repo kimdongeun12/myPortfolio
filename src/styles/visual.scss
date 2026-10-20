@@ -13,12 +13,46 @@
     left: 0%;
     top: 0;
     width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
+    // 스크롤 연출 구간: 이 높이 - 100vh 만큼 스크롤하는 동안 화면에 고정된 채 원이 커짐
+    height: 250vh;
+    // 다음 섹션(프로필)이 구간 끝에서 시작하도록 겹침
+    // (원이 커지는 동안에는 useVisualScrollTrigger가 화면 맨 위에 고정시켜 원 안에 제자리로 보이게 함)
+    margin-bottom: -100vh;
+    // 원이 끝까지 열리면 고정 레이어를 숨겨 아래 섹션 클릭을 막지 않음
+    &[data-scroll-end] .visual-sticky {
+        visibility: hidden;
+        pointer-events: none;
+    }
     color: $color-white;
+    // 스크롤 진행도 (0: 구간 시작 ~ 1: 구간 끝) - useVisualScrollTrigger(GSAP)가 트윈
+    --scroll-progress: 0;
+
+    .visual-sticky {
+        position: sticky;
+        top: 0;
+        // mask가 쌓임 맥락을 만들기 때문에, z-index가 없으면
+        // 뒤에 오는 프로필의 position: fixed 배경과 z-index: 1 요소에 가려짐
+        z-index: 2;
+        // 원 구멍의 반지름: 0 → 75vmax(화면 대각선 절반보다 큼)
+        --hole: calc(var(--scroll-progress) * 75vmax);
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        // 원 안쪽은 투명하게 뚫어서 아래 섹션이 보이도록 (원 바깥만 visual이 남음)
+        -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent var(--hole), #000 calc(var(--hole) + 1px));
+        mask-image: radial-gradient(circle at 50% 50%, transparent var(--hole), #000 calc(var(--hole) + 1px));
+        // 쌓임 순서: 파티클(z1) < dim(z1, DOM상 뒤) < visual-middle(z1, DOM상 더 뒤)
+        // → 검은 dim 위로 이름이 그려지고, 2초 뒤 dim이 사라지며 파티클이 드러남
+        > .dim {
+            z-index: 1;
+            animation: dim 0.5s 2s forwards;
+            -webkit-animation: dim 0.5s 2s forwards;
+        }
+    }
     &.loading {
         z-index: 10;
     }
@@ -34,6 +68,8 @@
         height: 100%;
         z-index: 1;
         background-color: $color-bg;
+        // 원이 커지는 동안 확대: useVisualScrollTrigger(GSAP)에서 처리
+        will-change: transform;
     }
     .visual-top {
         position: absolute;
@@ -57,10 +93,6 @@
         text-align: center;
         z-index: 1;
         .name-wrap {
-            .dim {
-                animation: dim 0.5s 2s forwards;
-                -webkit-animation: dim 0.5s 2s forwards;
-            }
             .name {
                 svg {
                     width: 100%;
@@ -107,6 +139,71 @@
 
     }
 
+    // 스크롤 연출: before/after 원형 링에서 시작해 원이 커지며 아래 섹션이 드러남
+    .visual-middle {
+        position: relative;
+        // 링 크기·투명도: useVisualScrollTrigger에서 구멍 크기에 맞춰 갱신
+        // (width를 바꾸면 매 프레임 레이아웃·페인트가 일어나 끊김 → transform: scale로 GPU에서만 처리)
+        --ring-scale: 1;
+        --ring-opacity: 1;
+
+        &::before,
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: calc(100% + 4rem); // 링 기본 지름 (고정)
+            aspect-ratio: 1;
+            border-radius: 50%;
+            pointer-events: none;
+            // 가운데 정렬은 개별 translate 속성으로 (transform 안에 넣으면 rotate보다 먼저 적용돼
+            // 링이 제자리에서 돌지 않고 궤도를 그리며 돎) → 적용 순서: scale → rotate → translate
+            translate: -50% -50%;
+            transform: scale(var(--ring-scale));
+            opacity: var(--ring-opacity);
+            will-change: transform, opacity;
+        }
+        // 빙글빙글 도는 링
+        // - 회전은 개별 rotate 속성으로 처리 → 위의 transform(위치·스크롤 확대)과 겹치지 않고 함께 적용됨
+        // - rotate 애니메이션은 GPU에서만 처리되어 스크롤 성능에 영향이 거의 없음
+        // - 인트로: dim이 걷히는 시점(2초)에 맞춰 나타남(intro-fade-in)
+
+        // 선명한 링: 그림자를 위쪽으로 치우치게 줘서, 링이 돌면 밝은 빛이 둘레를 따라 빙글빙글 돎
+        &::before {
+            border: 2px solid rgba(#ffffff, 0.9);
+            box-shadow:
+                0 -8px 18px -2px rgba(#ffffff, 0.8),
+                inset 0 8px 16px -6px rgba(#ffffff, 0.45);
+            animation:
+                intro-fade-in 0.5s 2s backwards,
+                ring-spin 4s linear infinite;
+        }
+        // 바깥 은은한 빛: 반대쪽으로 치우친 그림자가 반대 방향으로 천천히 돎
+        &::after {
+            box-shadow: 0 12px 32px 4px rgba(#ffffff, 0.18);
+            animation:
+                intro-fade-in 0.5s 2s backwards,
+                ring-spin 9s linear infinite reverse;
+        }
+
+        // 인트로: dim이 걷히는 시점(2초)에 맞춰 직무·링크가 나타남
+        // (dim보다 위에 있어서 따로 숨겨야 이름만 먼저 그려지는 효과가 유지됨)
+        .job,
+        > .link-wrap {
+            animation: intro-fade-in 0.5s 2s backwards;
+            -webkit-animation: intro-fade-in 0.5s 2s backwards;
+        }
+
+        // 내용 확대·흐려짐은 useVisualScrollTrigger(GSAP)에서 처리
+        // ※ visual-middle 자체가 아니라 자식에만 적용해야 링까지 같이 사라지지 않음
+        > .name-wrap,
+        > .link-wrap {
+            will-change: transform, opacity;
+        }
+    }
+
     // .copyright {
     //     position: absolute;
     //     left: 50%;
@@ -120,6 +217,12 @@
     // }
 }
 
+
+// 스크롤 중에는 큰 블러 text-shadow가 매 프레임 다시 그려지는 직무 글자 애니메이션을 일시정지
+// (.is-scrolling: src/lib/scroll-activity.ts에서 html에 붙임)
+html.is-scrolling .visual-wrap .visual-middle .job > span {
+    animation-play-state: paused;
+}
 
 // 애니메이션
 
@@ -137,6 +240,18 @@
     to {
         text-shadow: 20px 0 70px #ff0266;
         color: #ff0266;
+    }
+}
+// 링 회전 (개별 rotate 속성이라 transform과 별개로 적용)
+@keyframes ring-spin {
+    to {
+        rotate: 360deg;
+    }
+}
+// to를 생략해서 끝나면 원래 opacity(GSAP가 넣은 값)로 돌아감
+@keyframes intro-fade-in {
+    from {
+        opacity: 0;
     }
 }
 @keyframes dim {

@@ -49,8 +49,9 @@ const particleOption : ISourceOptions = {
             opacity: 0.5,
             width: 1,
         },
+        // 충돌 계산은 파티클 수의 제곱만큼 연산이 늘어 무거움 (눈에 띄는 차이는 적음)
         collisions: {
-            enable: true,
+            enable: false,
         },
         move: {
             enable: true,
@@ -75,7 +76,8 @@ const particleOption : ISourceOptions = {
             value: { min: 1, max: 5 },
         },
     },
-    detectRetina: true,
+    // 레티나에서 캔버스 픽셀이 4배가 되어 스크롤 중 프레임 저하 → 끔
+    detectRetina: false,
 }
 
 export default function ParticlesUI() {

@@ -50,7 +50,7 @@ export default function Profile() {
   return (
     <div className="contents-wrap">
       <AmbientBackground />
-      <div className='content'>
+      <div className='content pt-10'>
         <div className='mb-5'>
           <h2 className='font-28'>안녕하세요!<br/><span className='color-9'>프론트엔드 개발자</span> 김동은 입니다.</h2>
         </div>

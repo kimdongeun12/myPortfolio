@@ -203,13 +203,35 @@ export default function AmbientBackground({
       wobblePhase2: random() * 6.28,
     }));
 
+    // 입자 이미지 캐시: 매 프레임 입자마다 createRadialGradient를 만들면 무거우므로
+    // 색상별로 한 번만 그려두고 drawImage + globalAlpha로 재사용
+    const SPRITE_SIZE = 64;
+    function makeSprite(rgb: string) {
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = SPRITE_SIZE;
+      const spriteCtx = canvas.getContext('2d')!;
+      const half = SPRITE_SIZE / 2;
+      const g = spriteCtx.createRadialGradient(half, half, 0, half, half, half);
+      g.addColorStop(0, `rgba(${rgb},1)`);
+      g.addColorStop(0.25, `rgba(${rgb},0.5)`);
+      g.addColorStop(1, `rgba(${rgb},0)`);
+      spriteCtx.fillStyle = g;
+      spriteCtx.fillRect(0, 0, SPRITE_SIZE, SPRITE_SIZE);
+      return canvas;
+    }
+    const sprites = {
+      pink: makeSprite('191,112,153'),
+      teal: makeSprite('83,187,188'),
+    };
+
     // ------------------------------------------------------------
     // 리사이즈 / 렌더
     // ------------------------------------------------------------
     function resize() {
       w = window.innerWidth;
       h = window.innerHeight;
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      // 흐릿한 빛 입자라 고해상도가 필요 없음 → 1배로 고정해 픽셀 수(최대 2.25배)를 줄임
+      const dpr = 1;
 
       dust!.width = Math.round(w * dpr);
       dust!.height = Math.round(h * dpr);
@@ -248,18 +270,13 @@ export default function AmbientBackground({
 
         const r = p.r > 0.94 ? 4 + p.r * 3 : 0.4 + p.r * 1.2;
         const alpha = (0.12 + 0.2 * p.r) * (0.8 + 0.2 * Math.sin(time * 0.2 + p.phase));
-        const rgb = p.side ? '191,112,153' : '83,187,188';
+        const radius = r * 3;
 
-        const g = ctx!.createRadialGradient(x, y, 0, x, y, r * 3);
-        g.addColorStop(0, `rgba(${rgb},${alpha})`);
-        g.addColorStop(0.25, `rgba(${rgb},${alpha * 0.5})`);
-        g.addColorStop(1, `rgba(${rgb},0)`);
-
-        ctx!.fillStyle = g;
-        ctx!.beginPath();
-        ctx!.arc(x, y, r * 3, 0, Math.PI * 2);
-        ctx!.fill();
+        // 기존 radialGradient(alpha → alpha*0.5 → 0)와 같은 모양을 캐시 이미지로 그림
+        ctx!.globalAlpha = alpha;
+        ctx!.drawImage(p.side ? sprites.pink : sprites.teal, x - radius, y - radius, radius * 2, radius * 2);
       }
+      ctx!.globalAlpha = 1;
     }
 
     function loop(now: number) {
