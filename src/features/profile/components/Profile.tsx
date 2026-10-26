@@ -9,10 +9,39 @@ import '@/styles/profile.scss';
 
 import { AmbientBackground } from '@/components/backgrounds';
 import ImgWrap from '@/components/common/box/ImgWrap';
+import SlideButton from '@/components/common/button/SlideButton';
 import { BsFillBookFill, BsFillEnvelopeHeartFill, BsGithub } from 'react-icons/bs';
 
 
+// 기술 스택 아이콘 (public/images/skills), 여기에 없는 항목은 글자만 표시
+const SKILL_ICONS: Record<string, string> = {
+  Vue: '/images/skills/vue.svg',
+  React: '/images/skills/react.svg',
+  Next: '/images/skills/next.svg',
+  Javascript: '/images/skills/javascript.svg',
+  TypeScript: '/images/skills/typescript.svg',
+  Scss: '/images/skills/scss.svg',
+  Vuetify: '/images/skills/vuetify.svg',
+  Spring: '/images/skills/spring.svg',
+  MySQL: '/images/skills/mysql.svg',
+  AWS: '/images/skills/aws.svg',
+  Jenkins: '/images/skills/jenkins.svg',
+  Vite: '/images/skills/vite.svg',
+  Bitbucket: '/images/skills/bitbucket.svg',
+  Git: '/images/skills/git.svg',
+  Figma: '/images/skills/figma.svg',
+  Webpack: '/images/skills/webpack.svg',
+};
+
 export default function Profile() {
+  // 프로젝트 슬라이드 이전/다음 버튼 (클래스 선택자 대신 ref로 연결해 다른 Swiper와 섞이지 않게)
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
+  // 프로젝트 슬라이드 카운트 (01 / 02)
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [slideTotal, setSlideTotal] = useState(0);
+  const pad2 = (num: number) => String(num).padStart(2, '0');
+
   const experienceData = [
     {
       startDate : '20230621',
@@ -138,7 +167,16 @@ export default function Profile() {
                         <p className='pb-2 font-14 color-3'>{el.desc}</p>
                         <div className='skill-box'>
                           {
-                            el.stack.map((cur, stackIdx) => <span key={stackIdx}>{cur}</span>)
+                            el.stack.map((cur, stackIdx) => (
+                              <span key={stackIdx}>
+                                {SKILL_ICONS[cur] && (
+                                  // 장식용 아이콘이라 alt는 비움 (이름은 옆 글자로 읽힘)
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img className='skill-icon' src={SKILL_ICONS[cur]} alt='' width={24} height={24} />
+                                )}
+                                {cur}
+                              </span>
+                            ))
                           }
                         </div>
                       </li>
@@ -167,12 +205,22 @@ export default function Profile() {
                 el: '.swiper-pagination', 
                 type: 'progressbar', 
               }}
-              navigation= {{
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
+              navigation={{
+                prevEl: prevRef.current,
+                nextEl: nextRef.current,
               }}
-              onSlideChange={() => console.log('slide change')}
-              onSwiper={(swiper) => console.log(swiper)}
+              // 첫 렌더 때는 ref가 아직 비어 있으므로 Swiper 초기화 직전에 버튼을 연결
+              onBeforeInit={(swiper) => {
+                if (typeof swiper.params.navigation === 'object') {
+                  swiper.params.navigation.prevEl = prevRef.current;
+                  swiper.params.navigation.nextEl = nextRef.current;
+                }
+              }}
+              onSwiper={(swiper) => {
+                setSlideTotal(swiper.slides.length);
+                setSlideIndex(swiper.realIndex);
+              }}
+              onSlideChange={(swiper) => setSlideIndex(swiper.realIndex)}
             >
               <SwiperSlide>
                     <div className='box gap-3 flex-con has-bg'>
@@ -254,9 +302,16 @@ export default function Profile() {
               </SwiperSlide>
             </Swiper>
             <div className='paging-wrap pt-2'>
-              <button className="swiper-button-prev">aa</button>
-              <div className='swiper-pagination'></div>
-              <button className="swiper-button-next">bb</button>
+              <SlideButton ref={prevRef} direction="prev" />
+              <div className='paging-progress'>
+                <p className='paging-count kodchasan' aria-live='polite'>
+                  <span className='current'>{pad2(slideIndex + 1)}</span>
+                  <span className='divider'>/</span>
+                  <span className='total'>{pad2(slideTotal)}</span>
+                </p>
+                <div className='swiper-pagination'></div>
+              </div>
+              <SlideButton ref={nextRef} direction="next" />
             </div>
           </div>
         </div>
@@ -289,16 +344,25 @@ export default function Profile() {
             </div>
           </div>
         </div>
-        <div className='box has-bg'>
-          <div>프로젝트의 목표를 함께 완성해 나갈 동료가 되겠습니다</div>
-          <div className=''>
-            <span>010-9208-7621</span>
-            <span>kdedong12@gmail.com</span>
+        <div className='box has-bg contact-wrap'>
+          <p className='contact-title'>
+            프로젝트의 목표를<br />
+            함께 완성해 나갈 동료가 되겠습니다
+          </p>
+          <div className='contact-info'>
+            <a href='tel:01092087621'>010-9208-7621</a>
+            <a href='mailto:kdedong12@gmail.com'>kdedong12@gmail.com</a>
           </div>
-          <div className="link-wrap mt-2">
-            <Link href='https://github.com/kimdongeun12' target='_blank'><BsGithub /></Link>
-            <Link href='https://velog.io/@kimdongeun12' target='_blank'><BsFillBookFill /></Link>
-            <Link href='mailto:kdedong12@gmail.com'><BsFillEnvelopeHeartFill /></Link>
+          <div className='contact-links'>
+            <Link href='https://github.com/kimdongeun12' target='_blank' rel='noopener noreferrer' aria-label='GitHub'>
+              <BsGithub aria-hidden />
+            </Link>
+            <Link href='https://velog.io/@kimdongeun12' target='_blank' rel='noopener noreferrer' aria-label='블로그(velog)'>
+              <BsFillBookFill aria-hidden />
+            </Link>
+            <Link href='mailto:kdedong12@gmail.com' aria-label='이메일 보내기'>
+              <BsFillEnvelopeHeartFill aria-hidden />
+            </Link>
           </div>
         </div>
       </div>

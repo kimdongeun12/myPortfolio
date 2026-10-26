@@ -57,7 +57,6 @@
     }
 }
 
-.hr-01 {}
 
 #wrap {
     &.loading {
@@ -221,6 +220,52 @@
     }
 }
 
+
+// 슬라이드 이전/다음 버튼 (SlideButton 컴포넌트)
+.btn-prev,
+.btn-next {
+    position: relative;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border: 1px solid rgba($color-1, 0.4);
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
+    color: $color-1;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
+    > svg {
+        transition: transform 0.3s cubic-bezier(0.35, 0.1, 0.25, 1);
+    }
+    &:hover,
+    &:focus-visible {
+        border-color: $color-9;
+        color: $color-9;
+        box-shadow: 0 0 12px rgba($color-9, 0.4);
+    }
+    &:focus-visible {
+        outline: 2px solid $color-9;
+        outline-offset: 3px;
+    }
+    // Swiper가 처음/끝에 닿으면 붙이는 클래스
+    &.swiper-button-disabled {
+        opacity: 0.3;
+        cursor: default;
+        pointer-events: none;
+    }
+    // 슬라이드가 1장뿐이라 넘길 게 없을 때
+    &.swiper-button-lock {
+        display: none;
+    }
+}
+// 호버 시 화살표가 진행 방향으로 살짝 움직임
+.btn-prev:hover > svg { transform: translateX(-3px); }
+.btn-next:hover > svg { transform: translateX(3px); }
 
 .list-wrap {
     li {
