@@ -1,9 +1,8 @@
-import Blog from '@/features/blog/components/Blog'
-import '@/styles/blog.scss';
+import Blog from '@/features/blog/components/Blog';
 
 export const generateMetadata = () => {
   return {
-    title: '경력',
+    title: '블로그',
     customMeta: {
       pageTitle: 'Blog',
     },
@@ -11,7 +10,5 @@ export const generateMetadata = () => {
 };
 
 export default function BlogPage() {
-  return (
-    <Blog/>
-  )
+  return <Blog />;
 }

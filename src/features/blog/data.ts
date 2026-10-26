@@ -1,95 +1,75 @@
-import type { Blog } from "@/features/blog/types";
+// ------------------------------------------------------------
+// 블로그 데이터 (목록 /blog, 상세 /blog/[id]) - 시안용 임시 데이터
+// ------------------------------------------------------------
+import type { CommentData } from '@/components/common/comment';
+import { SKILL_ICONS } from '@/data/skills';
 
+import type { BlogPost, BlogSection } from './types';
 
-const blog: Blog = {
-    experience : { 
-        title : '경력',
-        items : [
-            {
-                category : 'dc-on',
-                name : '(주) 디씨온',       // 회사명
-                team : 'KB Account',      // 담당 부서
-                job : '프론트엔드 개발자',    // 담당 직무
-                level : '프로(대리)',       // 직급
-                startDate : '20230621',   // 시작 년월일
-                endDate : '재직중',         // 퇴사일
-                stack: [],
-                desc : `
-                    [주요 역할]
-                    - 프론트엔드 업무 리딩
-                    - 플랫폼 서비스 개발 주도
-                    - 공통 컴포넌트 제작 및 개발 생산성 향상
-                    - 신규 기능 개발 및 운영·유지보수 대응
-                    - 웹/앱 접근성 기준 충족 및 인증 마크 취득
-                    
-                    [프로젝트 수행 내역]
-                    - 계열사 연계 SSO 로그인 기능 개발 (리브똑똑, KB손해보험 등)
-                    - 기차예매 서비스 선물하기 기능 신규 구현
-                    - GLN 해외결제 UX 개편
-                    - 국민지갑 메인 UI 개편 및 패스트 인천공항 기능 개선
-                    - 공통 컴포넌트 최적화 및 접근성 인증 취득 대응
-                    - 여러 앱(국민·카드·보험 등)에서 공통으로 활용할 수 있는 인터페이스 제공
-                    - 고객 협의 기반 로직 리팩토링 주도
-                `,                // 역할
-            },
-        ],
-    },
-    project : {
-        title : '프로젝트',
-        items : {
-            'dc-on' : {
-                company : '(주) 디씨온',
-                title : 'KB국민지갑 개발대응반',
-                stack : [ 'Vue', 'Vuetify', ],
-                startDate : '20230621', // 프로젝트 시작일
-                endDate : '', // 프로젝트 종료일
-                desc : '', // 담당 역할
-                info : [
-                    {
-                        title : '계열사 플랫폼 서비스 연계',
-                        desc : [
-                            '다양한 앱(KB카드, KB손해보험, 리브똑똑 등) 내 동일 기능 제공을 위한 웹 서비스 개발 및 운영',
-                            '여러 앱 개발자들과 커뮤니케이션을 하면서 다양한 앱에서 동일하게 동작을 할 수 있도록 기존 프로세스를 수정 및 보완함.'
-                        ]
-                    },
-                    {
-                        title : '웹/앱 접근성 취득',
-                        desc : [
-                            'WCAG 2.1 기준을 준수하여 웹/앱 접근성 인증 마크를 취득',
-                        ]
-                    },
-                    {
-                        title : '서비스별 UI/UX 개선',
-                        desc : [
-                            'GLN 해외결제 서비스 이탈률 감소를 위해 CPM/MPM 선택 과정을 통합한 결제 UI 개편',
-                            '기차예매 서비스 선물하기 기능 UX 개선, 비회원 고객 접근성 향상',
-                            '국민지갑 메인 화면 진입률 향상을 위해 진입 구조 및 추천 서비스 UX 개편'
-                        ]
-                    },
-                    {
-                        title : '공통 컴포넌트 개발 및 최적화',
-                        desc : [
-                            '여러 프로젝트에서 재사용 가능한 컴포넌트 개발 및 운영',
-                            '1MM 소요 작업을 공통 소스 및 문서화로 대폭 단축',
-                            '접근성 대응 작업량을 2MM → 0.5MM로 절감, 개발 효율성 증대',
-                        ]
-                    },
-                ]
-            }
-        }
-    },
-    stack : {
-        title : '기술',
-        items : {
-            
-        }
-    },
-    education : {
-        title : '학력'
-    },
-    activity : {
-        title : '활동'
-    }
-}
+const SUMMARY =
+  '각 프로젝트 설명은 3줄정도를 기입하려고 노력 합시다.각 프로젝트 설명은 3줄정도를 기입하려고 노력 합시다.각 프로젝각 프로젝트 설명은 3줄정도를 기입하려고 노력 합시다.각 프로젝트 설명은 3줄정도를 기입하려고 노력 합시다.각 프로젝각 프로젝트 설명은 3줄정도를 기입하려고 노력 합시다.';
 
-export default blog;
+const sections: BlogSection[] = Array.from({ length: 7 }, (_, i) => ({
+  id: `section-${i + 1}`,
+  heading: `${String(i + 1).padStart(2, '0')}. 이번 목차 입니다.`,
+  paragraphs: [SUMMARY, SUMMARY],
+}));
+
+const daysAgo = (days: number) => new Date(Date.now() - days * 86400000).toISOString();
+
+const comments: CommentData[] = [
+  {
+    id: 'c1',
+    nickname: '닉네임',
+    content: '저에게는 큰 응원이 됩니다.\n언제든 편하게 남겨주세요 :)',
+    createdAt: daysAgo(70),
+    replies: [
+      { id: 'c1-1', nickname: '닉네임', content: '저에게는 큰 응원이 됩니다.\n언제든 편하게 남겨주세요 :)', createdAt: daysAgo(65) },
+      { id: 'c1-2', nickname: '닉네임', content: '저에게는 큰 응원이 됩니다.\n언제든 편하게 남겨주세요 :)', createdAt: daysAgo(64) },
+    ],
+  },
+  { id: 'c2', nickname: '닉네임', content: '저에게는 큰 응원이 됩니다.\n언제든 편하게 남겨주세요 :)', createdAt: daysAgo(62) },
+];
+
+const TAG_SETS = [
+  ['Vue', 'Javascript', 'TypeScript', 'Scss', 'Vuetify', 'Vite', 'Bitbucket', 'Git', 'Figma', 'Webpack'],
+  ['React', 'Next', 'TypeScript', 'Scss'],
+  ['Vue', 'Vuetify', 'Vite'],
+];
+
+export const BLOG_POSTS: BlogPost[] = Array.from({ length: 12 }, (_, i) => ({
+  id: `post-${i + 1}`,
+  title: i === 1 ? 'vue2 + vite + vuetify2 노트' : '프로젝트명',
+  category: 'Vue',
+  summary: SUMMARY,
+  date: '2026.09.17',
+  views: 3,
+  likes: 0,
+  tags: TAG_SETS[i % TAG_SETS.length],
+  sections,
+  comments,
+}));
+
+/** 필터 태그 목록: 전체 + 기술 스택 (아이콘 목록과 같은 순서) */
+export const ALL_TAG = '전체';
+export const BLOG_TAGS = [ALL_TAG, ...Object.keys(SKILL_ICONS)];
+
+export const countComments = (list: CommentData[]): number =>
+  list.reduce((sum, c) => sum + 1 + countComments(c.replies ?? []), 0);
+
+export const BLOG_STATS = {
+  posts: BLOG_POSTS.length,
+  views: BLOG_POSTS.reduce((sum, p) => sum + p.views, 0),
+  likes: BLOG_POSTS.reduce((sum, p) => sum + p.likes, 0),
+};
+
+export const getBlogPost = (id: string) => BLOG_POSTS.find((post) => post.id === id);
+
+/** 이전글 / 다음글 (목록 순서 기준) */
+export const getAdjacentPosts = (id: string) => {
+  const index = BLOG_POSTS.findIndex((post) => post.id === id);
+  return {
+    prev: index > 0 ? BLOG_POSTS[index - 1] : undefined,
+    next: index >= 0 && index < BLOG_POSTS.length - 1 ? BLOG_POSTS[index + 1] : undefined,
+  };
+};
