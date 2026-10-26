@@ -272,3 +272,88 @@
         }
     }
 }
+
+// ------------------------------------------------------------
+// 반응형 (프로필)
+// ※ .flex-con은 display: flex !important라서 쌓을 때는 flex-direction으로 바꾸고,
+//   .col-N 자식은 flex 비율 대신 전체 너비로
+// ※ 전역 '.flex-con .col-N { width }'보다 우선하도록 선택자 앞에 .flex-con을 붙임
+// ------------------------------------------------------------
+
+// 1024px 이하: 소개 문구를 위로, 본문을 아래로 / About 2열
+@include bp(lg) {
+    .flex-con.profile-intro {
+        flex-direction: column;
+        > * {
+            flex: none;
+            width: 100%;
+        }
+    }
+    .desc-box > p {
+        position: static; // 위로 올라가면 따라다닐 필요 없음
+    }
+    .about-wrap {
+        .flex-con > .about-info {
+            flex: none;
+            width: 100%;
+        }
+        .flex-con.info-box {
+            flex-wrap: wrap;
+            > li {
+                flex: 0 0 calc(50% - 1rem); // gap-2(2rem)의 절반씩
+                width: auto;
+            }
+        }
+    }
+}
+
+// 768px 이하: 경력·스킬·프로젝트 카드·글 목록을 세로로
+@include bp(md) {
+    .flex-con.experience-item {
+        flex-direction: column;
+        gap: 0.75rem;
+        > div {
+            flex: none;
+            width: 100%;
+        }
+    }
+    .flex-con.skill-groups,
+    .flex-con.post-boards {
+        flex-direction: column;
+        > li,
+        > div {
+            flex: none;
+            width: 100%;
+        }
+    }
+    .project-wrap {
+        .box {
+            padding: 1.25rem;
+        }
+        .paging-wrap {
+            padding: 0 1.25rem;
+            gap: 1rem;
+        }
+    }
+    .flex-con.project-card {
+        flex-direction: column;
+        gap: 1.25rem !important;
+        > div {
+            flex: none;
+            width: 100%;
+        }
+    }
+    .contact-wrap {
+        padding: 3.5rem 1.25rem;
+    }
+}
+
+// 500px 이하: About 1열
+@include bp(sm) {
+    .about-wrap .flex-con.info-box > li {
+        flex-basis: 100%;
+    }
+    .contact-wrap .contact-links {
+        gap: 1.5rem;
+    }
+}

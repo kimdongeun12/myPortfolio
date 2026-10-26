@@ -3,8 +3,6 @@
 // ------------------------------------------------------------
 
 .blog-page {
-    padding-left: 2rem;
-    padding-right: 2rem;
     padding-bottom: 8rem;
 
     // 배경 위에 어두운 단색 (WebGL 배경을 못 쓸 때도 글자가 보이게)
@@ -339,17 +337,62 @@
     }
 }
 
-@media screen and (max-width: 1023px) {
+// ------------------------------------------------------------
+// 반응형 (블로그)
+// ------------------------------------------------------------
+
+// 1024px 이하: 사이드바를 위로 (따라다니지 않음), 상세의 목차는 숨김
+@include bp(lg) {
     .blog-layout {
         flex-direction: column;
+        gap: 2rem;
+    }
+    .blog-main {
+        width: 100%;
     }
     .blog-sidebar {
         position: static;
         width: 100%;
         flex-basis: auto;
+        .sidebar-label {
+            margin-top: 1.5rem;
+        }
+        // 위로 올라온 사이드바에서는 목차가 본문을 밀어내기만 해서 숨김
+        .toc {
+            display: none;
+        }
     }
-    .blog-page .post-grid,
-    .post-detail .post-nav {
-        grid-template-columns: 1fr;
+}
+
+// 768px 이하: 글 카드·이전/다음글 1열
+@include bp(md) {
+    .blog-page {
+        .content {
+            padding-top: 3rem;
+        }
+        .post-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    .post-detail {
+        .post-nav {
+            grid-template-columns: 1fr;
+            margin-top: 2rem;
+            .nav-item {
+                padding: 1.25rem;
+            }
+        }
+        .detail-content {
+            padding: 2rem 0;
+        }
+    }
+}
+
+@include bp(sm) {
+    .post-detail .detail-title {
+        font-size: 1.75rem;
+    }
+    .blog-sidebar {
+        padding: 1.5rem 1rem;
     }
 }

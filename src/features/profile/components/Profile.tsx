@@ -26,11 +26,11 @@ export default function Profile() {
         <div className='mb-5'>
           <h2 className='font-28'>안녕하세요!<br/><span className='color-9'>프론트엔드 개발자</span> 김동은 입니다.</h2>
         </div>
-        <div className='flex-con gap-2 pb-15'>
+        <div className='profile-intro flex-con gap-2 pb-15'>
           <div className='desc-box'>
             <p>에이전시에서 쌓은 UI/UX 경험과 다양한 서비스 개발 경험을 바탕으로, 디자인과 기술 사이의 균형을 고민하며 더 나은 서비스를 만들어 가고 있습니다.</p>
           </div>
-          <div>
+          <div className='profile-main'>
             <div className='about-wrap mb-10'>
               <div className='about-box flex-con gap-2'>
                 <div className='about-info right col-8'>
@@ -56,7 +56,7 @@ export default function Profile() {
               <div className='pt-2'>
                 <ul>
                   {EXPERIENCES.map((el, idx) => (
-                    <li className='flex-con' key={idx}>
+                    <li className='experience-item flex-con' key={idx}>
                       <span className='deco'/>
                       <div className='col-3'>
                         <p className='pb-1 color-3 font-14'>{el.startDate} - {el.endDate}</p>
@@ -77,7 +77,7 @@ export default function Profile() {
                 <p>SKILLS</p>
               </div>
               <div>
-                <ul className='flex-con gap-1'>
+                <ul className='skill-groups flex-con gap-1'>
                   {SKILL_GROUPS.map((group) => (
                     <li className='box has-border col-4' key={group.name}>
                       <p className='pb-1 font-18'>{group.name}</p>
@@ -104,7 +104,7 @@ export default function Profile() {
           <div className='mb-5'>
             <h3 className='font-28 mb-3'>기록하고, 나눈 이야기들</h3>
           </div>
-          <div className='flex-con gap-2 mb-2'>
+          <div className='post-boards flex-con gap-2 mb-2'>
             {POST_BOARDS.map((board) => (
               <PostBoardBox board={board} key={board.title} />
             ))}

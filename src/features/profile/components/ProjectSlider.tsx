@@ -26,9 +26,14 @@ export default function ProjectSlider({ projects }: { projects: Project[] }) {
     <div className='swipe-wrap'>
       <Swiper
         modules={[Pagination, Navigation]}
-        spaceBetween={80}
-        slidesPerView={2}
+        // 모바일 기준값 + 화면이 넓어질수록 (Swiper breakpoints는 min-width 기준)
+        spaceBetween={16}
+        slidesPerView={1.1}
         centeredSlides={true}
+        breakpoints={{
+          769: { slidesPerView: 1.4, spaceBetween: 40 },  // 768px 초과
+          1025: { slidesPerView: 2, spaceBetween: 80 },   // 1024px 초과 (기존 데스크톱)
+        }}
         pagination={{
           el: '.swiper-pagination',
           type: 'progressbar',

@@ -151,6 +151,26 @@
                 color: $color-9;
             }
         }
+
+        // 메뉴 구분선 (Blog | Guest)
+        > .header-divider {
+            display: inline-block;
+            font-size: $font-size-md;
+            line-height: 6.25rem;
+            color: rgba($color-1, 0.4);
+        }
+
+        @include bp(md) {
+            height: 4.5rem;
+            padding: 0 1rem;
+            > a {
+                padding: 0 0.625rem;
+                line-height: 4.5rem;
+            }
+            > .header-divider {
+                line-height: 4.5rem;
+            }
+        }
     }
 }
 
@@ -161,17 +181,25 @@
     max-width: 82rem;
     margin: 0 auto;
 
+    // 좌우 여백 (모든 페이지 공통)
+    padding-left: 2rem;
+    padding-right: 2rem;
+
     .content {
         position: relative;
         z-index: 1;
         color : $color-2;
     }
-    // @media screen and (max-width:767px) {
-    //     padding-left: 6.5rem; 
-    //     padding-right: 2.5rem;
-    //     padding-top: 3.5rem;
-    //     padding-bottom: 5rem;
-    // }
+
+    @include bp(md) {
+        padding-top: 4.5rem; // 헤더 높이
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+    @include bp(sm) {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 }
 
 

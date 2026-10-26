@@ -11,7 +11,7 @@ type ProjectCardProps = {
 
 export default function ProjectCard({ project, index }: ProjectCardProps) {
   return (
-    <div className='box gap-3 flex-con has-bg'>
+    <div className='project-card box gap-3 flex-con has-bg'>
       <div className='col-5'>
         <ImgWrap ratioObj={{ width: 1, height: 1 }}>
           <span></span>

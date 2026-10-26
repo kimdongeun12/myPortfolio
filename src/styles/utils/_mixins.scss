@@ -3,6 +3,19 @@
     #COLOR
 \*------------------------------------*/
 
+// 반응형: @include bp(lg) { ... } → 1024px 이하, md → 768px 이하, sm → 500px 이하
+@mixin bp($size) {
+    @if $size == lg {
+        @media screen and (max-width: $bp-lg) { @content; }
+    } @else if $size == md {
+        @media screen and (max-width: $bp-md) { @content; }
+    } @else if $size == sm {
+        @media screen and (max-width: $bp-sm) { @content; }
+    } @else {
+        @error "bp(): lg, md, sm 중 하나를 사용하세요. (#{$size})";
+    }
+}
+
 @mixin setCenterPosion($left, $top) {
     @if $top == null {
         left: $left;

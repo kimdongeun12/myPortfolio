@@ -37,6 +37,7 @@
         --hole: calc(var(--scroll-progress) * 75vmax);
         width: 100%;
         height: 100vh;
+        height: 100svh; // 모바일 주소창 높이를 뺀 실제 화면 높이 (지원 브라우저만)
         overflow: hidden;
         display: flex;
         align-content: center;
@@ -137,6 +138,23 @@
             }
         }
 
+        // 화면이 좁아지면 이름·직무가 화면 밖으로 넘치지 않게
+        @include bp(md) {
+            padding: 0 1.5rem;
+            .name-wrap .job {
+                font-size: 2.25rem;
+            }
+            .link-wrap > a {
+                font-size: 2.25rem;
+                margin: 0 0.75rem;
+            }
+        }
+        @include bp(sm) {
+            padding: 0 1rem;
+            .name-wrap .job {
+                font-size: 1.625rem;
+            }
+        }
     }
 
     // 스크롤 연출: before/after 원형 링에서 시작해 원이 커지며 아래 섹션이 드러남
@@ -155,6 +173,13 @@
             left: 50%;
             top: 50%;
             width: calc(100% + 4rem); // 링 기본 지름 (고정)
+            // 좁은 화면에서는 링이 화면 밖으로 넘치지 않게 내용 너비에 맞춤
+            @include bp(md) {
+                width: calc(100% + 1rem);
+            }
+            @include bp(sm) {
+                width: 100%;
+            }
             aspect-ratio: 1;
             border-radius: 50%;
             pointer-events: none;
