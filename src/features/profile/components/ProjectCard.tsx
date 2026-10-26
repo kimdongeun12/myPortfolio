@@ -1,0 +1,45 @@
+import ImgWrap from '@/components/common/box/ImgWrap';
+import DecoLink from '@/components/common/button/DecoLink';
+import { padNumber } from '@/lib/format';
+
+import type { Project } from '@/features/profile/data';
+
+type ProjectCardProps = {
+  project: Project;
+  index: number; // 0부터, 카드 번호(01, 02 ...) 표시용
+};
+
+export default function ProjectCard({ project, index }: ProjectCardProps) {
+  return (
+    <div className='box gap-3 flex-con has-bg'>
+      <div className='col-5'>
+        <ImgWrap ratioObj={{ width: 1, height: 1 }}>
+          <span></span>
+        </ImgWrap>
+      </div>
+      <div className='info-wrap col-7'>
+        <div className='info-top'>
+          <span className='num'>{padNumber(index + 1)}</span>
+          <div className='title-wrap'>
+            <p className='font-32 mb-1'>{project.title}</p>
+            <p>{project.subtitle}</p>
+          </div>
+        </div>
+        <hr className='mt-3 mb-3' />
+        <div className='info-bottom mb-3'>
+          <ul>
+            {project.roles.map((role, idx) => (
+              <li className='flex-con' key={idx}>
+                <p className='col-2'>{role.label}</p>
+                <p className='col-10'>{role.value}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className='btn-wrap'>
+          <DecoLink href={project.href}>자세히보기</DecoLink>
+        </div>
+      </div>
+    </div>
+  );
+}

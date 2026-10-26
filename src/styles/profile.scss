@@ -83,28 +83,6 @@
     }
 }
 
-.skills-wrap {
-    .skill-box {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        > span {
-            position: relative;
-            display: inline-block;
-            padding-left: 2rem;
-            line-height: 1.5rem;
-        }
-        // 왼쪽 2rem 자리에 아이콘
-        .skill-icon {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            width: 1.5rem;
-            height: 1.5rem;
-            transform: translateY(-50%);
-        }
-    }
-}
 
 // EXPERIENCE 원형 장식 애니메이션
 // (회전·크기는 개별 rotate/scale 속성, 가운데 정렬은 translate 속성으로 분리)
