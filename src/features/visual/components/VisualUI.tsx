@@ -1,20 +1,23 @@
  "use client"
 
-import { useEffect, useRef } from 'react';
-import { BsGithub, BsFillBookFill, BsFillEnvelopeHeartFill } from "react-icons/bs";
+import { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 import ParticlesUI from '@/features/visual/components/Particles';
 import NameUI from '@/components/common/Name';
+import SocialLinks from '@/components/common/SocialLinks';
 
 import { useBeforeUnload } from '@/hooks/useWindowEvent';
 import { useUiStore } from '@/providers/ui-store-provider';
 import { useVisualScrollTrigger } from '@/features/visual/hooks/useVisualScrollTrigger';
-import Link from 'next/link';
 
 
 export default function VisualUI() {
   const visualWrap = useRef<HTMLDivElement | null>(null);
   const isWindowOpen = useUiStore((state) => state.isWindowOpen);
   const openWindow = useUiStore((state) => state.openWindow);
+  // 처음 화면에 그려질 때 이미 인트로를 본 상태인지 (다른 페이지에 갔다가 돌아온 경우)
+  // → 마운트 시점 값으로 고정해서, 첫 방문 중 인트로가 끝나는 순간에는 바뀌지 않게 함
+  const [isIntroDone] = useState(isWindowOpen);
 
   useEffect(() => {
     console.log(isWindowOpen, 'asdada')
@@ -42,7 +45,13 @@ export default function VisualUI() {
   useVisualScrollTrigger(visualWrap, isWindowOpen);
 
   return (
-    <div className={`visual-wrap ${ !isWindowOpen ? 'loading' : '' }`} ref={visualWrap}>
+    <div
+      className={clsx('visual-wrap', {
+        loading: !isWindowOpen,
+        'is-intro-done': isIntroDone, // 인트로 애니메이션을 건너뛰고 완료된 모습으로 바로 표시
+      })}
+      ref={visualWrap}
+    >
       {/* 화면에 고정된 채로 스크롤 진행도에 따라 원형으로 닫히는 영역 */}
       <div className="visual-sticky">
       <ParticlesUI/>
@@ -63,11 +72,7 @@ export default function VisualUI() {
             ))
           }</div>
         </div>
-        <div className="link-wrap mt-2">
-          <Link href='https://github.com/kimdongeun12' target='_blank'><BsGithub /></Link>
-          <Link href='https://velog.io/@kimdongeun12' target='_blank'><BsFillBookFill /></Link>
-          <Link href='mailto:kdedong12@gmail.com'><BsFillEnvelopeHeartFill /></Link>
-        </div>
+        <SocialLinks className="link-wrap mt-2" />
       </div>
       </div>
       {/* <div className='copyright'>© 2023. rlo-orn<br/>All rights reserved.</div> */}

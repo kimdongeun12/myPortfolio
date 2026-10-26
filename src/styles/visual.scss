@@ -204,6 +204,30 @@
         }
     }
 
+    // 인트로를 이미 본 경우 (같은 방문 중 다른 페이지에서 돌아옴): 인트로 애니메이션 없이 완료된 모습으로
+    &.is-intro-done {
+        .visual-sticky > .dim {
+            display: none;
+        }
+        .visual-middle {
+            .name-wrap .name svg {
+                animation: none;
+                stroke-dashoffset: 0; // 이름이 다 그려진 상태
+            }
+            .job,
+            > .link-wrap {
+                animation: none;
+            }
+            // 링은 나타나는 효과만 빼고 회전은 유지
+            &::before {
+                animation: ring-spin 4s linear infinite;
+            }
+            &::after {
+                animation: ring-spin 9s linear infinite reverse;
+            }
+        }
+    }
+
     // .copyright {
     //     position: absolute;
     //     left: 50%;

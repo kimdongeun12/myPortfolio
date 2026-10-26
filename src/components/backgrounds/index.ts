@@ -1,4 +1,6 @@
 export { default as AmbientBackground } from './AmbientBackground';
+export { default as AmbientCollectionBackground } from './AmbientCollectionBackground';
+export type { AmbientVariant } from './AmbientCollectionBackground';
 export type { BackgroundProps } from './types';
 
 // export { default as Background02 } from './Background02';
