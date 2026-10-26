@@ -3,8 +3,19 @@
 // ------------------------------------------------------------
 
 .comment-section {
+    // 아바타 크기와 답글 들여쓰기: 연결선 위치가 이 두 값으로 계산됨
+    --avatar: 3.5rem;
+    --indent: 5rem;
     margin-top: 4rem;
     color: $color-2;
+
+    @include bp(md) {
+        --indent: 3.5rem;
+    }
+    @include bp(sm) {
+        --avatar: 2.5rem;
+        --indent: 2.75rem;
+    }
 
     .comment-title {
         font-size: 1rem;
@@ -15,6 +26,14 @@
     .comment-empty {
         margin-top: 2.5rem;
         color: $color-7;
+    }
+
+    // 헤더가 폼 아래에 올 때 (방명록): 구분선 + 큰 글자
+    &.header-below-form .comment-title {
+        margin: 1.5rem 0 0;
+        padding-top: 2rem;
+        border-top: 1px solid rgba($color-1, 0.3);
+        font-size: 1.25rem;
     }
 }
 
@@ -97,6 +116,22 @@
         font-weight: normal;
     }
 
+    // 라벨이 있는 폼 (방명록): 라벨 열 너비를 맞추고 한 줄씩
+    &.has-labels {
+        .form-row {
+            flex-direction: column;
+        }
+        .field-label {
+            width: 3.5rem;
+        }
+        .form-field.is-content {
+            align-items: flex-start;
+            .field-label {
+                padding-top: 0.625rem;
+            }
+        }
+    }
+
     // 답글용 작은 폼
     &.is-compact {
         margin-top: 0.75rem;
@@ -132,8 +167,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 3.5rem;
-    height: 3.5rem;
+    width: var(--avatar);
+    height: var(--avatar);
     border-radius: 50%;
     background-color: $color-2;
     color: $color-5;
@@ -189,14 +224,14 @@
 .comment-replies {
     position: relative;
     margin-top: 1.5rem;
-    padding-left: 5rem;
-    // 부모 아바타 아래로 내려오는 세로선
+    padding-left: var(--indent);
+    // 부모 아바타 가운데에서 내려오는 세로선
     &::before {
         content: "";
         position: absolute;
-        left: 1.75rem;
+        left: calc(var(--avatar) / 2);
         top: -1.5rem;
-        bottom: 1.75rem;
+        bottom: calc(var(--avatar) / 2);
         width: 1px;
         background-color: rgba($color-1, 0.25);
     }
@@ -210,21 +245,29 @@
     &::before {
         content: "";
         position: absolute;
-        left: -3.25rem;
+        left: calc(var(--avatar) / 2 - var(--indent));
         top: 0;
-        width: 3.25rem;
-        height: 1.75rem;
+        width: calc(var(--indent) - var(--avatar) / 2);
+        height: calc(var(--avatar) / 2);
         border-left: 1px solid rgba($color-1, 0.25);
         border-bottom: 1px solid rgba($color-1, 0.25);
         border-bottom-left-radius: 1rem;
     }
 }
 
-@media screen and (max-width: 767px) {
+@include bp(md) {
     .comment-form .form-row {
         flex-direction: column;
+        gap: 0.75rem;
     }
-    .comment-replies {
-        padding-left: 3rem;
+}
+@include bp(sm) {
+    .comment-item {
+        gap: 0.75rem;
+    }
+    .comment-form .form-field {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.375rem;
     }
 }

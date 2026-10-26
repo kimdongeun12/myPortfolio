@@ -4,7 +4,7 @@ import { FiCornerDownRight } from 'react-icons/fi';
 
 import { formatRelativeTime } from '@/lib/format';
 
-import CommentForm from './CommentForm';
+import CommentForm, { type CommentFormOptions } from './CommentForm';
 import type { CommentData, CommentInput } from './types';
 
 type CommentItemProps = {
@@ -17,6 +17,8 @@ type CommentItemProps = {
   /** threadId: 답글이 달릴 최상위 댓글 id */
   onReply: (threadId: string, input: CommentInput) => void;
   threadId?: string;
+  /** 답글 폼에도 같은 옵션 적용 (비밀번호 사용 여부 등) */
+  formOptions?: CommentFormOptions;
 };
 
 export default function CommentItem({
@@ -26,6 +28,7 @@ export default function CommentItem({
   onToggleReply,
   onReply,
   threadId = comment.id,
+  formOptions,
 }: CommentItemProps) {
   const isReplying = replyingTo === comment.id;
 
@@ -52,6 +55,7 @@ export default function CommentItem({
           </button>
           {isReplying && (
             <CommentForm
+              {...formOptions}
               compact
               placeholder={`${comment.nickname}님에게 답글 남기기`}
               onCancel={() => onToggleReply(null)}
@@ -76,6 +80,7 @@ export default function CommentItem({
               onToggleReply={onToggleReply}
               onReply={onReply}
               threadId={threadId}
+              formOptions={formOptions}
             />
           ))}
         </ul>
