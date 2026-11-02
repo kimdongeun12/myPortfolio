@@ -1,0 +1,133 @@
+// ------------------------------------------------------------
+// MDX 본문 (어드민 미리보기 + 공개 페이지 공용)
+// reset.scss 가 기본 여백을 없애므로 본문용 간격을 다시 잡습니다.
+// ------------------------------------------------------------
+
+.mdx-content {
+    color: #1e1f25;
+    font-size: 1rem;
+    line-height: 1.8;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+
+    > * + * {
+        margin-top: 1em;
+    }
+
+    h1, h2, h3, h4 {
+        line-height: 1.4;
+        font-weight: 700;
+    }
+    h1 { font-size: 1.875rem; margin-top: 2em; }
+    h2 { font-size: 1.5rem; margin-top: 1.8em; padding-bottom: 0.3em; border-bottom: 1px solid #e5e7eb; }
+    h3 { font-size: 1.25rem; margin-top: 1.5em; }
+    h4 { font-size: 1.0625rem; margin-top: 1.2em; }
+    > :first-child { margin-top: 0; }
+
+    ul, ol {
+        padding-left: 1.5em;
+    }
+    ul { list-style: disc; }
+    ol { list-style: decimal; }
+    li + li { margin-top: 0.3em; }
+    // GFM 체크박스 목록
+    li:has(> input[type='checkbox']) {
+        list-style: none;
+        margin-left: -1.3em;
+    }
+
+    a {
+        color: #4356ff;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+
+    strong { font-weight: 700; }
+    em { font-style: italic; }
+    del { color: #747884; }
+
+    blockquote {
+        padding: 0.5em 1em;
+        border-left: 4px solid #c8cdff;
+        background: #f6f7fa;
+        color: #4b4e5a;
+    }
+
+    code {
+        padding: 0.15em 0.4em;
+        border-radius: 4px;
+        background: #f0f1f5;
+        font-family: 'SFMono-Regular', Menlo, Consolas, monospace;
+        font-size: 0.875em;
+    }
+
+    pre {
+        padding: 1em 1.2em;
+        border-radius: 8px;
+        background: #1e1f25;
+        color: #e5e7eb;
+        overflow-x: auto;
+        line-height: 1.6;
+
+        code {
+            padding: 0;
+            background: none;
+            color: inherit;
+            font-size: 0.875rem;
+        }
+    }
+
+    img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9375rem;
+        display: block;
+        overflow-x: auto;
+    }
+    th, td {
+        padding: 0.5em 0.8em;
+        border: 1px solid #e5e7eb;
+        text-align: left;
+    }
+    th {
+        background: #f6f7fa;
+        font-weight: 700;
+    }
+}
+
+.mdx-callout {
+    display: flex;
+    gap: 0.75em;
+    padding: 1em 1.2em;
+    border-radius: 8px;
+    border: 1px solid;
+
+    &.is-info { background: #eef4ff; border-color: #c8cdff; }
+    &.is-tip { background: #eefaf3; border-color: #b7e4c7; }
+    &.is-warn { background: #fff6e6; border-color: #ffd591; }
+
+    .mdx-callout-body > * + * { margin-top: 0.5em; }
+    .mdx-callout-title { display: block; }
+}
+
+.mdx-error {
+    margin-bottom: 1em;
+    padding: 0.75em 1em;
+    border-radius: 8px;
+    background: #fff1f0;
+    color: #cf1322;
+    font-size: 0.8125rem;
+    white-space: pre-wrap;
+}
