@@ -1,6 +1,7 @@
-import AdminComingSoon from '@/features/admin/components/AdminComingSoon';
+import ExperienceAdmin from '@/features/admin/components/experience/ExperienceAdmin';
 
-// feature/admin-experience 브랜치에서 실제 화면으로 교체됩니다.
+export const metadata = { title: '경력 관리' };
+
 export default function AdminExperiencesPage() {
-  return <AdminComingSoon title="경력 관리" />;
+  return <ExperienceAdmin />;
 }
