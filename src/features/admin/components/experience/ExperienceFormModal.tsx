@@ -81,7 +81,12 @@ export default function ExperienceFormModal({ open, experience, onClose, onSaved
   }, [open, experience, form]);
 
   const handleSubmit = async () => {
-    const values = await form.validateFields();
+    let values: FormValues;
+    try {
+      values = await form.validateFields();
+    } catch {
+      return; // 입력 오류는 각 칸 아래에 표시됨
+    }
     setSaving(true);
     try {
       const body = toRequest(values);
