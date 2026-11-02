@@ -189,3 +189,20 @@
         opacity: 0.55;
     }
 }
+
+// 썸네일 입력
+.admin-thumbnail-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-thumbnail-preview {
+    width: 240px;
+    max-width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+    background: #fafafa;
+}
