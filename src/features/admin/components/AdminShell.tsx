@@ -19,6 +19,9 @@ import { getErrorMessage } from '../api/client';
 
 const { Sider, Header, Content } = Layout;
 
+/** 공개 사이트 주소 ("사이트 보기" 버튼) — 배포 환경변수 NEXT_PUBLIC_SITE_URL */
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+
 /** 사이드 메뉴 — 기능 브랜치에서 메뉴를 고치지 않도록 전체 메뉴를 여기서 정의 */
 const MENU_ITEMS = [
   { key: '/admin', icon: <DashboardOutlined />, label: '대시보드' },
@@ -115,7 +118,7 @@ export default function AdminShell({ children }: { children: ReactNode }) {
       <Layout>
         <Header className='admin-header'>
           <Space>
-            <Button type='text' icon={<ExportOutlined />} href='/' target='_blank'>
+            <Button type='text' icon={<ExportOutlined />} href={SITE_URL} target='_blank' rel='noopener noreferrer'>
               사이트 보기
             </Button>
             <Button type='text' icon={<LogoutOutlined />} onClick={handleLogout}>
