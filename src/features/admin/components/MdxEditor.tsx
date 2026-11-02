@@ -1,15 +1,23 @@
 'use client';
 
 import { PictureOutlined } from '@ant-design/icons';
-import { App, Button, Segmented, Space, Tooltip, Upload } from 'antd';
+import { App, Button, Segmented, Space, Spin, Tooltip, Upload } from 'antd';
 import clsx from 'clsx';
+import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
-
-import MdxContent from '@/components/mdx/MdxContent';
 
 import { getErrorMessage } from '../api/client';
 import { uploadImage } from '../api/common';
 import type { ImageTargetType } from '../api/types';
+
+/**
+ * MDX 컴파일러(@mdx-js/mdx)는 용량이 커서 따로 불러옵니다.
+ * → 작성 화면(폼)이 먼저 뜨고, 미리보기는 준비되는 대로 표시
+ */
+const MdxContent = dynamic(() => import('@/components/mdx/MdxContent'), {
+  ssr: false,
+  loading: () => <Spin size='small' tip='미리보기 준비 중'><div style={{ height: 80 }} /></Spin>,
+});
 
 type ViewMode = 'split' | 'edit' | 'preview';
 
