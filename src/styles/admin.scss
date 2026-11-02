@@ -1,0 +1,208 @@
+// ------------------------------------------------------------
+// 어드민 (/admin) — 대부분은 antd 기본 스타일을 쓰고 레이아웃만 잡습니다.
+// ------------------------------------------------------------
+
+.admin-center {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: #f5f6fa;
+}
+
+.admin-spin-space {
+    width: 120px;
+    height: 80px;
+}
+
+// 로그인
+.admin-login-card {
+    width: 100%;
+    max-width: 380px;
+}
+
+.admin-login-error {
+    margin-bottom: 16px;
+}
+
+// 레이아웃
+.admin-layout {
+    min-height: 100vh;
+}
+
+.admin-sider {
+    border-right: 1px solid #f0f0f0;
+
+    .ant-menu-inline {
+        border-inline-end: none !important;
+    }
+}
+
+.admin-logo {
+    display: block;
+    padding: 20px 24px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #1e1f25;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 16px !important;
+    background: #fff !important;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.admin-content {
+    padding: 24px;
+    background: #f5f6fa;
+
+    @media (max-width: 768px) {
+        padding: 16px;
+    }
+}
+
+.admin-page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+
+    .admin-page-title {
+        margin: 0 0 4px;
+    }
+}
+
+.admin-block {
+    margin-bottom: 16px;
+}
+
+// MDX 에디터
+.mdx-editor {
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.mdx-editor-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fafafa;
+}
+
+.mdx-editor-body {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    &.is-split {
+        grid-template-columns: 1fr 1fr;
+
+        @media (max-width: 1024px) {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+.mdx-editor-input {
+    width: 100%;
+    min-height: inherit;
+    padding: 16px;
+    border: none;
+    outline: none;
+    resize: vertical;
+    font-family: 'SFMono-Regular', Menlo, Consolas, monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    tab-size: 2;
+}
+
+.mdx-editor-preview {
+    padding: 16px 20px;
+    border-left: 1px solid #f0f0f0;
+    overflow: auto;
+    max-height: 80vh;
+
+    .is-preview & {
+        border-left: none;
+    }
+}
+
+.mdx-editor-empty {
+    color: #a1a8b3;
+}
+
+// 공통 유틸 (기능 화면에서 함께 사용)
+.admin-full-width {
+    width: 100% !important;
+}
+
+.admin-pre-line {
+    white-space: pre-line;
+}
+
+// 작성 화면 하단 고정 버튼 영역
+.admin-form-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+    margin: 24px -24px -24px;
+    padding: 12px 24px;
+    border-top: 1px solid #f0f0f0;
+    background: rgba(255, 255, 255, 0.95);
+
+    @media (max-width: 768px) {
+        margin: 16px -16px -16px;
+        padding: 12px 16px;
+    }
+}
+
+// 댓글 관리
+.admin-comment-item {
+    padding: 12px 0;
+
+    & + & {
+        border-top: 1px solid #f0f0f0;
+    }
+
+    &.is-reply {
+        margin-left: 32px;
+        padding-left: 16px;
+        border-left: 2px solid #f0f0f0;
+        border-top: none !important;
+    }
+
+    &.is-deleted {
+        opacity: 0.55;
+    }
+}
+
+// 썸네일 입력
+.admin-thumbnail-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-thumbnail-preview {
+    width: 240px;
+    max-width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+    background: #fafafa;
+}
