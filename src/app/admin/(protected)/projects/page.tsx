@@ -1,6 +1,7 @@
-import AdminComingSoon from '@/features/admin/components/AdminComingSoon';
+import ProjectAdmin from '@/features/admin/components/project/ProjectAdmin';
 
-// feature/admin-project 브랜치에서 실제 화면으로 교체됩니다.
+export const metadata = { title: '프로젝트 관리' };
+
 export default function AdminProjectsPage() {
-  return <AdminComingSoon title="프로젝트 관리" />;
+  return <ProjectAdmin />;
 }
