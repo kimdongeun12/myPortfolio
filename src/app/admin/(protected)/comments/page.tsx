@@ -1,6 +1,7 @@
-import AdminComingSoon from '@/features/admin/components/AdminComingSoon';
+import CommentAdmin from '@/features/admin/components/comment/CommentAdmin';
 
-// feature/admin-comment 브랜치에서 실제 화면으로 교체됩니다.
+export const metadata = { title: '댓글 관리' };
+
 export default function AdminCommentsPage() {
-  return <AdminComingSoon title="댓글 관리" />;
+  return <CommentAdmin />;
 }
