@@ -35,8 +35,23 @@ function MdxLink({ href = '', children, ...rest }: ComponentPropsWithoutRef<'a'>
   );
 }
 
+export function Badge({ children }: { children?: ReactNode }) {
+  return <span className='section-badge'>{children}</span>;
+}
+
+export function Result({ label = '성과', children }: { label?: string; children?: ReactNode }) {
+  return (
+    <p className='section-result'>
+      <span className='label'>{label}</span>
+      {children}
+    </p>
+  );
+}
+
 export const mdxComponents: MDXComponents = {
   img: MdxImage,
   a: MdxLink,
   Callout,
+  Badge,
+  Result,
 };

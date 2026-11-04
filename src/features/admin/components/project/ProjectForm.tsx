@@ -229,7 +229,7 @@ export default function ProjectForm({ projectId }: ProjectFormProps) {
                 </Form.Item>
               </Col>
               <Col span={24}>
-                <Form.Item name='responsibilities' label='담당 업무'>
+                <Form.Item name='responsibilities' label='담당 업무' extra='한 줄에 하나씩 작성하면 프로필 프로젝트 카드에 목록으로 표시됩니다.'>
                   <Input.TextArea autoSize={{ minRows: 3, maxRows: 10 }} placeholder='줄바꿈으로 구분해서 작성하세요.' />
                 </Form.Item>
               </Col>

@@ -64,6 +64,7 @@ export default function AdminCommentItem({ comment, isReply = false, onChanged }
         <Typography.Text type='secondary' title={dayjs(comment.createdAt).format('YYYY.MM.DD HH:mm')}>
           {formatRelativeTime(comment.createdAt)}
         </Typography.Text>
+        {comment.edited && <Typography.Text type='secondary'>수정됨</Typography.Text>}
         {!comment.deleted && comment.likeCount > 0 && (
           <Typography.Text type='secondary'>
             <HeartOutlined /> {comment.likeCount}

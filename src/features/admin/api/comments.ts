@@ -1,7 +1,9 @@
 import { adminApi } from './client';
 import type { PageResponse } from './types';
 
-export type CommentTargetType = 'BLOG' | 'PROJECT';
+export type CommentTargetType = 'BLOG' | 'PROJECT' | 'GUEST';
+
+export const GUEST_TARGET_ID = 1;
 
 export type AdminComment = {
   id: number;
@@ -11,6 +13,7 @@ export type AdminComment = {
   likeCount: number;
   admin: boolean;
   deleted: boolean;
+  edited: boolean;
   createdAt: string;
   updatedAt: string;
   replies: AdminComment[];
@@ -43,6 +46,9 @@ export const deleteCommentByAdmin = async (id: number): Promise<void> => {
 };
 
 export const fetchCommentTargets = async (targetType: CommentTargetType): Promise<CommentTarget[]> => {
+  if (targetType === 'GUEST') {
+    return [{ id: GUEST_TARGET_ID, title: '방명록' }];
+  }
   if (targetType === 'BLOG') {
     const { data } = await adminApi.get<PageResponse<{ id: number; title: string; published: boolean }>>('/api/admin/blogs', {
       params: { page: 0, size: 100, sort: 'createdAt,desc' },

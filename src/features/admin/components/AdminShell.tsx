@@ -8,6 +8,7 @@ import {
   IdcardOutlined,
   LogoutOutlined,
   ProjectOutlined,
+  ToolOutlined,
 } from '@ant-design/icons';
 import { App, Button, Layout, Menu, Result, Space, Spin } from 'antd';
 import Link from 'next/link';
@@ -24,6 +25,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
 const MENU_ITEMS = [
   { key: '/admin', icon: <DashboardOutlined />, label: '대시보드' },
   { key: '/admin/experiences', icon: <IdcardOutlined />, label: '경력' },
+  { key: '/admin/skills', icon: <ToolOutlined />, label: '스킬' },
   { key: '/admin/projects', icon: <ProjectOutlined />, label: '프로젝트' },
   { key: '/admin/blogs', icon: <EditOutlined />, label: '블로그' },
   { key: '/admin/comments', icon: <CommentOutlined />, label: '댓글' },

@@ -22,7 +22,16 @@ const MAX_LENGTH = 1000;
 const countAll = (comments: AdminComment[]) =>
   comments.reduce((sum, c) => sum + (c.deleted ? 0 : 1) + c.replies.filter((r) => !r.deleted).length, 0);
 
-const parseType = (value: string | null): CommentTargetType => (value === 'PROJECT' ? 'PROJECT' : 'BLOG');
+const TARGET_TYPES: CommentTargetType[] = ['BLOG', 'PROJECT', 'GUEST'];
+
+const PLACEHOLDERS: Record<CommentTargetType, string> = {
+  BLOG: '공개된 블로그 글 선택',
+  PROJECT: '프로젝트 선택',
+  GUEST: '방명록 선택',
+};
+
+const parseType = (value: string | null): CommentTargetType =>
+  TARGET_TYPES.find((type) => type === value) ?? 'BLOG';
 
 export default function CommentAdmin() {
   const { message } = App.useApp();
@@ -100,17 +109,18 @@ export default function CommentAdmin() {
         <Space wrap size={12} className='admin-full-width'>
           <Segmented<CommentTargetType>
             value={targetType}
-            onChange={(type) => select(type)}
+            onChange={(type) => select(type, type === 'GUEST' ? 1 : undefined)}
             options={[
               { label: '블로그', value: 'BLOG' },
               { label: '프로젝트', value: 'PROJECT' },
+              { label: '방명록', value: 'GUEST' },
             ]}
           />
           <Select
             showSearch
             allowClear
             style={{ minWidth: 320 }}
-            placeholder={targetType === 'BLOG' ? '공개된 블로그 글 선택' : '프로젝트 선택'}
+            placeholder={PLACEHOLDERS[targetType]}
             loading={targetsLoading}
             value={targetId}
             onChange={(id?: number) => select(targetType, id)}
@@ -123,7 +133,7 @@ export default function CommentAdmin() {
 
       {!targetId ? (
         <Card>
-          <Empty description='댓글을 볼 블로그 글이나 프로젝트를 선택하세요.' />
+          <Empty description='댓글을 볼 블로그 글, 프로젝트, 방명록을 선택하세요.' />
         </Card>
       ) : (
         <Card title={selectedTitle ? `${selectedTitle} · 댓글 ${countAll(comments)}` : `댓글 ${countAll(comments)}`}>

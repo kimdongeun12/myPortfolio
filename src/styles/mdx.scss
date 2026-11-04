@@ -125,3 +125,26 @@
     font-size: 0.8125rem;
     white-space: pre-wrap;
 }
+
+.mdx-content {
+    .section-badge {
+        display: inline-block;
+        margin-left: 0.5rem;
+        padding: 0.125rem 0.5rem;
+        border: 1px solid #1677ff;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: normal;
+        color: #1677ff;
+        vertical-align: middle;
+    }
+    .section-result {
+        padding: 0.75rem 1rem;
+        border-left: 2px solid #ff0266;
+        background-color: rgba(255, 2, 102, 0.06);
+        .label {
+            margin-right: 0.5rem;
+            color: #ff0266;
+        }
+    }
+}
