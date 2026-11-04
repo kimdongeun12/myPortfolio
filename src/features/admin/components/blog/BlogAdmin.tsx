@@ -13,7 +13,6 @@ import AdminPageHeader from '../AdminPageHeader';
 
 const PAGE_SIZE = 20;
 
-/** 블로그 글 목록 (임시저장 포함, 최신순) */
 export default function BlogAdmin() {
   const { message } = App.useApp();
   const [page, setPage] = useState(0);
@@ -42,7 +41,6 @@ export default function BlogAdmin() {
     try {
       await deleteBlog(item.id);
       message.success('삭제했습니다.');
-      // 마지막 페이지의 마지막 글을 지우면 앞 페이지로
       if (items.length === 1 && page > 0) setPage(page - 1);
       else load();
     } catch (error) {

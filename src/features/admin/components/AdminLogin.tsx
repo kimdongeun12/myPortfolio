@@ -10,7 +10,6 @@ import { getErrorMessage } from '../api/client';
 
 type LoginForm = { password: string };
 
-/** 로그인 후 이동할 주소 — 어드민 안쪽 경로만 허용 (외부 주소로 보내는 공격 방지) */
 const getSafeNext = (next: string | null) =>
   next && next.startsWith('/admin') && !next.startsWith('//') ? next : '/admin';
 
@@ -21,7 +20,6 @@ export default function AdminLogin() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  // 이미 로그인되어 있으면 바로 이동
   useEffect(() => {
     fetchIsLoggedIn()
       .then((loggedIn) => loggedIn && router.replace(next))

@@ -14,12 +14,10 @@ import ExperienceFormModal from './ExperienceFormModal';
 const formatPeriod = ({ startDate, endDate }: Experience) =>
   `${startDate.replace(/-/g, '.')} ~ ${endDate ? endDate.replace(/-/g, '.') : ''}`;
 
-/** 경력 관리 (목록 + 등록·수정 모달) */
 export default function ExperienceAdmin() {
   const { message } = App.useApp();
   const [items, setItems] = useState<Experience[]>([]);
   const [loading, setLoading] = useState(true);
-  /** undefined: 모달 닫힘 / null: 새로 등록 / Experience: 수정 */
   const [editing, setEditing] = useState<Experience | null | undefined>(undefined);
 
   const load = useCallback(async () => {

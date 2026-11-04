@@ -10,10 +10,6 @@ import { getErrorMessage } from '../api/client';
 import { uploadImage } from '../api/common';
 import type { ImageTargetType } from '../api/types';
 
-/**
- * MDX 컴파일러(@mdx-js/mdx)는 용량이 커서 따로 불러옵니다.
- * → 작성 화면(폼)이 먼저 뜨고, 미리보기는 준비되는 대로 표시
- */
 const MdxContent = dynamic(() => import('@/components/mdx/MdxContent'), {
   ssr: false,
   loading: () => <Spin size='small' tip='미리보기 준비 중'><div style={{ height: 80 }} /></Spin>,
@@ -22,15 +18,12 @@ const MdxContent = dynamic(() => import('@/components/mdx/MdxContent'), {
 type ViewMode = 'split' | 'edit' | 'preview';
 
 type MdxEditorProps = {
-  /** Form.Item 이 자동으로 넣어주는 값 */
   value?: string;
   onChange?: (value: string) => void;
-  /** 이미지 업로드 대상 (id 가 없으면 = 아직 저장 전이면 업로드 불가) */
   uploadTarget?: { type: ImageTargetType; id?: number };
   minHeight?: number;
 };
 
-/** 툴바에서 넣을 수 있는 문법 조각 */
 const SNIPPETS: { label: string; text: string; tooltip: string }[] = [
   { label: 'H2', text: '\n## 제목\n', tooltip: '큰 제목 (목차에 표시)' },
   { label: 'H3', text: '\n### 소제목\n', tooltip: '작은 제목' },
@@ -43,10 +36,6 @@ const SNIPPETS: { label: string; text: string; tooltip: string }[] = [
 
 const PREVIEW_DELAY = 300;
 
-/**
- * MDX 에디터 (작성 + 실시간 미리보기)
- * antd Form.Item 안에 넣으면 value/onChange 가 자동 연결됩니다.
- */
 export default function MdxEditor({ value = '', onChange, uploadTarget, minHeight = 480 }: MdxEditorProps) {
   const { message } = App.useApp();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -54,13 +43,11 @@ export default function MdxEditor({ value = '', onChange, uploadTarget, minHeigh
   const [preview, setPreview] = useState(value);
   const [uploading, setUploading] = useState(false);
 
-  // 입력할 때마다 렌더링하면 무거우므로 잠깐 멈췄을 때 미리보기 갱신
   useEffect(() => {
     const timer = setTimeout(() => setPreview(value), PREVIEW_DELAY);
     return () => clearTimeout(timer);
   }, [value]);
 
-  /** 커서 위치(선택 영역)에 텍스트 넣기 */
   const insertText = (text: string) => {
     const textarea = textareaRef.current;
     if (!textarea) {
@@ -70,7 +57,6 @@ export default function MdxEditor({ value = '', onChange, uploadTarget, minHeigh
     const { selectionStart, selectionEnd } = textarea;
     const next = value.slice(0, selectionStart) + text + value.slice(selectionEnd);
     onChange?.(next);
-    // 값이 반영된 뒤 커서를 넣은 텍스트 뒤로 이동
     requestAnimationFrame(() => {
       textarea.focus();
       const cursor = selectionStart + text.length;
@@ -114,7 +100,7 @@ export default function MdxEditor({ value = '', onChange, uploadTarget, minHeigh
                 disabled={!canUpload || mode === 'preview'}
                 beforeUpload={(file) => {
                   handleUpload(file);
-                  return false; // antd 기본 업로드 대신 직접 처리
+                  return false;
                 }}
               >
                 <Button size='small' icon={<PictureOutlined />} loading={uploading} disabled={!canUpload || mode === 'preview'}>

@@ -6,7 +6,6 @@ import AdminProviders from '@/features/admin/components/AdminProviders';
 
 export const metadata = {
   title: '어드민',
-  // 검색엔진에 노출되지 않게
   robots: { index: false, follow: false },
 };
 

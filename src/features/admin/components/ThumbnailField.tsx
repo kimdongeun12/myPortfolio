@@ -11,14 +11,11 @@ import { uploadImage } from '../api/common';
 import type { ImageTargetType } from '../api/types';
 
 type ThumbnailFieldProps = {
-  /** Form.Item 이 자동으로 넣어주는 값 */
   value?: string | null;
   onChange?: (value: string | null) => void;
-  /** 업로드 대상 (id 가 없으면 = 아직 저장 전이면 업로드 불가, URL 직접 입력만 가능) */
   target: { type: ImageTargetType; id?: number };
 };
 
-/** 썸네일 입력 (업로드 또는 URL 직접 입력 + 미리보기) */
 export default function ThumbnailField({ value, onChange, target }: ThumbnailFieldProps) {
   const { message } = App.useApp();
   const [uploading, setUploading] = useState(false);

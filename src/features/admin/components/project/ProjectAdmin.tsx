@@ -20,7 +20,6 @@ const formatPeriod = ({ startDate, endDate }: Project) => {
   return `${toMonth(startDate)} ~ ${endDate ? toMonth(endDate) : '진행중'}`;
 };
 
-/** 프로젝트 목록 (고정 → 정렬 순서 → 최신 시작일 순) */
 export default function ProjectAdmin() {
   const { message } = App.useApp();
   const [filter, setFilter] = useState<TypeFilter>('ALL');

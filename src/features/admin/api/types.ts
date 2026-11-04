@@ -1,9 +1,6 @@
-/** 어드민 API 공통 타입 (백엔드 DTO 와 이름을 맞춤) */
-
-/** 페이징 응답 (PageResponseDto) */
 export type PageResponse<T> = {
   content: T[];
-  page: number; // 0부터 시작
+  page: number;
   size: number;
   totalElements: number;
   totalPages: number;
@@ -21,7 +18,7 @@ export type UploadedImage = {
   id: number;
   targetType: ImageTargetType;
   targetId: number;
-  url: string; // /uploads/2026/11/xxx.png
+  url: string;
   originalName: string | null;
   mimeType: string | null;
   fileSize: number | null;

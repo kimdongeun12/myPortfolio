@@ -1,7 +1,6 @@
 import { adminApi } from './client';
 import type { PageResponse } from './types';
 
-/** 목록용 (BlogSummaryDto) */
 export type BlogSummary = {
   id: number;
   title: string;
@@ -13,11 +12,10 @@ export type BlogSummary = {
   createdAt: string;
 };
 
-/** 상세 (BlogResponseDto) */
 export type BlogDetail = {
   id: number;
   title: string;
-  content: string; // MDX
+  content: string;
   thumbnailUrl: string | null;
   likeCount: number;
   liked: boolean;
@@ -27,7 +25,6 @@ export type BlogDetail = {
   updatedAt: string;
 };
 
-/** 등록·수정 요청 (BlogRequestDto) */
 export type BlogRequest = {
   title: string;
   content: string;
@@ -36,7 +33,6 @@ export type BlogRequest = {
   techStacks: string[];
 };
 
-/** 관리자 목록 (임시저장 포함, 최신순) — page 는 0부터 */
 export const fetchAdminBlogs = async (page: number, size = 20): Promise<PageResponse<BlogSummary>> => {
   const { data } = await adminApi.get<PageResponse<BlogSummary>>('/api/admin/blogs', {
     params: { page, size, sort: 'createdAt,desc' },
@@ -44,7 +40,6 @@ export const fetchAdminBlogs = async (page: number, size = 20): Promise<PageResp
   return data;
 };
 
-/** 관리자 상세 (임시저장 포함) */
 export const fetchAdminBlog = async (id: number): Promise<BlogDetail> => {
   const { data } = await adminApi.get<BlogDetail>(`/api/admin/blogs/${id}`);
   return data;
@@ -60,7 +55,6 @@ export const updateBlog = async (id: number, body: BlogRequest): Promise<BlogDet
   return data;
 };
 
-/** 삭제 (숨김 처리) */
 export const deleteBlog = async (id: number): Promise<void> => {
   await adminApi.post(`/api/blogs/${id}/delete`);
 };

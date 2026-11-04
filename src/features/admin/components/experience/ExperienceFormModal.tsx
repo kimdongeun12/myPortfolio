@@ -28,7 +28,6 @@ type FormValues = {
 
 type ExperienceFormModalProps = {
   open: boolean;
-  /** null 이면 새로 등록 */
   experience: Experience | null;
   onClose: () => void;
   onSaved: () => void;
@@ -36,7 +35,6 @@ type ExperienceFormModalProps = {
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 
-/** 빈 문자열은 null 로 보내서 DB 에 빈 값이 남지 않게 */
 const emptyToNull = (value?: string) => (value && value.trim() ? value.trim() : null);
 
 const toFormValues = (experience: Experience | null): Partial<FormValues> =>
@@ -69,7 +67,6 @@ const toRequest = (values: FormValues): ExperienceRequest => ({
   endDate: values.current || !values.endDate ? null : values.endDate.format(DATE_FORMAT),
 });
 
-/** 경력 등록·수정 모달 */
 export default function ExperienceFormModal({ open, experience, onClose, onSaved }: ExperienceFormModalProps) {
   const { message } = App.useApp();
   const [form] = Form.useForm<FormValues>();
@@ -88,7 +85,7 @@ export default function ExperienceFormModal({ open, experience, onClose, onSaved
     try {
       values = await form.validateFields();
     } catch {
-      return; // 입력 오류는 각 칸 아래에 표시됨
+      return;
     }
     setSaving(true);
     try {
@@ -114,7 +111,6 @@ export default function ExperienceFormModal({ open, experience, onClose, onSaved
       onCancel={onClose}
       confirmLoading={saving}
       width={720}
-      // 닫혀 있어도 Form 을 유지해야 useForm/useWatch 경고가 나지 않음 (열 때마다 초기화)
       forceRender
       maskClosable={false}
     >

@@ -1,11 +1,5 @@
-
-/*------------------------------------*\
-    #COLOR
-\*------------------------------------*/
-// 테마, 기본 배경 색
 $color-bg: #1e1f26;
 
-// 무채색
 $color-white: #fff;
 $color-grey01: #E9E9E9;
 $color-grey02: #8D8D8D;
@@ -14,10 +8,8 @@ $color-black: #121212;
 
 $color-red: #FF0266;
 
-// 버튼
 $color-button: #4356FF;
 $color-button-active: #C8CDFF;
-
 
 $color-1 : #FFFFFF;
 $color-2 : #E5E7EB;
@@ -43,46 +35,20 @@ $colors: (
     10 : #5DBFD4,
 );
 
+$bp-lg: 1024px;
+$bp-md: 768px;
+$bp-sm: 500px;
 
-// $color-white: #ffffff;
-// $color-grey01: #E9E9E9;
-// $color-grey02: #8D8D8D;
-// $color-grey03: #606060;
-// $color-black: #121212;
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-md: 1.125rem;
+$font-size-lg: 1.5rem;
+$font-size-xl: 2rem;
+$font-size-xxl: 3rem;
+$font-size-exl: 3.5rem;
 
-// $color-red: #FF0266;
+$font-size-h1: 2.5rem;
+$font-size-h2: 2rem;
 
-// $color-button: #4356FF;
-// $color-button-active: #C8CDFF;
-
-/*------------------------------------*\
-    #TYPOGRAPHY
-\*------------------------------------*/
-
-/* 1rem === 16px 기준 */
-
-// 반응형 브레이크포인트 (max-width 기준, 이하일 때 적용) → @include bp(lg | md | sm)
-$bp-lg: 1024px; // 태블릿 가로 / 작은 노트북
-$bp-md: 768px;  // 태블릿 세로
-$bp-sm: 500px;  // 모바일
-
-$font-size-xs: 0.75rem;     // 12px
-$font-size-sm: 0.875rem;    // 14px
-$font-size-md: 1.125rem;    // 18px
-$font-size-lg: 1.5rem;      // 24px
-$font-size-xl: 2rem;        // 32px
-$font-size-xxl: 3rem;       // 48px
-$font-size-exl: 3.5rem;     // 56px
-
-$font-size-h1: 2.5rem;      // 40px
-$font-size-h2: 2rem;        // 32px
-
-/*------------------------------------*\
-    #SIZES
-\*------------------------------------*/
-// border-radius
 $border-radius01: 1rem;
 
-// padding
-
-// margin

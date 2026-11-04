@@ -9,7 +9,6 @@ import type { VisitStats } from '../api/types';
 
 import AdminPageHeader from './AdminPageHeader';
 
-/** 대시보드 — 최근 30일 방문 통계 */
 export default function AdminDashboard() {
   const [stats, setStats] = useState<VisitStats | null>(null);
   const [error, setError] = useState('');

@@ -16,13 +16,11 @@ const MAX_LENGTH = 1000;
 type AdminCommentItemProps = {
   comment: AdminComment;
   isReply?: boolean;
-  /** 등록·수정·숨김 후 목록 다시 불러오기 */
   onChanged: () => void;
 };
 
 type Mode = 'view' | 'reply' | 'edit';
 
-/** 댓글 한 개 (답글 작성 / 관리자 댓글 수정 / 숨김) */
 export default function AdminCommentItem({ comment, isReply = false, onChanged }: AdminCommentItemProps) {
   const { message } = App.useApp();
   const [mode, setMode] = useState<Mode>('view');
@@ -52,7 +50,6 @@ export default function AdminCommentItem({ comment, isReply = false, onChanged }
     const content = text.trim();
     if (!content) return;
     if (mode === 'reply') {
-      // 답글의 답글도 백엔드에서 같은 최상위 댓글 아래로 붙여줌
       run(() => createAdminComment({ parentId: comment.id, content }), '답글을 등록했습니다.');
     } else if (mode === 'edit') {
       run(() => updateAdminComment(comment.id, content), '수정했습니다.');

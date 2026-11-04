@@ -1,9 +1,3 @@
-
-/*------------------------------------*\
-    #COLOR
-\*------------------------------------*/
-
-// 반응형: @include bp(lg) { ... } → 1024px 이하, md → 768px 이하, sm → 500px 이하
 @mixin bp($size) {
     @if $size == lg {
         @media screen and (max-width: $bp-lg) { @content; }

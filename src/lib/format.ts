@@ -1,7 +1,5 @@
-/** 숫자를 자릿수에 맞춰 0으로 채움 (1 → "01") */
 export const padNumber = (num: number, length = 2) => String(num).padStart(length, '0');
 
-/** 숫자만 있는 휴대폰 번호를 하이픈 형식으로 (01012345678 → 010-1234-5678) */
 export const formatPhone = (phone: string) => {
   const digits = phone.replace(/\D/g, '');
   if (digits.length === 11) return digits.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
@@ -9,7 +7,6 @@ export const formatPhone = (phone: string) => {
   return phone;
 };
 
-/** 날짜를 "방금 전 / 5분 전 / 3시간 전 / 2일 전 / 몇 달 전 / 1년 전" 형식으로 */
 export const formatRelativeTime = (date: string | Date, now: Date = new Date()) => {
   const diffSec = Math.max(0, (now.getTime() - new Date(date).getTime()) / 1000);
   const min = diffSec / 60;

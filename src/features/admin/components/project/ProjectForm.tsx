@@ -87,14 +87,9 @@ const toRequest = (values: FormValues): ProjectRequest => ({
 });
 
 type ProjectFormProps = {
-  /** 없으면 새로 등록 */
   projectId?: number;
 };
 
-/**
- * 프로젝트 등록·수정 화면
- * 새 프로젝트는 한 번 저장한 뒤부터 이미지(썸네일·본문)를 올릴 수 있습니다.
- */
 export default function ProjectForm({ projectId }: ProjectFormProps) {
   const router = useRouter();
   const { message } = App.useApp();
@@ -167,7 +162,6 @@ export default function ProjectForm({ projectId }: ProjectFormProps) {
         }
       />
 
-      {/* 불러오는 동안에도 Form 을 유지해야 setFieldsValue 값이 반영됩니다 */}
       <Spin spinning={loading} tip='불러오는 중'>
         <Form<FormValues>
           form={form}

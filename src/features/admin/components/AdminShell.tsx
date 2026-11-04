@@ -19,10 +19,8 @@ import { getErrorMessage } from '../api/client';
 
 const { Sider, Header, Content } = Layout;
 
-/** 공개 사이트 주소 ("사이트 보기" 버튼) — 배포 환경변수 NEXT_PUBLIC_SITE_URL */
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
 
-/** 사이드 메뉴 — 기능 브랜치에서 메뉴를 고치지 않도록 전체 메뉴를 여기서 정의 */
 const MENU_ITEMS = [
   { key: '/admin', icon: <DashboardOutlined />, label: '대시보드' },
   { key: '/admin/experiences', icon: <IdcardOutlined />, label: '경력' },
@@ -31,7 +29,6 @@ const MENU_ITEMS = [
   { key: '/admin/comments', icon: <CommentOutlined />, label: '댓글' },
 ];
 
-/** 현재 경로에 맞는 메뉴 (예: /admin/blogs/3 → /admin/blogs) */
 const getSelectedKey = (pathname: string) =>
   MENU_ITEMS.map((item) => item.key)
     .filter((key) => (key === '/admin' ? pathname === '/admin' : pathname.startsWith(key)))
@@ -39,9 +36,6 @@ const getSelectedKey = (pathname: string) =>
 
 type AuthStatus = 'checking' | 'ok' | 'error';
 
-/**
- * 어드민 화면 틀 (로그인 확인 + 사이드 메뉴 + 상단 바)
- */
 export default function AdminShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -65,7 +59,6 @@ export default function AdminShell({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
     };
-    // 최초 진입 시 한 번만 확인 (이후 401 은 각 요청에서 안내)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

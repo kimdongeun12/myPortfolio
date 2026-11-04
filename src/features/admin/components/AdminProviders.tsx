@@ -8,11 +8,6 @@ import type { ReactNode } from 'react';
 
 dayjs.locale('ko');
 
-/**
- * 어드민 공통 Provider
- * - ConfigProvider: antd 한국어·테마
- * - App: message / modal 을 App.useApp() 으로 쓰기 위함
- */
 export default function AdminProviders({ children }: { children: ReactNode }) {
   return (
     <ConfigProvider

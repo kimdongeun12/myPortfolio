@@ -23,22 +23,15 @@ type FormValues = {
 const DEFAULT_VALUES: FormValues = { title: '', techStacks: [], thumbnailUrl: null, content: '' };
 
 type BlogFormProps = {
-  /** 없으면 새 글 */
   blogId?: number;
 };
 
-/**
- * 블로그 글 작성·수정 화면 (MDX)
- * - 임시저장: 사이트에 노출되지 않음 / 공개: 사이트 목록에 노출
- * - 새 글은 한 번 저장(임시저장)한 뒤부터 이미지를 올릴 수 있습니다.
- */
 export default function BlogForm({ blogId }: BlogFormProps) {
   const router = useRouter();
   const { message } = App.useApp();
   const [form] = Form.useForm<FormValues>();
   const [loading, setLoading] = useState(Boolean(blogId));
   const [loadError, setLoadError] = useState('');
-  /** 서버에 저장된 공개 상태 (화면 상단 표시용) */
   const [published, setPublished] = useState(false);
   const [saving, setSaving] = useState<'draft' | 'publish' | null>(null);
   const isEdit = blogId !== undefined;
@@ -64,7 +57,7 @@ export default function BlogForm({ blogId }: BlogFormProps) {
     try {
       values = await form.validateFields();
     } catch {
-      return; // 입력 오류는 각 칸 아래에 표시됨
+      return;
     }
     const body: BlogRequest = {
       title: values.title.trim(),
@@ -123,7 +116,6 @@ export default function BlogForm({ blogId }: BlogFormProps) {
         }
       />
 
-      {/* 불러오는 동안에도 Form 을 유지해야 setFieldsValue 값이 반영됩니다 */}
       <Spin spinning={loading} tip='불러오는 중'>
         <Form<FormValues> form={form} layout='vertical' requiredMark='optional' initialValues={DEFAULT_VALUES}>
           <Card className='admin-block'>

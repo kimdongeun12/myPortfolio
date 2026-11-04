@@ -24,11 +24,6 @@ const countAll = (comments: AdminComment[]) =>
 
 const parseType = (value: string | null): CommentTargetType => (value === 'PROJECT' ? 'PROJECT' : 'BLOG');
 
-/**
- * 댓글 관리
- * - 블로그/프로젝트를 골라 댓글을 보고, 관리자 댓글·답글 작성, 수정(관리자 댓글만), 숨김 처리
- * - 주소에 ?targetType=BLOG&targetId=3 을 붙이면 해당 글의 댓글로 바로 이동
- */
 export default function CommentAdmin() {
   const { message } = App.useApp();
   const router = useRouter();
@@ -46,7 +41,6 @@ export default function CommentAdmin() {
   const [newContent, setNewContent] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  /** 선택 상태를 주소에 저장 (새로고침해도 유지) */
   const select = (type: CommentTargetType, id?: number) => {
     const params = new URLSearchParams({ targetType: type });
     if (id) params.set('targetId', String(id));
