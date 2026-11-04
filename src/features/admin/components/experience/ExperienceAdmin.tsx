@@ -120,11 +120,22 @@ export default function ExperienceAdmin() {
           loading={loading}
           pagination={false}
           expandable={{
-            rowExpandable: (item) => Boolean(item.responsibilities || item.role),
+            rowExpandable: (item) => Boolean(item.responsibilities || item.achievements || item.role),
             expandedRowRender: (item) => (
               <div className='admin-pre-line'>
                 {item.role && <p>역할: {item.role}</p>}
-                {item.responsibilities}
+                {item.responsibilities && (
+                  <>
+                    <p><strong>주요 업무</strong></p>
+                    <p>{item.responsibilities}</p>
+                  </>
+                )}
+                {item.achievements && (
+                  <>
+                    <p><strong>주요 성과</strong></p>
+                    <p>{item.achievements}</p>
+                  </>
+                )}
               </div>
             ),
           }}

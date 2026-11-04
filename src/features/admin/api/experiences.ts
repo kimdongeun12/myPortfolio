@@ -10,6 +10,7 @@ export type Experience = {
   role: string | null;
   position: string | null;
   responsibilities: string | null;
+  achievements: string | null;
   startDate: string; // 2023-06-20
   endDate: string | null; // null = 재직중
   current: boolean;
@@ -26,6 +27,7 @@ export type ExperienceRequest = {
   role?: string | null;
   position?: string | null;
   responsibilities?: string | null;
+  achievements?: string | null;
   startDate: string;
   endDate: string | null;
 };

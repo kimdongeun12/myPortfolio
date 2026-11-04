@@ -20,6 +20,7 @@ type FormValues = {
   role?: string;
   position?: string;
   responsibilities?: string;
+  achievements?: string;
   startDate: Dayjs;
   endDate?: Dayjs | null;
   current: boolean;
@@ -48,6 +49,7 @@ const toFormValues = (experience: Experience | null): Partial<FormValues> =>
         role: experience.role ?? undefined,
         position: experience.position ?? undefined,
         responsibilities: experience.responsibilities ?? undefined,
+        achievements: experience.achievements ?? undefined,
         startDate: dayjs(experience.startDate),
         endDate: experience.endDate ? dayjs(experience.endDate) : null,
         current: experience.current,
@@ -62,6 +64,7 @@ const toRequest = (values: FormValues): ExperienceRequest => ({
   role: emptyToNull(values.role),
   position: emptyToNull(values.position),
   responsibilities: emptyToNull(values.responsibilities),
+  achievements: emptyToNull(values.achievements),
   startDate: values.startDate.format(DATE_FORMAT),
   endDate: values.current || !values.endDate ? null : values.endDate.format(DATE_FORMAT),
 });
@@ -193,8 +196,13 @@ export default function ExperienceFormModal({ open, experience, onClose, onSaved
             </Form.Item>
           </Col>
           <Col span={24}>
-            <Form.Item name='responsibilities' label='담당 업무'>
+            <Form.Item name='responsibilities' label='주요 업무' extra='한 줄에 하나씩 작성하면 목록으로 표시됩니다.'>
               <Input.TextArea autoSize={{ minRows: 4, maxRows: 12 }} placeholder='줄바꿈으로 구분해서 작성하세요.' />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item name='achievements' label='주요 성과' extra='한 줄에 하나씩 작성하면 목록으로 표시됩니다.'>
+              <Input.TextArea autoSize={{ minRows: 3, maxRows: 12 }} placeholder='줄바꿈으로 구분해서 작성하세요.' />
             </Form.Item>
           </Col>
         </Row>
