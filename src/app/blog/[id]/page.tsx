@@ -19,7 +19,7 @@ export const generateMetadata = async ({ params }: PageProps) => {
   return {
     title: post ? post.title : '블로그',
     description: post?.summary || undefined,
-    robots: { index: true, follow: true },
+    robots: { index: false, follow: true },
   };
 };
 
