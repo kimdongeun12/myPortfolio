@@ -14,8 +14,13 @@ export const generateStaticParams = async () => (await getBlogPosts()).map((post
 
 export const generateMetadata = async ({ params }: PageProps) => {
   const { id } = await params;
-  const post = await getBlogPost(id);
-  return { title: post ? post.title : '블로그' };
+  const posts = await getBlogPosts();
+  const post = await getBlogPost(id, posts.find((item) => item.id === id));
+  return {
+    title: post ? post.title : '블로그',
+    description: post?.summary || undefined,
+    robots: { index: true, follow: true },
+  };
 };
 
 export default async function BlogDetailPage({ params }: PageProps) {

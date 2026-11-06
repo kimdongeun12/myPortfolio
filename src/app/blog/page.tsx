@@ -6,6 +6,7 @@ export const revalidate = 60;
 export const generateMetadata = () => {
   return {
     title: '블로그',
+    robots: { index: true, follow: true },
     customMeta: {
       pageTitle: 'Blog',
     },

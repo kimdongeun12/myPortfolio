@@ -4,6 +4,10 @@ import Visual from '@/features/visual/components/Visual';
 
 export const revalidate = 60;
 
+export const metadata = {
+  robots: { index: true, follow: true, nosnippet: true },
+};
+
 export default async function ProfilePage() {
   const data = await getProfileData();
   return (

@@ -10,9 +10,9 @@ import Header from '@/components/layout/Header';
 import SmoothScroll from '@/components/layout/SmoothScroll';
 import VisitTracker from '@/components/layout/VisitTracker';
 import Wrap from '@/components/layout/Wrap';
+import { SITE_URL } from '@/lib/site-url';
 import { UiStoreProvider } from '@/providers/ui-store-provider';
 
-const SITE_URL = 'https://www.rloorn.com';
 const SITE_TITLE = '김동은 | 이력서';
 const SITE_DESCRIPTION = '프론트엔드 개발자 김동은의 이력서와 포트폴리오';
 const OG_IMAGE = { url: '/og_image.jpg', width: 2400, height: 1260, alt: SITE_TITLE };
@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     default: SITE_TITLE,
   },
   description: SITE_DESCRIPTION,
+  robots: { index: false, follow: true },
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
