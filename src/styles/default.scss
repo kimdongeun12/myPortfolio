@@ -26,7 +26,7 @@
     }
 
     .font-#{10 + ($i * 2)} {
-        font-size: #{((10 + ($i * 2)) / 16)}rem;
+        font-size: #{math.div(10 + $i * 2, 16)}rem;
     }
     
     .color-#{$i} {
@@ -34,7 +34,7 @@
     }
     
     .w-#{$i} {
-        width: #{(100% / $i)};
+        width: #{math.div(100%, $i)};
     }
     
 }
@@ -49,7 +49,7 @@
     @for $i from 1 to 12 {
         .col-#{$i} {
             flex-grow:$i; flex: $i;
-            width: #{(100% / $i)};
+            width: #{math.div(100%, $i)};
         }
         &.gap-#{$i} {
             gap : #{$i}rem;
@@ -61,8 +61,15 @@
 #wrap {
     &.loading {
         height: 100vh;
+        height: 100svh;
         overflow: hidden;
     }
+}
+
+html:has(#wrap.loading),
+html:has(#wrap.loading) body {
+    overflow: hidden;
+    overscroll-behavior: none;
 }
 
 /*------------------------------------*\
