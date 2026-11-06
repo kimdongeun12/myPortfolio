@@ -7,9 +7,9 @@ import clsx from 'clsx';
 
 import { getErrorMessage } from '@/lib/api';
 
-import { createComment, fetchComments } from './api';
+import { createComment, deleteComment, fetchComments, updateComment } from './api';
 import CommentForm, { type CommentFormOptions } from './CommentForm';
-import CommentItem from './CommentItem';
+import CommentItem, { type CommentActions } from './CommentItem';
 import type { CommentData, CommentInput, CommentTarget } from './types';
 
 export type CommentStats = {
@@ -85,6 +85,17 @@ export default function CommentSection({
     await load();
   };
 
+  const actions: CommentActions = {
+    onEdit: async (commentId, password, content) => {
+      await updateComment(commentId, password, content);
+      await load();
+    },
+    onDelete: async (commentId, password) => {
+      await deleteComment(commentId, password);
+      await load();
+    },
+  };
+
   const all = flatten(comments).filter((c) => !c.deleted);
   const stats: CommentStats = { total: all.length, today: all.filter((c) => isToday(c.createdAt)).length };
 
@@ -122,6 +133,7 @@ export default function CommentSection({
               onToggleReply={setReplyingTo}
               onReply={handleReply}
               formOptions={formOptions}
+              actions={actions}
             />
           ))}
         </ul>

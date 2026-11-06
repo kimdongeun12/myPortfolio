@@ -8,6 +8,12 @@ import type { Experience, Post, ProfileData, Project, SkillGroup } from './data'
 const BOARD_SIZE = 5;
 const EMPTY_PAGE: PageResponse<BlogSummaryDto> = { content: [], page: 0, size: 0, totalElements: 0, totalPages: 0, last: true };
 
+const toLines = (text: string | null) =>
+  (text ?? '')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
+
 const toExperience = (dto: ExperienceDto): Experience => ({
   id: dto.id,
   startDate: formatCompactDate(dto.startDate),
@@ -15,6 +21,8 @@ const toExperience = (dto: ExperienceDto): Experience => ({
   name: dto.formerName ? `${dto.companyName} | (전) ${dto.formerName}` : dto.companyName,
   job: [dto.department, dto.position].filter(Boolean).join(' · '),
   info: dto.role ?? '',
+  tasks: toLines(dto.responsibilities),
+  achievements: toLines(dto.achievements),
 });
 
 const toSkillGroup = (dto: SkillGroupDto): SkillGroup => ({

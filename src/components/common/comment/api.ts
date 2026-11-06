@@ -34,3 +34,11 @@ export async function createComment(target: CommentTarget, input: CommentInput, 
     },
   });
 }
+
+export async function updateComment(id: string, password: string, content: string): Promise<void> {
+  await requestApi(`/api/comments/${id}`, { method: 'PUT', body: { password, content } });
+}
+
+export async function deleteComment(id: string, password: string): Promise<void> {
+  await requestApi(`/api/comments/${id}/delete`, { body: { password } });
+}

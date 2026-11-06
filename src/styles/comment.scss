@@ -200,6 +200,12 @@
     color: $color-1;
     word-break: break-word;
 }
+.comment-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
 .btn-reply {
     display: inline-flex;
     align-items: center;

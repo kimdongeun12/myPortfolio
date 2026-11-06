@@ -7,8 +7,20 @@
 }
 
 .experience-wrap {
-    ul {
-        li { 
+    .experience-detail ul {
+        li {
+            position: relative;
+            padding: 0 0 0 1rem;
+            line-height: 1.7;
+            &::before {
+                content: "·";
+                position: absolute;
+                left: 0.25rem;
+            }
+        }
+    }
+    > div > ul {
+        > li { 
             position: relative;
             padding-left: 2rem;
             padding-bottom: 1rem;
@@ -117,7 +129,7 @@
     }
 }
 @media (prefers-reduced-motion: reduce) {
-    .experience-wrap ul li {
+    .experience-wrap > div > ul > li {
         &::before,
         .deco::before,
         .deco::after {

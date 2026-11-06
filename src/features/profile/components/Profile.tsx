@@ -58,7 +58,27 @@ export default function Profile({ experiences, skillGroups, projects, postBoards
                         <p className='font-14'>{el.job}</p>
                       </div>
                       <div className='col-9'>
-                        {el.info}
+                        <p>{el.info}</p>
+                        {el.tasks.length > 0 && (
+                          <div className='experience-detail pt-2'>
+                            <p className='pb-1 color-9 font-14'>주요 업무</p>
+                            <ul className='color-3 font-14'>
+                              {el.tasks.map((task) => (
+                                <li key={task}>{task}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {el.achievements.length > 0 && (
+                          <div className='experience-detail pt-2'>
+                            <p className='pb-1 color-9 font-14'>주요 성과</p>
+                            <ul className='color-2 font-14'>
+                              {el.achievements.map((achievement) => (
+                                <li key={achievement}>{achievement}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </div>
                     </li>
                   ))}

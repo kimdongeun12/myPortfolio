@@ -8,6 +8,7 @@ import type { TocItem } from '@/components/mdx/headings';
 import MdxContent from '@/components/mdx/MdxContent';
 
 import BlogSidebar from '@/features/blog/components/BlogSidebar';
+import LikeButton from '@/features/blog/components/LikeButton';
 import PostStats from '@/features/blog/components/PostStats';
 import TableOfContents from '@/features/blog/components/TableOfContents';
 import type { BlogPost, BlogPostDetail } from '@/features/blog/types';
@@ -43,13 +44,12 @@ export default function BlogDetail({ post, toc, prev, next }: BlogDetailProps) {
 
           <MdxContent source={post.content} className='detail-content' />
 
-          {post.tags.length > 0 && (
-            <div className='detail-tags'>
-              {post.tags.map((tag) => (
-                <TagChip key={tag} label={tag} href={`/blog?tag=${encodeURIComponent(tag)}`} />
-              ))}
-            </div>
-          )}
+          <div className='detail-tags'>
+            {post.tags.map((tag) => (
+              <TagChip key={tag} label={tag} href={`/blog?tag=${encodeURIComponent(tag)}`} />
+            ))}
+            <LikeButton postId={post.id} initialCount={post.likes} />
+          </div>
 
           <nav className='post-nav' aria-label='이전글, 다음글'>
             {prev ? (

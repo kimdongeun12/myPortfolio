@@ -66,6 +66,7 @@ export type BlogDetailDto = {
   content: string;
   thumbnailUrl: string | null;
   likeCount: number;
+  liked: boolean;
   techStacks: string[];
   createdAt: string;
   updatedAt: string;

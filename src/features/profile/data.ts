@@ -1,5 +1,14 @@
 export type AboutItem = { title: string; desc: string };
-export type Experience = { id: number; startDate: string; endDate: string; name: string; job: string; info: string };
+export type Experience = {
+  id: number;
+  startDate: string;
+  endDate: string;
+  name: string;
+  job: string;
+  info: string;
+  tasks: string[];
+  achievements: string[];
+};
 export type SkillGroup = { id: number; name: string; desc: string; stack: string[] };
 export type Project = {
   id: number;
