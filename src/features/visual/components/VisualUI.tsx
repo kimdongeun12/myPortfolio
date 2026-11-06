@@ -20,7 +20,6 @@ export default function VisualUI() {
   const [isIntroDone] = useState(isWindowOpen);
 
   useEffect(() => {
-    console.log(isWindowOpen, 'asdada')
     if (isWindowOpen) return;
     const dim = document.querySelector<HTMLElement>('.visual-wrap .dim');
     if (!dim) return;
@@ -37,7 +36,11 @@ export default function VisualUI() {
     }
 
     dim.addEventListener('animationstart', openWindow, { once: true });
-    return () => dim.removeEventListener('animationstart', openWindow);
+    const fallback = window.setTimeout(openWindow, delayMs + 1000);
+    return () => {
+      dim.removeEventListener('animationstart', openWindow);
+      window.clearTimeout(fallback);
+    };
   }, [isWindowOpen, openWindow]);
 
   useBeforeUnload();

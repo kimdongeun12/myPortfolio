@@ -18,6 +18,7 @@
     // 다음 섹션(프로필)이 구간 끝에서 시작하도록 겹침
     // (원이 커지는 동안에는 useVisualScrollTrigger가 화면 맨 위에 고정시켜 원 안에 제자리로 보이게 함)
     margin-bottom: -100vh;
+    margin-bottom: -100svh;
     // 원이 끝까지 열리면 고정 레이어를 숨겨 아래 섹션 클릭을 막지 않음
     &[data-scroll-end] .visual-sticky {
         visibility: hidden;

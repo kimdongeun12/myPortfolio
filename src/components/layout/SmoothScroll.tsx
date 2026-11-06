@@ -21,6 +21,14 @@ export default function SmoothScroll() {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    if (window.matchMedia('(pointer: coarse)').matches) {
+      ScrollTrigger.config({ ignoreMobileResize: true });
+      ScrollTrigger.normalizeScroll(true);
+      return () => {
+        ScrollTrigger.normalizeScroll(false);
+      };
+    }
+
     const lenis = new Lenis({
       lerp: 0.1,             // 0~1, 작을수록 더 미끄럽게(천천히) 따라감
       wheelMultiplier: 1,
