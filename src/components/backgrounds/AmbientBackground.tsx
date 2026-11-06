@@ -141,7 +141,7 @@ export default function AmbientBackground({
     }
 
     function showFallback() {
-      mist.hidden = true;
+      mist!.hidden = true;
       if (fallback) fallback.hidden = false;
     }
 
