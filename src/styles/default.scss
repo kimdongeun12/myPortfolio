@@ -58,16 +58,15 @@
 }
 
 
-#wrap {
-    &.loading {
-        height: 100vh;
-        height: 100svh;
-        overflow: hidden;
-    }
+#wrap.loading,
+#wrap:has(.visual-wrap.loading) {
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
 }
 
-html:has(#wrap.loading),
-html:has(#wrap.loading) body {
+html:has(.visual-wrap.loading),
+html:has(.visual-wrap.loading) body {
     overflow: hidden;
     overscroll-behavior: none;
 }
