@@ -23,7 +23,7 @@ export function Callout({ type = 'info', title, children }: { type?: CalloutType
 
 function MdxImage({ src, alt, ...rest }: ComponentPropsWithoutRef<'img'>) {
   // eslint-disable-next-line @next/next/no-img-element
-  return <img {...rest} src={toAssetUrl(src)} alt={alt ?? ''} loading='lazy' />;
+  return <img {...rest} src={typeof src === 'string' ? toAssetUrl(src) : src} alt={alt ?? ''} loading='lazy' />;
 }
 
 function MdxLink({ href = '', children, ...rest }: ComponentPropsWithoutRef<'a'>) {
