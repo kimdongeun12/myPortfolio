@@ -16,6 +16,7 @@ export type Project = {
   subtitle: string;
   thumbnail: string;
   roles: { label: string; value: string }[];
+  highlights: string[];
   href: string;
 };
 export type Post = { title: string; date: string; href: string };

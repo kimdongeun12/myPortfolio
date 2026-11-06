@@ -40,6 +40,13 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
               </li>
             ))}
           </ul>
+          {project.highlights.length > 0 && (
+            <ul className='info-highlights mt-2'>
+              {project.highlights.map((highlight) => (
+                <li key={highlight}>{highlight}</li>
+              ))}
+            </ul>
+          )}
         </div>
         <div className='btn-wrap'>
           <DecoLink href={project.href}>자세히보기</DecoLink>

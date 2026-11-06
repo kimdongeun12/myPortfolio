@@ -2,6 +2,7 @@ import { fetchApiOr } from '@/lib/api';
 import type { BlogSummaryDto, CommentDto, ExperienceDto, PageResponse, ProjectDto, SkillGroupDto } from '@/lib/api-types';
 import { toAssetUrl } from '@/lib/api-url';
 import { formatCompactDate, formatPeriod, formatShortDate } from '@/lib/format';
+import { formatSkill } from '@/data/skills';
 
 import type { Experience, Post, ProfileData, Project, SkillGroup } from './data';
 
@@ -35,12 +36,14 @@ const toSkillGroup = (dto: SkillGroupDto): SkillGroup => ({
 const toProject = (dto: ProjectDto): Project => ({
   id: dto.id,
   title: dto.title,
-  subtitle: dto.companyName ?? '',
+  subtitle: dto.summary ?? dto.companyName ?? '',
   thumbnail: toAssetUrl(dto.thumbnailUrl),
   roles: [
-    { label: 'ROLE', value: dto.role ?? '' },
-    { label: 'PERIOD', value: formatPeriod(dto.startDate, dto.endDate) },
+    { label: '기간', value: formatPeriod(dto.startDate, dto.endDate) },
+    { label: '역할', value: dto.role ?? '' },
+    { label: '기술', value: dto.techStacks.map(formatSkill).join(' · ') },
   ].filter((row) => row.value),
+  highlights: toLines(dto.responsibilities),
   href: `/portfolio/${dto.id}`,
 });
 

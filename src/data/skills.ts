@@ -18,3 +18,12 @@ export const SKILL_ICONS: Record<string, string> = {
   Figma: '/images/skills/figma.svg',
   Webpack: '/images/skills/webpack.svg',
 };
+
+const SKILL_LABELS: Record<string, string> = {
+  Scss: 'SCSS',
+  Javascript: 'JavaScript',
+  Next: 'Next.js',
+  Spring: 'Spring Boot',
+};
+
+export const formatSkill = (skill: string) => SKILL_LABELS[skill] ?? skill;
