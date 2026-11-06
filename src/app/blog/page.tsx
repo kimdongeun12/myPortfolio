@@ -1,4 +1,7 @@
 import Blog from '@/features/blog/components/Blog';
+import { getBlogPosts } from '@/features/blog/data';
+
+export const revalidate = 60;
 
 export const generateMetadata = () => {
   return {
@@ -9,6 +12,7 @@ export const generateMetadata = () => {
   };
 };
 
-export default function BlogPage() {
-  return <Blog />;
+export default async function BlogPage() {
+  const posts = await getBlogPosts();
+  return <Blog posts={posts} />;
 }

@@ -1,52 +1,53 @@
-// ------------------------------------------------------------
-// 포트폴리오 데이터 (목록 /portfolio, 상세 /portfolio/[id])
-// ------------------------------------------------------------
-
-export type PortfolioSection = {
-  heading?: string;    // 문단 제목 (없으면 이전 문단에 이어지는 본문)
-  paragraphs: string[];
-};
+import { ApiError, fetchApi, fetchApiOr } from '@/lib/api';
+import type { ProjectDto } from '@/lib/api-types';
+import { toAssetUrl } from '@/lib/api-url';
+import { formatPeriod } from '@/lib/format';
 
 export type PortfolioProject = {
-  id: string;          // URL에 쓰이는 값 (/portfolio/[id])
+  id: string;
   title: string;
-  summary: string;     // 카드에 보이는 짧은 설명
-  pinned?: boolean;    // 상단 Pinned 영역에 노출
+  summary: string;
+  pinned: boolean;
   role: string;
   period: string;
   stack: string[];
-  description: string; // 상세 왼쪽의 프로젝트 설명
-  thumbnail?: string;  // 이미지 경로 (없으면 빈 이미지 영역)
-  sections: PortfolioSection[];
+  description: string;
+  responsibilities: string[];
+  content: string;
+  thumbnail: string;
 };
 
-// 시안용 임시 문구 (실제 내용으로 교체 예정)
-const SUMMARY =
-  '각 프로젝트 설명은 3줄정도를 기입하려고 노력 합시다.각 프로젝트 설명은 3줄정도를 기입하려고 노력 합시다.각 프로젝트 설명은 3줄정도를 기입하려고 노력 합시다.각 프로젝트 설명은 3줄';
-const PARAGRAPH = `${SUMMARY}${SUMMARY}${SUMMARY}`;
-const STACK = ['Vue', 'React', 'Next', 'Javascript', 'TypeScript', 'Scss', 'Vuetify'];
+const splitLines = (text: string | null) =>
+  (text ?? '')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
 
-const sample = (id: string, pinned = false): PortfolioProject => ({
-  id,
-  title: '프로젝트명',
-  summary: SUMMARY,
-  pinned,
-  role: 'Front-end',
-  period: '2025.01 - 현재',
-  stack: STACK,
-  description: `${SUMMARY}${SUMMARY}`,
-  sections: [
-    { heading: '문단', paragraphs: [PARAGRAPH, PARAGRAPH] },
-  ],
+const toPortfolioProject = (dto: ProjectDto): PortfolioProject => ({
+  id: String(dto.id),
+  title: dto.title,
+  summary: dto.summary ?? '',
+  pinned: dto.pinned,
+  role: dto.role ?? '',
+  period: formatPeriod(dto.startDate, dto.endDate),
+  stack: dto.techStacks,
+  description: dto.summary ?? '',
+  responsibilities: splitLines(dto.responsibilities),
+  content: dto.content ?? '',
+  thumbnail: toAssetUrl(dto.thumbnailUrl),
 });
 
-export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
-  sample('pinned-1', true),
-  sample('pinned-2', true),
-  sample('other-1'),
-  sample('other-2'),
-  sample('other-3'),
-];
+export async function getPortfolioProjects(): Promise<PortfolioProject[]> {
+  const projects = await fetchApiOr<ProjectDto[]>('/api/projects', []);
+  return projects.map(toPortfolioProject);
+}
 
-export const getPortfolioProject = (id: string) =>
-  PORTFOLIO_PROJECTS.find((project) => project.id === id);
+export async function getPortfolioProject(id: string): Promise<PortfolioProject | null> {
+  if (!/^\d+$/.test(id)) return null;
+  try {
+    return toPortfolioProject(await fetchApi<ProjectDto>(`/api/projects/${id}`));
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) return null;
+    throw error;
+  }
+}

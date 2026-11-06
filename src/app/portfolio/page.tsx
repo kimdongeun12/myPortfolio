@@ -1,4 +1,7 @@
-import Portfolio from '@/features/portfolio/components/Portfolio'
+import Portfolio from '@/features/portfolio/components/Portfolio';
+import { getPortfolioProjects } from '@/features/portfolio/data';
+
+export const revalidate = 60;
 
 export const generateMetadata = () => {
   return {
@@ -9,8 +12,7 @@ export const generateMetadata = () => {
   };
 };
 
-export default function PortfolioPage() {
-  return (
-    <Portfolio/>
-  )
+export default async function PortfolioPage() {
+  const projects = await getPortfolioProjects();
+  return <Portfolio projects={projects} />;
 }

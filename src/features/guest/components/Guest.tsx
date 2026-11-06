@@ -3,7 +3,6 @@ import '@/styles/guest.scss';
 import { AmbientCollectionBackground } from '@/components/backgrounds';
 
 import GuestBoard from '@/features/guest/components/GuestBoard';
-import { GUEST_MESSAGES } from '@/features/guest/data';
 
 export default function Guest() {
   return (
@@ -18,7 +17,7 @@ export default function Guest() {
           </p>
         </div>
 
-        <GuestBoard initialMessages={GUEST_MESSAGES} />
+        <GuestBoard />
       </div>
     </div>
   );

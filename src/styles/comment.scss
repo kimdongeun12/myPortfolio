@@ -271,3 +271,27 @@
         gap: 0.375rem;
     }
 }
+
+.comment-meta {
+    .comment-badge {
+        padding: 0 0.5rem;
+        border-radius: 999px;
+        background: rgba($color-9, 0.15);
+        color: $color-9;
+        font-size: 0.75rem;
+        line-height: 1.6;
+    }
+    .comment-edited {
+        font-size: 0.75rem;
+        color: $color-7;
+    }
+}
+
+.comment-item.is-deleted .comment-content {
+    color: $color-7;
+}
+
+.comment-form .btn-submit:disabled {
+    opacity: 0.6;
+    cursor: default;
+}

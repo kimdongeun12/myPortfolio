@@ -12,7 +12,9 @@
     "node": "22.x"
   },
   "dependencies": {
+    "@mdx-js/mdx": "^3.1.0",
     "@types/lodash": "^4.17.27",
+    "@types/mdx": "^2.0.13",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -31,6 +33,7 @@
     "react-dom": "^19.3.1",
     "react-icons": "^5",
     "react-tsparticles": "^2.10.1",
+    "remark-gfm": "^4.0.1",
     "sass": "^1.63.3",
     "swiper": "^14.3.0",
     "tsparticles": "^2.10.1",

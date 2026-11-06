@@ -3,11 +3,8 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
-type TocItem = { id: string; label: string };
+import type { TocItem } from '@/components/mdx/headings';
 
-/**
- * 목차: 클릭하면 해당 문단으로 이동, 스크롤 위치에 맞춰 현재 문단을 강조
- */
 export default function TableOfContents({ items }: { items: TocItem[] }) {
   const [activeId, setActiveId] = useState(items[0]?.id);
 
@@ -17,8 +14,6 @@ export default function TableOfContents({ items }: { items: TocItem[] }) {
       .filter((el): el is HTMLElement => !!el);
     if (!targets.length) return;
 
-    // 화면 위에서 30% 지점보다 위로 올라간 마지막 문단을 현재 문단으로
-    // (스크롤을 빠르게 내리거나 맨 아래로 바로 가도 정확하게 맞음)
     let frame = 0;
     const update = () => {
       frame = 0;

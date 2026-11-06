@@ -3,12 +3,13 @@ import { Suspense } from 'react';
 import '@/styles/blog.scss';
 
 import BlogList from '@/features/blog/components/BlogList';
+import { getBlogStats, getBlogTags } from '@/features/blog/data';
+import type { BlogPost } from '@/features/blog/types';
 
-/** 블로그 목록 (BlogList가 URL 쿼리를 읽으므로 Suspense로 감쌈) */
-export default function Blog() {
+export default function Blog({ posts }: { posts: BlogPost[] }) {
   return (
     <Suspense>
-      <BlogList />
+      <BlogList posts={posts} tags={getBlogTags(posts)} stats={getBlogStats(posts)} />
     </Suspense>
   );
 }

@@ -3,11 +3,11 @@ import '@/styles/portfolio.scss';
 import { AmbientCollectionBackground } from '@/components/backgrounds';
 
 import PortfolioCard from '@/features/portfolio/components/PortfolioCard';
-import { PORTFOLIO_PROJECTS } from '@/features/portfolio/data';
+import type { PortfolioProject } from '@/features/portfolio/data';
 
-export default function Portfolio() {
-  const pinned = PORTFOLIO_PROJECTS.filter((project) => project.pinned);
-  const others = PORTFOLIO_PROJECTS.filter((project) => !project.pinned);
+export default function Portfolio({ projects }: { projects: PortfolioProject[] }) {
+  const pinned = projects.filter((project) => project.pinned);
+  const others = projects.filter((project) => !project.pinned);
 
   return (
     <div className='contents-wrap portfolio-page'>
@@ -15,7 +15,6 @@ export default function Portfolio() {
       <div className='content'>
         <h2 className='page-title'>Project</h2>
 
-        {/* Pinned: 왼쪽 소개 + 오른쪽 가로형 카드 목록 */}
         <section className='portfolio-section pinned-section flex-con gap-2'>
           <div className='section-head col-4'>
             <h3 className='section-title kodchasan'>Pinned</h3>
@@ -34,7 +33,6 @@ export default function Portfolio() {
           </ul>
         </section>
 
-        {/* Other: 3열 세로형 카드 */}
         <section className='portfolio-section'>
           <div className='section-head'>
             <h3 className='section-title kodchasan'>Other</h3>

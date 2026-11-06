@@ -1,6 +1,7 @@
 'use client';
 
 import { FiCornerDownRight } from 'react-icons/fi';
+import clsx from 'clsx';
 
 import { formatRelativeTime } from '@/lib/format';
 
@@ -9,15 +10,10 @@ import type { CommentData, CommentInput } from './types';
 
 type CommentItemProps = {
   comment: CommentData;
-  /** 0: 댓글, 1: 답글 (답글은 한 단계까지만 들여쓰기) */
   depth?: number;
-  /** 지금 답글 폼이 열려 있는 댓글 id */
   replyingTo: string | null;
   onToggleReply: (id: string | null) => void;
-  /** threadId: 답글이 달릴 최상위 댓글 id */
-  onReply: (threadId: string, input: CommentInput) => void;
-  threadId?: string;
-  /** 답글 폼에도 같은 옵션 적용 (비밀번호 사용 여부 등) */
+  onReply: (parentId: string, input: CommentInput) => Promise<void>;
   formOptions?: CommentFormOptions;
 };
 
@@ -27,41 +23,43 @@ export default function CommentItem({
   replyingTo,
   onToggleReply,
   onReply,
-  threadId = comment.id,
   formOptions,
 }: CommentItemProps) {
   const isReplying = replyingTo === comment.id;
 
   return (
     <li className={depth === 0 ? 'comment-thread' : 'comment-reply'}>
-      <article className='comment-item'>
+      <article className={clsx('comment-item', comment.deleted && 'is-deleted', comment.admin && 'is-admin')}>
         <span className='comment-avatar' aria-hidden='true'>
           {comment.nickname.slice(0, 1)}
         </span>
         <div className='comment-body'>
           <p className='comment-meta'>
             <strong className='comment-nickname'>{comment.nickname}</strong>
+            {comment.admin && !comment.deleted && <span className='comment-badge'>작성자</span>}
             <time dateTime={comment.createdAt}>{formatRelativeTime(comment.createdAt)}</time>
+            {comment.edited && <span className='comment-edited'>수정됨</span>}
           </p>
           <p className='comment-content'>{comment.content}</p>
-          <button
-            type='button'
-            className='btn-reply'
-            aria-expanded={isReplying}
-            onClick={() => onToggleReply(isReplying ? null : comment.id)}
-          >
-            <FiCornerDownRight aria-hidden />
-            댓글쓰기
-          </button>
+          {!comment.deleted && (
+            <button
+              type='button'
+              className='btn-reply'
+              aria-expanded={isReplying}
+              onClick={() => onToggleReply(isReplying ? null : comment.id)}
+            >
+              <FiCornerDownRight aria-hidden />
+              댓글쓰기
+            </button>
+          )}
           {isReplying && (
             <CommentForm
               {...formOptions}
               compact
               placeholder={`${comment.nickname}님에게 답글 남기기`}
               onCancel={() => onToggleReply(null)}
-              onSubmit={(input) => {
-                // 답글에 답글을 달아도 같은 스레드(최상위 댓글) 아래에 이어서 표시
-                onReply(threadId, input);
+              onSubmit={async (input) => {
+                await onReply(comment.id, input);
                 onToggleReply(null);
               }}
             />
@@ -79,7 +77,6 @@ export default function CommentItem({
               replyingTo={replyingTo}
               onToggleReply={onToggleReply}
               onReply={onReply}
-              threadId={threadId}
               formOptions={formOptions}
             />
           ))}

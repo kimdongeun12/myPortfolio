@@ -6,19 +6,13 @@ import { AmbientBackground } from '@/components/backgrounds';
 import SkillTags from '@/components/common/SkillTags';
 import SocialLinks from '@/components/common/SocialLinks';
 import profile from '@/data/profile';
-import { formatPhone, padNumber } from '@/lib/format';
+import { padNumber } from '@/lib/format';
 
 import PostBoardBox from '@/features/profile/components/PostBoardBox';
 import ProjectSlider from '@/features/profile/components/ProjectSlider';
-import {
-  ABOUT_ITEMS,
-  EXPERIENCES,
-  POST_BOARDS,
-  PROJECTS,
-  SKILL_GROUPS,
-} from '@/features/profile/data';
+import { ABOUT_ITEMS, type ProfileData } from '@/features/profile/data';
 
-export default function Profile() {
+export default function Profile({ experiences, skillGroups, projects, postBoards }: ProfileData) {
   return (
     <div className="contents-wrap">
       <AmbientBackground />
@@ -55,8 +49,8 @@ export default function Profile() {
               <hr/>
               <div className='pt-2'>
                 <ul>
-                  {EXPERIENCES.map((el, idx) => (
-                    <li className='experience-item flex-con' key={idx}>
+                  {experiences.map((el) => (
+                    <li className='experience-item flex-con' key={el.id}>
                       <span className='deco'/>
                       <div className='col-3'>
                         <p className='pb-1 color-3 font-14'>{el.startDate} - {el.endDate}</p>
@@ -78,8 +72,8 @@ export default function Profile() {
               </div>
               <div>
                 <ul className='skill-groups flex-con gap-1'>
-                  {SKILL_GROUPS.map((group) => (
-                    <li className='box has-border col-4' key={group.name}>
+                  {skillGroups.map((group) => (
+                    <li className='box has-border col-4' key={group.id}>
                       <p className='pb-1 font-18'>{group.name}</p>
                       <p className='pb-2 font-14 color-3'>{group.desc}</p>
                       <SkillTags skills={group.stack} />
@@ -98,14 +92,14 @@ export default function Profile() {
               디자인과 기술 사이의 균형을 고민하며 더 나은 서비스를 만들어 가고 있습니다.
             </p>
           </div>
-          <ProjectSlider projects={PROJECTS} />
+          <ProjectSlider projects={projects} />
         </div>
         <div className='post-wrap'>
           <div className='mb-5'>
             <h3 className='font-28 mb-3'>기록하고, 나눈 이야기들</h3>
           </div>
           <div className='post-boards flex-con gap-2 mb-2'>
-            {POST_BOARDS.map((board) => (
+            {postBoards.map((board) => (
               <PostBoardBox board={board} key={board.title} />
             ))}
           </div>
@@ -116,7 +110,6 @@ export default function Profile() {
             함께 완성해 나갈 동료가 되겠습니다
           </p>
           <div className='contact-info'>
-            <a href={`tel:${profile.phone}`}>{formatPhone(profile.phone)}</a>
             <a href={`mailto:${profile.email}`}>{profile.email}</a>
           </div>
           <SocialLinks className='contact-links' />

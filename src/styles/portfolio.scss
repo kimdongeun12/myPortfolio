@@ -184,6 +184,13 @@
         .meta-desc {
             color: $color-2;
         }
+        .meta-list {
+            padding-left: 1.125rem;
+            list-style: disc;
+            li + li {
+                margin-top: 0.375rem;
+            }
+        }
     }
 
     .detail-thumb {

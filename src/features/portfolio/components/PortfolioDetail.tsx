@@ -4,13 +4,13 @@ import { AmbientCollectionBackground } from '@/components/backgrounds';
 import ImgWrap from '@/components/common/box/ImgWrap';
 import BackLink from '@/components/common/button/BackLink';
 import SkillTags from '@/components/common/SkillTags';
+import MdxContent from '@/components/mdx/MdxContent';
 
 import type { PortfolioProject } from '@/features/portfolio/data';
 
 export default function PortfolioDetail({ project }: { project: PortfolioProject }) {
   return (
     <div className='contents-wrap portfolio-page'>
-      {/* 상세는 글 읽기에 집중하도록 가장자리만 은은하게 변하는 배경 */}
       <AmbientCollectionBackground variant='blog-detail' />
       <div className='content'>
         <div className='detail-head'>
@@ -19,7 +19,6 @@ export default function PortfolioDetail({ project }: { project: PortfolioProject
         </div>
 
         <div className='detail-body flex-con gap-2'>
-          {/* 왼쪽: 프로젝트 정보 */}
           <dl className='detail-meta col-4'>
             <dt>역할</dt>
             <dd>{project.role}</dd>
@@ -31,9 +30,20 @@ export default function PortfolioDetail({ project }: { project: PortfolioProject
             </dd>
             <dt>프로젝트 설명</dt>
             <dd className='meta-desc'>{project.description}</dd>
+            {project.responsibilities.length > 0 && (
+              <>
+                <dt>주요 업무</dt>
+                <dd className='meta-desc'>
+                  <ul className='meta-list'>
+                    {project.responsibilities.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </dd>
+              </>
+            )}
           </dl>
 
-          {/* 오른쪽: 이미지 + 본문 */}
           <div className='detail-main col-8'>
             <div className='detail-thumb'>
               <ImgWrap ratioObj={{ width: 864, height: 425 }}>
@@ -43,14 +53,7 @@ export default function PortfolioDetail({ project }: { project: PortfolioProject
                 )}
               </ImgWrap>
             </div>
-            {project.sections.map((section, idx) => (
-              <section className='detail-section' key={idx}>
-                {section.heading && <h3 className='section-heading'>{section.heading}</h3>}
-                {section.paragraphs.map((paragraph, pIdx) => (
-                  <p key={pIdx}>{paragraph}</p>
-                ))}
-              </section>
-            ))}
+            <MdxContent source={project.content} className='detail-section' />
           </div>
         </div>
       </div>

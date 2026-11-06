@@ -1,36 +1,31 @@
 'use client';
 
 import { useId, useState, type FormEvent } from 'react';
+
+import { getErrorMessage } from '@/lib/api';
 import clsx from 'clsx';
 
 import type { CommentInput } from './types';
 
-/** 페이지마다 다르게 쓸 수 있는 폼 옵션 (CommentSection에서 그대로 전달) */
 export type CommentFormOptions = {
-  /** 비밀번호 칸 사용 여부 (기본 true, 방명록은 false) */
-  requirePassword?: boolean;
-  /** 내용 칸 왼쪽 라벨 (예: "메세지"), 없으면 라벨 없이 placeholder만 */
   contentLabel?: string;
-  /** 내용 최소 글자 수 (기본 1) */
   contentMinLength?: number;
   placeholder?: string;
 };
 
 type CommentFormProps = CommentFormOptions & {
-  onSubmit: (input: CommentInput) => void;
-  /** 답글 폼처럼 작은 크기 */
+  onSubmit: (input: CommentInput) => Promise<void>;
   compact?: boolean;
   submitLabel?: string;
   onCancel?: () => void;
 };
 
-const MIN_LENGTH = 2;
+const NICKNAME_MIN = 2;
+const PASSWORD_MIN = 4;
 
-/** 닉네임 · (비밀번호) · 내용 입력 폼 */
 export default function CommentForm({
   onSubmit,
   compact,
-  requirePassword = true,
   contentLabel,
   contentMinLength = 1,
   placeholder = '댓글을 남겨주세요',
@@ -42,18 +37,26 @@ export default function CommentForm({
   const [password, setPassword] = useState('');
   const [content, setContent] = useState('');
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (nickname.trim().length < MIN_LENGTH) return setError(`닉네임을 ${MIN_LENGTH}자 이상 작성해주세요.`);
-    if (requirePassword && password.length < MIN_LENGTH)
-      return setError(`비밀번호를 ${MIN_LENGTH}자 이상 작성해주세요.`);
+    if (submitting) return;
+    if (nickname.trim().length < NICKNAME_MIN) return setError(`닉네임을 ${NICKNAME_MIN}자 이상 작성해주세요.`);
+    if (password.length < PASSWORD_MIN) return setError(`비밀번호를 ${PASSWORD_MIN}자 이상 작성해주세요.`);
     if (content.trim().length < contentMinLength)
       return setError(contentMinLength > 1 ? `내용을 ${contentMinLength}자 이상 작성해주세요.` : '내용을 작성해주세요.');
 
-    onSubmit({ nickname: nickname.trim(), password, content: content.trim() });
-    setContent('');
+    setSubmitting(true);
     setError('');
+    try {
+      await onSubmit({ nickname: nickname.trim(), password, content: content.trim() });
+      setContent('');
+    } catch (err) {
+      setError(getErrorMessage(err, '등록하지 못했습니다. 잠시 후 다시 시도해주세요.'));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const textarea = (
@@ -82,25 +85,23 @@ export default function CommentForm({
             id={`${id}-nickname`}
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
-            placeholder={`${MIN_LENGTH}자 이상 작성해주세요`}
+            placeholder={`${NICKNAME_MIN}자 이상 작성해주세요`}
             autoComplete='nickname'
             maxLength={20}
           />
         </label>
-        {requirePassword && (
-          <label className='form-field' htmlFor={`${id}-password`}>
-            <span className='field-label'>비밀번호</span>
-            <input
-              id={`${id}-password`}
-              type='password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder={`${MIN_LENGTH}자 이상 작성해주세요`}
-              autoComplete='new-password'
-              maxLength={20}
-            />
-          </label>
-        )}
+        <label className='form-field' htmlFor={`${id}-password`}>
+          <span className='field-label'>비밀번호</span>
+          <input
+            id={`${id}-password`}
+            type='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={`${PASSWORD_MIN}자 이상 작성해주세요`}
+            autoComplete='new-password'
+            maxLength={30}
+          />
+        </label>
       </div>
 
       {contentLabel ? (
@@ -123,8 +124,8 @@ export default function CommentForm({
             취소
           </button>
         )}
-        <button type='submit' className='btn-submit'>
-          {submitLabel}
+        <button type='submit' className='btn-submit' disabled={submitting}>
+          {submitting ? '등록 중...' : submitLabel}
         </button>
       </div>
     </form>

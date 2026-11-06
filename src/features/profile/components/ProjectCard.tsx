@@ -6,7 +6,7 @@ import type { Project } from '@/features/profile/data';
 
 type ProjectCardProps = {
   project: Project;
-  index: number; // 0부터, 카드 번호(01, 02 ...) 표시용
+  index: number;
 };
 
 export default function ProjectCard({ project, index }: ProjectCardProps) {
@@ -14,7 +14,12 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
     <div className='project-card box gap-3 flex-con has-bg'>
       <div className='col-5'>
         <ImgWrap ratioObj={{ width: 1, height: 1 }}>
-          <span></span>
+          {project.thumbnail ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={project.thumbnail} alt={`${project.title} 대표 이미지`} />
+          ) : (
+            <span></span>
+          )}
         </ImgWrap>
       </div>
       <div className='info-wrap col-7'>
@@ -28,8 +33,8 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         <hr className='mt-3 mb-3' />
         <div className='info-bottom mb-3'>
           <ul>
-            {project.roles.map((role, idx) => (
-              <li className='flex-con' key={idx}>
+            {project.roles.map((role) => (
+              <li className='flex-con' key={role.label}>
                 <p className='col-2'>{role.label}</p>
                 <p className='col-10'>{role.value}</p>
               </li>

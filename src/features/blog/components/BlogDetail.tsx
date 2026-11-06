@@ -4,20 +4,22 @@ import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 import { AmbientCollectionBackground } from '@/components/backgrounds';
 import { CommentSection } from '@/components/common/comment';
 import TagChip from '@/components/common/TagChip';
+import type { TocItem } from '@/components/mdx/headings';
+import MdxContent from '@/components/mdx/MdxContent';
 
 import BlogSidebar from '@/features/blog/components/BlogSidebar';
 import PostStats from '@/features/blog/components/PostStats';
 import TableOfContents from '@/features/blog/components/TableOfContents';
-import { countComments } from '@/features/blog/data';
-import type { BlogPost } from '@/features/blog/types';
+import type { BlogPost, BlogPostDetail } from '@/features/blog/types';
 
 type BlogDetailProps = {
-  post: BlogPost;
+  post: BlogPostDetail;
+  toc: TocItem[];
   prev?: BlogPost;
   next?: BlogPost;
 };
 
-export default function BlogDetail({ post, prev, next }: BlogDetailProps) {
+export default function BlogDetail({ post, toc, prev, next }: BlogDetailProps) {
   return (
     <div className='contents-wrap blog-page'>
       <AmbientCollectionBackground variant='blog-detail' />
@@ -26,7 +28,7 @@ export default function BlogDetail({ post, prev, next }: BlogDetailProps) {
           <Link href='/blog' className='back-to-list'>
             <FiArrowLeft aria-hidden /> 목록 보기
           </Link>
-          <TableOfContents items={post.sections.map((s) => ({ id: s.id, label: s.heading }))} />
+          {toc.length > 0 && <TableOfContents items={toc} />}
         </BlogSidebar>
 
         <article className='blog-main post-detail'>
@@ -35,26 +37,19 @@ export default function BlogDetail({ post, prev, next }: BlogDetailProps) {
             <h2 className='detail-title'>{post.title}</h2>
             <p className='detail-meta'>
               <span className='post-date'>{post.date}</span>
-              <PostStats views={post.views} likes={post.likes} comments={countComments(post.comments)} />
+              <PostStats likes={post.likes} comments={post.comments} />
             </p>
           </header>
 
-          <div className='detail-content'>
-            {post.sections.map((section) => (
-              <section id={section.id} key={section.id}>
-                <h3>{section.heading}</h3>
-                {section.paragraphs.map((paragraph, idx) => (
-                  <p key={idx}>{paragraph}</p>
-                ))}
-              </section>
-            ))}
-          </div>
+          <MdxContent source={post.content} className='detail-content' />
 
-          <div className='detail-tags'>
-            {post.tags.map((tag) => (
-              <TagChip key={tag} label={tag} href={`/blog?tag=${encodeURIComponent(tag)}`} />
-            ))}
-          </div>
+          {post.tags.length > 0 && (
+            <div className='detail-tags'>
+              {post.tags.map((tag) => (
+                <TagChip key={tag} label={tag} href={`/blog?tag=${encodeURIComponent(tag)}`} />
+              ))}
+            </div>
+          )}
 
           <nav className='post-nav' aria-label='이전글, 다음글'>
             {prev ? (
@@ -81,7 +76,7 @@ export default function BlogDetail({ post, prev, next }: BlogDetailProps) {
             )}
           </nav>
 
-          <CommentSection initialComments={post.comments} />
+          <CommentSection target={{ type: 'BLOG', id: Number(post.id) }} />
         </article>
       </div>
     </div>

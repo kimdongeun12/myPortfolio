@@ -9,13 +9,19 @@ import TagChip from '@/components/common/TagChip';
 
 import BlogSidebar from '@/features/blog/components/BlogSidebar';
 import PostCard from '@/features/blog/components/PostCard';
-import { ALL_TAG, BLOG_POSTS, BLOG_STATS, BLOG_TAGS } from '@/features/blog/data';
+import { ALL_TAG } from '@/features/blog/data';
+import type { BlogPost, BlogStats } from '@/features/blog/types';
 
-export default function BlogList() {
+type BlogListProps = {
+  posts: BlogPost[];
+  tags: string[];
+  stats: BlogStats;
+};
+
+export default function BlogList({ posts: allPosts, tags, stats }: BlogListProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  // 선택한 태그는 URL(?tag=Vue)에 저장 → 상세의 태그를 눌러 들어오거나, 새로고침해도 유지
   const activeTag = searchParams.get('tag') ?? ALL_TAG;
   const [query, setQuery] = useState('');
 
@@ -26,13 +32,13 @@ export default function BlogList() {
 
   const posts = useMemo(() => {
     const keyword = query.trim().toLowerCase();
-    return BLOG_POSTS.filter((post) => {
+    return allPosts.filter((post) => {
       const matchTag = activeTag === ALL_TAG || post.tags.includes(activeTag);
       const matchQuery =
         !keyword || post.title.toLowerCase().includes(keyword) || post.summary.toLowerCase().includes(keyword);
       return matchTag && matchQuery;
     });
-  }, [activeTag, query]);
+  }, [allPosts, activeTag, query]);
 
   return (
     <div className='contents-wrap blog-page'>
@@ -52,7 +58,7 @@ export default function BlogList() {
 
           <p className='sidebar-label'>TAGS</p>
           <div className='tag-list'>
-            {BLOG_TAGS.map((tag) => (
+            {tags.map((tag) => (
               <TagChip key={tag} label={tag} active={tag === activeTag} onClick={() => selectTag(tag)} />
             ))}
           </div>
@@ -60,11 +66,11 @@ export default function BlogList() {
           <p className='sidebar-label'>STATS</p>
           <dl className='sidebar-stats'>
             <dt>POSTS</dt>
-            <dd>{BLOG_STATS.posts}</dd>
-            <dt>VIEWS</dt>
-            <dd>{BLOG_STATS.views}</dd>
+            <dd>{stats.posts}</dd>
             <dt>LIKES</dt>
-            <dd>{BLOG_STATS.likes}</dd>
+            <dd>{stats.likes}</dd>
+            <dt>COMMENTS</dt>
+            <dd>{stats.comments}</dd>
           </dl>
         </BlogSidebar>
 

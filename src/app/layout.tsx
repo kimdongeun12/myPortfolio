@@ -7,6 +7,7 @@ import 'swiper/css';
 
 import Header from '@/components/layout/Header';
 import SmoothScroll from '@/components/layout/SmoothScroll';
+import VisitTracker from '@/components/layout/VisitTracker';
 import Wrap from '@/components/layout/Wrap';
 import { UiStoreProvider } from '@/providers/ui-store-provider';
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="ko">
       <body>
         <SmoothScroll />
+        <VisitTracker />
         <UiStoreProvider>
           <Wrap>
             <Header />

@@ -2,25 +2,28 @@ import { notFound } from 'next/navigation';
 
 import '@/styles/blog.scss';
 
+import { extractToc } from '@/components/mdx/headings';
 import BlogDetail from '@/features/blog/components/BlogDetail';
-import { BLOG_POSTS, getAdjacentPosts, getBlogPost } from '@/features/blog/data';
+import { getAdjacentPosts, getBlogPost, getBlogPosts } from '@/features/blog/data';
+
+export const revalidate = 60;
 
 type PageProps = { params: Promise<{ id: string }> };
 
-// 빌드할 때 글별 상세 페이지를 미리 생성
-export const generateStaticParams = () => BLOG_POSTS.map((post) => ({ id: post.id }));
+export const generateStaticParams = async () => (await getBlogPosts()).map((post) => ({ id: post.id }));
 
 export const generateMetadata = async ({ params }: PageProps) => {
   const { id } = await params;
-  const post = getBlogPost(id);
+  const post = await getBlogPost(id);
   return { title: post ? post.title : '블로그' };
 };
 
 export default async function BlogDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const post = getBlogPost(id);
+  const posts = await getBlogPosts();
+  const post = await getBlogPost(id, posts.find((item) => item.id === id));
   if (!post) notFound();
 
-  const { prev, next } = getAdjacentPosts(post.id);
-  return <BlogDetail post={post} prev={prev} next={next} />;
+  const { prev, next } = getAdjacentPosts(posts, post.id);
+  return <BlogDetail post={post} toc={extractToc(post.content)} prev={prev} next={next} />;
 }

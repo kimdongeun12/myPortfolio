@@ -3,11 +3,15 @@ import clsx from 'clsx';
 
 import type { PostBoard } from '@/features/profile/data';
 
-/** 글 목록 박스 (Blog, Guest Board) */
 export default function PostBoardBox({ board }: { board: PostBoard }) {
   return (
     <div className={clsx('box col-6 has-border', board.borderVariant)}>
       <div className='font20 pb-1'>{board.title}</div>
+      {board.posts.length === 0 && (
+        <Link className='flex-con pt-1 pb-1 color-3' href={board.href}>
+          아직 작성된 글이 없습니다.
+        </Link>
+      )}
       <ul>
         {board.posts.map((post, idx) => (
           <li key={idx}>

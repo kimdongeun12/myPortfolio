@@ -22,3 +22,37 @@ export const formatRelativeTime = (date: string | Date, now: Date = new Date()) 
   if (day < 365) return `${Math.floor(day / 30)}달 전`;
   return `${Math.floor(day / 365)}년 전`;
 };
+
+const SERVER_OFFSET = '+09:00';
+
+export const parseServerDate = (value: string) =>
+  new Date(/(Z|[+-]\d{2}:?\d{2})$/.test(value) ? value : `${value}${SERVER_OFFSET}`);
+
+export const toIsoString = (value: string) => parseServerDate(value).toISOString();
+
+const parts = (value: string) => {
+  const [y, m, d] = value.slice(0, 10).split('-');
+  return { y, m, d };
+};
+
+export const formatDotDate = (value: string) => {
+  const { y, m, d } = parts(value);
+  return `${y}.${m}.${d}`;
+};
+
+export const formatShortDate = (value: string) => {
+  const { y, m, d } = parts(value);
+  return `${y.slice(2)}.${m}.${d}`;
+};
+
+export const formatCompactDate = (value: string) => value.slice(0, 10).replace(/-/g, '');
+
+export const formatMonth = (value: string) => {
+  const { y, m } = parts(value);
+  return `${y}.${m}`;
+};
+
+export const formatPeriod = (start: string | null, end: string | null, current = !end) => {
+  if (!start) return '';
+  return `${formatMonth(start)} - ${current || !end ? '현재' : formatMonth(end)}`;
+};
