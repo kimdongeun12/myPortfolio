@@ -1,8 +1,9 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
+import type { Swiper as SwiperInstance } from 'swiper';
 
 import 'swiper/css/pagination';
 
@@ -21,6 +22,19 @@ export default function ProjectSlider({ projects }: { projects: Project[] }) {
   const nextRef = useRef<HTMLButtonElement>(null);
   const [slideIndex, setSlideIndex] = useState(0);
   const [slideTotal, setSlideTotal] = useState(projects.length);
+  const swiperRef = useRef<SwiperInstance | null>(null);
+
+  useEffect(() => {
+    const swiper = swiperRef.current;
+    if (!swiper || !prevRef.current || !nextRef.current) return;
+    if (typeof swiper.params.navigation === 'object') {
+      swiper.params.navigation.prevEl = prevRef.current;
+      swiper.params.navigation.nextEl = nextRef.current;
+    }
+    swiper.navigation.destroy();
+    swiper.navigation.init();
+    swiper.navigation.update();
+  }, []);
 
   return (
     <div className='swipe-wrap'>
@@ -39,21 +53,15 @@ export default function ProjectSlider({ projects }: { projects: Project[] }) {
           type: 'progressbar',
         }}
         navigation={{
-          prevEl: prevRef.current,
-          nextEl: nextRef.current,
+          prevEl: null,
+          nextEl: null,
         }}
-        // 첫 렌더 때는 ref가 아직 비어 있으므로 Swiper 초기화 직전에 버튼을 연결
-        onBeforeInit={(swiper) => {
-          if (typeof swiper.params.navigation === 'object') {
-            swiper.params.navigation.prevEl = prevRef.current;
-            swiper.params.navigation.nextEl = nextRef.current;
-          }
+        onSwiper={(instance) => {
+          swiperRef.current = instance;
+          setSlideTotal(instance.slides.length);
+          setSlideIndex(instance.realIndex);
         }}
-        onSwiper={(swiper) => {
-          setSlideTotal(swiper.slides.length);
-          setSlideIndex(swiper.realIndex);
-        }}
-        onSlideChange={(swiper) => setSlideIndex(swiper.realIndex)}
+        onSlideChange={(instance) => setSlideIndex(instance.realIndex)}
       >
         {projects.map((project, idx) => (
           <SwiperSlide key={idx}>

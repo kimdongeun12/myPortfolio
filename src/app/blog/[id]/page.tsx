@@ -5,18 +5,20 @@ import '@/styles/blog.scss';
 import BlogDetail from '@/features/blog/components/BlogDetail';
 import { BLOG_POSTS, getAdjacentPosts, getBlogPost } from '@/features/blog/data';
 
-type PageProps = { params: { id: string } };
+type PageProps = { params: Promise<{ id: string }> };
 
 // 빌드할 때 글별 상세 페이지를 미리 생성
 export const generateStaticParams = () => BLOG_POSTS.map((post) => ({ id: post.id }));
 
-export const generateMetadata = ({ params }: PageProps) => {
-  const post = getBlogPost(params.id);
+export const generateMetadata = async ({ params }: PageProps) => {
+  const { id } = await params;
+  const post = getBlogPost(id);
   return { title: post ? post.title : '블로그' };
 };
 
-export default function BlogDetailPage({ params }: PageProps) {
-  const post = getBlogPost(params.id);
+export default async function BlogDetailPage({ params }: PageProps) {
+  const { id } = await params;
+  const post = getBlogPost(id);
   if (!post) notFound();
 
   const { prev, next } = getAdjacentPosts(post.id);

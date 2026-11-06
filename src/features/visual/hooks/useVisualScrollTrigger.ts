@@ -19,7 +19,7 @@ gsap.registerPlugin(ScrollTrigger);
  * @param refreshKey 값이 바뀌면 ScrollTrigger 위치를 다시 계산 (인트로 후 스크롤 잠금 해제 시점 등)
  */
 export function useVisualScrollTrigger(
-  ref: RefObject<HTMLElement>,
+  ref: RefObject<HTMLElement | null>,
   refreshKey?: unknown,
 ) {
   useEffect(() => {
