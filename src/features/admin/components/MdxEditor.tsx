@@ -12,7 +12,7 @@ import type { ImageTargetType } from '../api/types';
 
 const MdxContent = dynamic(() => import('@/components/mdx/MdxContent'), {
   ssr: false,
-  loading: () => <Spin size='small' tip='미리보기 준비 중'><div style={{ height: 80 }} /></Spin>,
+  loading: () => <Spin size='small' description='미리보기 준비 중'><div style={{ height: 80 }} /></Spin>,
 });
 
 type ViewMode = 'split' | 'edit' | 'preview';

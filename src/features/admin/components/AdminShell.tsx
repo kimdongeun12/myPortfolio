@@ -77,7 +77,7 @@ export default function AdminShell({ children }: { children: ReactNode }) {
   if (status === 'checking') {
     return (
       <div className='admin-center'>
-        <Spin size='large' tip='로그인 확인 중' >
+        <Spin size='large' description='로그인 확인 중' >
           <div className='admin-spin-space' />
         </Spin>
       </div>

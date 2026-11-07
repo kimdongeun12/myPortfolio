@@ -114,7 +114,7 @@ export default function ProjectAdmin() {
       title: '프로젝트',
       key: 'title',
       render: (_, item) => (
-        <Space direction='vertical' size={2}>
+        <Space orientation='vertical' size={2}>
           <Space size={6}>
             {item.pinned && (
               <Tooltip title='상단 고정'>

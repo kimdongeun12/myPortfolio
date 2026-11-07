@@ -59,7 +59,7 @@ export default function BlogAdmin() {
       title: '제목',
       key: 'title',
       render: (_, item) => (
-        <Space direction='vertical' size={2}>
+        <Space orientation='vertical' size={2}>
           <Link href={`/admin/blogs/${item.id}`}>
             <Typography.Text strong>{item.title}</Typography.Text>
           </Link>

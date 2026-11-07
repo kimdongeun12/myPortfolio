@@ -162,7 +162,7 @@ export default function ProjectForm({ projectId }: ProjectFormProps) {
         }
       />
 
-      <Spin spinning={loading} tip='불러오는 중'>
+      <Spin spinning={loading} description='불러오는 중'>
         <Form<FormValues>
           form={form}
           layout='vertical'

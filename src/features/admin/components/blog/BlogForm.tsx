@@ -116,7 +116,7 @@ export default function BlogForm({ blogId }: BlogFormProps) {
         }
       />
 
-      <Spin spinning={loading} tip='불러오는 중'>
+      <Spin spinning={loading} description='불러오는 중'>
         <Form<FormValues> form={form} layout='vertical' requiredMark='optional' initialValues={DEFAULT_VALUES}>
           <Card className='admin-block'>
             <Row gutter={16}>
