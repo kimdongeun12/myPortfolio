@@ -118,8 +118,12 @@ export default function CommentItem({
         </span>
         <div className='comment-body'>
           <p className='comment-meta'>
+            {comment.admin && !comment.deleted && (
+              <span className='comment-badge' role='img' aria-label='작성자' title='작성자'>
+                👑
+              </span>
+            )}
             <strong className='comment-nickname'>{comment.nickname}</strong>
-            {comment.admin && !comment.deleted && <span className='comment-badge'>작성자</span>}
             <time dateTime={comment.createdAt}>{formatRelativeTime(comment.createdAt)}</time>
             {comment.edited && <span className='comment-edited'>수정됨</span>}
           </p>
