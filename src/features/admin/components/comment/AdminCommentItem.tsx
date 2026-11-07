@@ -60,7 +60,7 @@ export default function AdminCommentItem({ comment, isReply = false, onChanged }
     <div className={clsx('admin-comment-item', isReply && 'is-reply', comment.deleted && 'is-deleted')}>
       <Space size={8} wrap>
         <Typography.Text strong>{comment.deleted ? '(삭제됨)' : comment.nickname}</Typography.Text>
-        {comment.admin && !comment.deleted && <Tag color='blue'>작성자</Tag>}
+        {comment.admin && !comment.deleted && <Tag color='blue'>👑</Tag>}
         <Typography.Text type='secondary' title={dayjs(comment.createdAt).format('YYYY.MM.DD HH:mm')}>
           {formatRelativeTime(comment.createdAt)}
         </Typography.Text>

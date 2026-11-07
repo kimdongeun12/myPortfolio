@@ -103,7 +103,7 @@ export default function CommentAdmin() {
 
   return (
     <>
-      <AdminPageHeader title='댓글 관리' description='관리자 댓글은 사이트에 "작성자"로 표시됩니다.' />
+      <AdminPageHeader title='댓글 관리' description='관리자 댓글은 사이트에 rlo_orn 닉네임과 👑 표시로 나옵니다.' />
 
       <Card className='admin-block'>
         <Space wrap size={12} className='admin-full-width'>
