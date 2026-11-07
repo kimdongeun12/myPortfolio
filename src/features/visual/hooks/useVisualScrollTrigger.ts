@@ -141,11 +141,11 @@ export function useVisualScrollTrigger(
 
         // 움직임 줄이기 설정이 아니면 확대 연출
         if (!reduceMotion) {
-          tl.to(content, { scale: 1.6 }, 0).to('#tsparticles', { scale: 1.3 }, 0);
+          tl.fromTo(content, { scale: 1 }, { scale: 1.6 }, 0).fromTo('#tsparticles', { scale: 1 }, { scale: 1.3 }, 0);
         }
 
         // 이름·링크는 앞부분(1/3)에서 빠르게 사라짐
-        tl.to(content, { autoAlpha: 0, duration: 0.33, ease: 'power1.in' }, 0);
+        tl.fromTo(content, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.33, ease: 'power1.in' }, 0);
 
         // matchMedia가 되돌릴 때(언마운트 등) 함께 정리
         return () => {
