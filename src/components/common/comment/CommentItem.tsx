@@ -119,7 +119,7 @@ export default function CommentItem({
         <div className='comment-body'>
           <p className='comment-meta'>
             {comment.admin && !comment.deleted && (
-              <span className='comment-badge' role='img' aria-label='작성자' title='작성자'>
+              <span className='comment-badge' role='img' aria-label='rlo_orn' title='rlo_orn'>
                 👑
               </span>
             )}
