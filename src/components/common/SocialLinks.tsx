@@ -13,7 +13,7 @@ type SocialLink = {
 
 const SOCIAL_LINKS: SocialLink[] = [
   { label: 'GitHub', href: profile.links.github, icon: BsGithub, external: true },
-  { label: '블로그(velog)', href: profile.links.blog, icon: BsFillBookFill, external: true },
+  { label: '블로그(velog)', href: profile.links.blog, icon: BsFillBookFill, external: false },
   { label: '이메일 보내기', href: `mailto:${profile.email}`, icon: BsFillEnvelopeHeartFill },
 ];
 

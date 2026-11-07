@@ -2,11 +2,10 @@ const profile = {
     name: '김동은',
     birth : '19970818',
     email : 'kdedong12@gmail.com',
-    phone : '01092087621',
     // 외부 링크 (SocialLinks 등에서 공용으로 사용)
     links : {
         github : 'https://github.com/kimdongeun12',
-        blog : 'https://velog.io/@kimdongeun12',
+        blog : '/blog',
     },
     job : {
         ko : '프론트엔드 개발자',

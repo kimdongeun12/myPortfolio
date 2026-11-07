@@ -4,14 +4,15 @@ html,
 body {
     font-family: "NotoSansKR", sans-serif !important;
     line-height: 1.25;
+    word-break: keep-all;
 }
 
 // 루트 글자 크기: rem 값 전체가 이 비율로 함께 줄어듦
 html {
     font-size: 16px;
-    @include bp(lg) { font-size: 15px; }
-    @include bp(md) { font-size: 14px; }
-    @include bp(sm) { font-size: 13px; }
+    @include bp(lg) { font-size: 14px; }
+    @include bp(md) { font-size: 12px; }
+    @include bp(sm) { font-size: 10px; }
 }
 // body를 px로 고정하면 상속받는 글자는 줄지 않으므로 rem으로
 body {

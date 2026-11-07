@@ -2,27 +2,27 @@
 // 간편 css 생성
 @for $i from 1 to 20 {
     .mt-#{$i} {
-        margin-top: ($i * 0.5rem);
+        margin-top: ($i * 0.5rem) !important;
     }
 
     .mb-#{$i} {
-        margin-bottom: ($i * 0.5rem);
+        margin-bottom: ($i * 0.5rem) !important;
     }
 
     .pl-#{$i} {
-        padding-left: ($i * 0.5rem);
+        padding-left: ($i * 0.5rem) !important;
     }
 
     .pr-#{$i} {
-        padding-right: ($i * 0.5rem);
+        padding-right: ($i * 0.5rem) !important;
     }
 
     .pt-#{$i} {
-        padding-top: ($i * 0.5rem);
+        padding-top: ($i * 0.5rem) !important;
     }
 
     .pb-#{$i} {
-        padding-bottom: ($i * 0.5rem);
+        padding-bottom: ($i * 0.5rem) !important;
     }
 
     .font-#{10 + ($i * 2)} {
@@ -36,8 +36,14 @@
     .w-#{$i} {
         width: #{math.div(100%, $i)};
     }
+    .m-w-#{$i} {
+        width: #{math.div(100%, $i)};
+        @include bp(md) { width: 100%; }
+    }
     
 }
+
+.keep-all { word-break: keep-all; }
 
 .d-flex {
     display: flex;
@@ -199,12 +205,12 @@ html:has(.visual-wrap.loading) body {
 
     @include bp(md) {
         padding-top: 4.5rem; // 헤더 높이
-        padding-left: 1.25rem;
-        padding-right: 1.25rem;
+        padding-left: 1.75rem;
+        padding-right: 1.75rem;
     }
     @include bp(sm) {
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
     }
 }
 

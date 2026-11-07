@@ -95,7 +95,12 @@
         text-align: center;
         z-index: 1;
         .name-wrap {
+            @include bp(sm) { 
+                width: calc(100% - 2.4rem);
+                margin: 0 auto; 
+            }
             .name {
+                padding: 0 2rem;
                 svg {
                     width: 100%;
                     animation: stroke 4s forwards;
@@ -152,9 +157,6 @@
         }
         @include bp(sm) {
             padding: 0 1rem;
-            .name-wrap .job {
-                font-size: 1.625rem;
-            }
         }
     }
 
@@ -179,7 +181,7 @@
                 width: calc(100% + 1rem);
             }
             @include bp(sm) {
-                width: 100%;
+                width: calc(100% - 2rem);
             }
             aspect-ratio: 1;
             border-radius: 50%;

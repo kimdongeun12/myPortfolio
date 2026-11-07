@@ -60,13 +60,7 @@ export default function VisualUI() {
       <ParticlesUI/>
       {/* 인트로 dim: 파티클은 덮고, 이름(.visual-middle)은 그 위에 그려지도록 사이에 둠 */}
       <div className='dim'/>
-      {/* <div className="visual-top">
-        <div><span>조회수 : </span><span>0</span></div>
-        <div><span>방명록 : </span><span>0</span></div>
-      </div> */}
       <div className="visual-middle">
-        {/* <Avatar size={160} /> */}
-        {/* <div className="img-wrap"><span className='img-box'>이미지 영역</span></div> */}
         <div className="name-wrap mt-3">
           <div className="name"><NameUI/></div>
           <div className="job kodchasan">{
