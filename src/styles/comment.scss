@@ -280,12 +280,11 @@
 
 .comment-meta {
     .comment-badge {
-        padding: 0 0.5rem;
-        border-radius: 999px;
-        background: rgba($color-9, 0.15);
-        color: $color-9;
-        font-size: 0.75rem;
-        line-height: 1.6;
+        align-self: center;
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.875rem;
+        line-height: 1;
     }
     .comment-edited {
         font-size: 0.75rem;
