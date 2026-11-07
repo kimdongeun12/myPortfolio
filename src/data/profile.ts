@@ -1,6 +1,5 @@
 const profile = {
     name: '김동은',
-    birth : '19970818',
     email : 'kdedong12@gmail.com',
     // 외부 링크 (SocialLinks 등에서 공용으로 사용)
     links : {
