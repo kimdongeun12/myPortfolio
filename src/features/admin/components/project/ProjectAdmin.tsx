@@ -1,13 +1,20 @@
 'use client';
 
-import { DeleteOutlined, EditOutlined, PlusOutlined, PushpinFilled } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, HolderOutlined, PlusOutlined, PushpinFilled } from '@ant-design/icons';
 import { App, Button, Card, Popconfirm, Segmented, Space, Table, Tag, Tooltip, Typography } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 
 import { getErrorMessage } from '../../api/client';
-import { deleteProject, fetchProjects, PROJECT_TYPE_LABEL, type Project, type ProjectType } from '../../api/projects';
+import {
+  deleteProject,
+  fetchProjects,
+  PROJECT_TYPE_LABEL,
+  reorderProjects,
+  type Project,
+  type ProjectType,
+} from '../../api/projects';
 import AdminPageHeader from '../AdminPageHeader';
 
 type TypeFilter = ProjectType | 'ALL';
@@ -25,6 +32,11 @@ export default function ProjectAdmin() {
   const [filter, setFilter] = useState<TypeFilter>('ALL');
   const [items, setItems] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [dragId, setDragId] = useState<number | null>(null);
+  const [overId, setOverId] = useState<number | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  const canReorder = filter === 'ALL' && !saving;
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -51,7 +63,53 @@ export default function ProjectAdmin() {
     }
   };
 
+  const resetDrag = () => {
+    setDragId(null);
+    setOverId(null);
+  };
+
+  const handleDrop = async (targetId: number) => {
+    const fromId = dragId;
+    resetDrag();
+    if (fromId === null || fromId === targetId) return;
+
+    const from = items.find((item) => item.id === fromId);
+    const target = items.find((item) => item.id === targetId);
+    if (!from || !target) return;
+    if (from.pinned !== target.pinned) {
+      message.warning('상단 고정 프로젝트끼리, 일반 프로젝트끼리만 순서를 바꿀 수 있습니다.');
+      return;
+    }
+
+    const next = items.filter((item) => item.id !== fromId);
+    next.splice(next.findIndex((item) => item.id === targetId) + (items.indexOf(from) < items.indexOf(target) ? 1 : 0), 0, from);
+    setItems(next);
+    setSaving(true);
+    try {
+      await reorderProjects(next.map((item) => item.id));
+      message.success('순서를 저장했습니다.');
+      load();
+    } catch (error) {
+      message.error(getErrorMessage(error, '순서를 저장하지 못했습니다.'));
+      load();
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const columns: ColumnsType<Project> = [
+    {
+      key: 'drag',
+      width: 44,
+      align: 'center',
+      render: () => (
+        <HolderOutlined
+          className='admin-drag-handle'
+          aria-label='드래그해서 순서 변경'
+          style={{ cursor: canReorder ? 'grab' : 'not-allowed', opacity: canReorder ? 1 : 0.3 }}
+        />
+      ),
+    },
     {
       title: '프로젝트',
       key: 'title',
@@ -95,7 +153,6 @@ export default function ProjectAdmin() {
         </Space>
       ),
     },
-    { title: '순서', dataIndex: 'sortOrder', width: 70, align: 'center', responsive: ['md'] },
     {
       title: '관리',
       key: 'actions',
@@ -126,7 +183,7 @@ export default function ProjectAdmin() {
     <>
       <AdminPageHeader
         title='프로젝트 관리'
-        description='상단 고정 → 정렬 순서(작은 숫자 먼저) → 최신 시작일 순으로 사이트에 표시됩니다.'
+        description='목록 순서대로 사이트에 표시됩니다. 전체 보기에서 행을 끌어 놓으면 순서가 바뀌고, 상단 고정 프로젝트는 항상 위에 옵니다.'
         extra={
           <Link href='/admin/projects/new'>
             <Button type='primary' icon={<PlusOutlined />}>
@@ -148,7 +205,38 @@ export default function ProjectAdmin() {
             { label: '사이드', value: 'SIDE' },
           ]}
         />
-        <Table rowKey='id' columns={columns} dataSource={items} loading={loading} pagination={{ pageSize: 20, hideOnSinglePage: true }} />
+        {filter !== 'ALL' && (
+          <Typography.Paragraph type='secondary' className='admin-block'>
+            순서 변경은 전체 보기에서만 할 수 있습니다.
+          </Typography.Paragraph>
+        )}
+        <Table
+          rowKey='id'
+          columns={columns}
+          dataSource={items}
+          loading={loading || saving}
+          pagination={false}
+          onRow={(item) => ({
+            draggable: canReorder,
+            className: overId === item.id && dragId !== item.id ? 'is-drag-over' : undefined,
+            style: dragId === item.id ? { opacity: 0.4 } : undefined,
+            onDragStart: (e) => {
+              setDragId(item.id);
+              e.dataTransfer.effectAllowed = 'move';
+            },
+            onDragOver: (e) => {
+              if (dragId === null) return;
+              e.preventDefault();
+              e.dataTransfer.dropEffect = 'move';
+              if (overId !== item.id) setOverId(item.id);
+            },
+            onDrop: (e) => {
+              e.preventDefault();
+              handleDrop(item.id);
+            },
+            onDragEnd: resetDrag,
+          })}
+        />
       </Card>
     </>
   );

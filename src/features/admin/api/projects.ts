@@ -74,3 +74,7 @@ export const fetchExperienceOptions = async (): Promise<ExperienceOption[]> => {
   const { data } = await adminApi.get<ExperienceOption[]>('/api/experiences');
   return data;
 };
+
+export const reorderProjects = async (ids: number[]): Promise<void> => {
+  await adminApi.put('/api/projects/order', { ids });
+};
