@@ -1,6 +1,17 @@
 'use client';
 
-import { DeleteOutlined, EditOutlined, HolderOutlined, PlusOutlined, PushpinFilled } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlusOutlined, PushpinFilled } from '@ant-design/icons';
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
+import { SortableContext, arrayMove, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { App, Button, Card, Popconfirm, Segmented, Space, Table, Tag, Tooltip, Typography } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import Link from 'next/link';
@@ -16,6 +27,7 @@ import {
   type ProjectType,
 } from '../../api/projects';
 import AdminPageHeader from '../AdminPageHeader';
+import SortableRow, { DragHandle, ReorderEnabledContext } from '../SortableRow';
 
 type TypeFilter = ProjectType | 'ALL';
 
@@ -32,11 +44,13 @@ export default function ProjectAdmin() {
   const [filter, setFilter] = useState<TypeFilter>('ALL');
   const [items, setItems] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [dragId, setDragId] = useState<number | null>(null);
-  const [overId, setOverId] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
 
   const canReorder = filter === 'ALL' && !saving;
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -63,26 +77,18 @@ export default function ProjectAdmin() {
     }
   };
 
-  const resetDrag = () => {
-    setDragId(null);
-    setOverId(null);
-  };
+  const handleDragEnd = async ({ active, over }: DragEndEvent) => {
+    if (!over || active.id === over.id) return;
 
-  const handleDrop = async (targetId: number) => {
-    const fromId = dragId;
-    resetDrag();
-    if (fromId === null || fromId === targetId) return;
-
-    const from = items.find((item) => item.id === fromId);
-    const target = items.find((item) => item.id === targetId);
-    if (!from || !target) return;
-    if (from.pinned !== target.pinned) {
+    const oldIndex = items.findIndex((item) => item.id === active.id);
+    const newIndex = items.findIndex((item) => item.id === over.id);
+    if (oldIndex < 0 || newIndex < 0) return;
+    if (items[oldIndex].pinned !== items[newIndex].pinned) {
       message.warning('상단 고정 프로젝트끼리, 일반 프로젝트끼리만 순서를 바꿀 수 있습니다.');
       return;
     }
 
-    const next = items.filter((item) => item.id !== fromId);
-    next.splice(next.findIndex((item) => item.id === targetId) + (items.indexOf(from) < items.indexOf(target) ? 1 : 0), 0, from);
+    const next = arrayMove(items, oldIndex, newIndex);
     setItems(next);
     setSaving(true);
     try {
@@ -100,15 +106,9 @@ export default function ProjectAdmin() {
   const columns: ColumnsType<Project> = [
     {
       key: 'drag',
-      width: 44,
+      width: 48,
       align: 'center',
-      render: () => (
-        <HolderOutlined
-          className='admin-drag-handle'
-          aria-label='드래그해서 순서 변경'
-          style={{ cursor: canReorder ? 'grab' : 'not-allowed', opacity: canReorder ? 1 : 0.3 }}
-        />
-      ),
+      render: () => <DragHandle />,
     },
     {
       title: '프로젝트',
@@ -210,33 +210,30 @@ export default function ProjectAdmin() {
             순서 변경은 전체 보기에서만 할 수 있습니다.
           </Typography.Paragraph>
         )}
-        <Table
-          rowKey='id'
-          columns={columns}
-          dataSource={items}
-          loading={loading || saving}
-          pagination={false}
-          onRow={(item) => ({
-            draggable: canReorder,
-            className: overId === item.id && dragId !== item.id ? 'is-drag-over' : undefined,
-            style: dragId === item.id ? { opacity: 0.4 } : undefined,
-            onDragStart: (e) => {
-              setDragId(item.id);
-              e.dataTransfer.effectAllowed = 'move';
-            },
-            onDragOver: (e) => {
-              if (dragId === null) return;
-              e.preventDefault();
-              e.dataTransfer.dropEffect = 'move';
-              if (overId !== item.id) setOverId(item.id);
-            },
-            onDrop: (e) => {
-              e.preventDefault();
-              handleDrop(item.id);
-            },
-            onDragEnd: resetDrag,
-          })}
-        />
+        <ReorderEnabledContext.Provider value={canReorder}>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            modifiers={[restrictToVerticalAxis]}
+            onDragEnd={handleDragEnd}
+            accessibility={{
+              screenReaderInstructions: {
+                draggable: '스페이스바로 들어 올리고 위아래 방향키로 옮긴 뒤 스페이스바로 내려놓습니다. 취소는 Esc입니다.',
+              },
+            }}
+          >
+            <SortableContext items={items.map((item) => item.id)} strategy={verticalListSortingStrategy} disabled={!canReorder}>
+              <Table
+                rowKey='id'
+                columns={columns}
+                dataSource={items}
+                loading={loading || saving}
+                pagination={false}
+                components={{ body: { row: SortableRow } }}
+              />
+            </SortableContext>
+          </DndContext>
+        </ReorderEnabledContext.Provider>
       </Card>
     </>
   );
