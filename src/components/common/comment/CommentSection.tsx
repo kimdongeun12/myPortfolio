@@ -5,6 +5,7 @@ import '@/styles/comment.scss';
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import clsx from 'clsx';
 
+import { CommentSkeletons } from '@/components/common/skeleton/ListSkeleton';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { getErrorMessage } from '@/lib/api';
 
@@ -92,6 +93,11 @@ export default function CommentSection({
     load();
   }, [load]);
 
+  const retryLoad = () => {
+    setLoading(true);
+    load();
+  };
+
   const loadMore = async () => {
     if (!pageSize || loadingMore || last) return;
     setLoadingMore(true);
@@ -159,12 +165,20 @@ export default function CommentSection({
       <CommentForm {...formOptions} onSubmit={handleCreate} />
       {headerPosition === 'below-form' && header}
 
-      {loadError ? (
-        <p className='comment-empty' role='alert'>
-          {loadError}
-        </p>
-      ) : loading ? (
-        <p className='comment-empty'>불러오는 중...</p>
+      {loading || (loadError && comments.length === 0) ? (
+        <>
+          <ul className='comment-list' aria-busy='true'>
+            <CommentSkeletons count={3} />
+          </ul>
+          {loadError && (
+            <p className='list-status' role='alert'>
+              {loadError}{' '}
+              <button type='button' className='list-retry' onClick={retryLoad}>
+                다시 시도
+              </button>
+            </p>
+          )}
+        </>
       ) : comments.length > 0 ? (
         <ul className='comment-list'>
           {comments.map((comment) => (
@@ -178,6 +192,7 @@ export default function CommentSection({
               actions={actions}
             />
           ))}
+          {loadingMore && <CommentSkeletons count={2} />}
         </ul>
       ) : (
         <p className='comment-empty'>첫 댓글을 남겨주세요.</p>
@@ -186,7 +201,6 @@ export default function CommentSection({
       {paged && (
         <>
           <div ref={sentinelRef} aria-hidden='true' />
-          {loadingMore && <p className='list-status'>불러오는 중...</p>}
           {moreError && (
             <p className='list-status' role='alert'>
               {moreError}{' '}

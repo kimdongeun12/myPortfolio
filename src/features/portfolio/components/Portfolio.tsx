@@ -9,6 +9,7 @@ import { AmbientCollectionBackground } from '@/components/backgrounds';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { getErrorMessage } from '@/lib/api';
 
+import { PortfolioCardSkeletons } from '@/components/common/skeleton/ListSkeleton';
 import PortfolioCard from '@/features/portfolio/components/PortfolioCard';
 import { fetchPortfolioPage, type PortfolioPage, type PortfolioProject } from '@/features/portfolio/data';
 
@@ -38,6 +39,7 @@ export default function Portfolio({ firstPage }: { firstPage: PortfolioPage }) {
   const sentinelRef = useInfiniteScroll({ hasMore: !last && !error, loading, onLoadMore: loadMore });
   const pinned = projects.filter((project) => project.pinned);
   const others = projects.filter((project) => !project.pinned);
+  const unresolved = projects.length === 0 && !last;
 
   return (
     <div className='contents-wrap portfolio-page'>
@@ -60,6 +62,7 @@ export default function Portfolio({ firstPage }: { firstPage: PortfolioPage }) {
                 <PortfolioCard project={project} layout='row' />
               </li>
             ))}
+            {unresolved && <PortfolioCardSkeletons count={2} layout='row' />}
           </ul>
         </section>
 
@@ -74,9 +77,9 @@ export default function Portfolio({ firstPage }: { firstPage: PortfolioPage }) {
                 <PortfolioCard project={project} />
               </li>
             ))}
+            {unresolved ? <PortfolioCardSkeletons count={3} /> : loading && <PortfolioCardSkeletons count={3} />}
           </ul>
           <div ref={sentinelRef} aria-hidden='true' />
-          {loading && <p className='list-status'>불러오는 중...</p>}
           {error && (
             <p className='list-status' role='alert'>
               {error}{' '}

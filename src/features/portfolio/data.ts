@@ -31,7 +31,7 @@ export type PortfolioPage = {
   last: boolean;
 };
 
-const EMPTY_PAGE: PageResponse<ProjectDto> = { content: [], page: 0, size: 0, totalElements: 0, totalPages: 0, last: true };
+const FAILED_PAGE: PortfolioPage = { items: [], page: -1, last: false };
 
 const toPortfolioProject = (dto: ProjectDto): PortfolioProject => ({
   id: String(dto.id),
@@ -56,7 +56,11 @@ const toPortfolioPage = (page: PageResponse<ProjectDto>): PortfolioPage => ({
 const pagePath = (page: number) => `/api/projects/page?page=${page}&size=${PORTFOLIO_PAGE_SIZE}`;
 
 export async function getPortfolioFirstPage(): Promise<PortfolioPage> {
-  return toPortfolioPage(await fetchApiOr<PageResponse<ProjectDto>>(pagePath(0), EMPTY_PAGE));
+  try {
+    return toPortfolioPage(await fetchApi<PageResponse<ProjectDto>>(pagePath(0)));
+  } catch {
+    return FAILED_PAGE;
+  }
 }
 
 export async function fetchPortfolioPage(page: number): Promise<PortfolioPage> {

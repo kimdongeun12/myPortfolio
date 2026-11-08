@@ -8,6 +8,8 @@ import type { BlogPage, BlogPost, BlogPostDetail, BlogStats } from './types';
 export const ALL_TAG = '전체';
 
 const LIST_SIZE = 200;
+const FAILED_PAGE: BlogPage = { items: [], page: -1, last: false, total: 0 };
+
 const EMPTY_PAGE: PageResponse<BlogSummaryDto> = { content: [], page: 0, size: 0, totalElements: 0, totalPages: 0, last: true };
 const ICON_ORDER = Object.keys(SKILL_ICONS);
 
@@ -41,7 +43,11 @@ const blogPagePath = (page: number, tag?: string, query?: string) => {
 };
 
 export async function getBlogFirstPage(): Promise<BlogPage> {
-  return toBlogPage(await fetchApiOr<PageResponse<BlogSummaryDto>>(blogPagePath(0), EMPTY_PAGE));
+  try {
+    return toBlogPage(await fetchApi<PageResponse<BlogSummaryDto>>(blogPagePath(0)));
+  } catch {
+    return FAILED_PAGE;
+  }
 }
 
 export async function fetchBlogPage(page: number, tag?: string, query?: string): Promise<BlogPage> {
