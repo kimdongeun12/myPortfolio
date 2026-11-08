@@ -56,6 +56,7 @@ export type BlogSummaryDto = {
   thumbnailUrl: string | null;
   likeCount: number;
   techStacks: string[];
+  publishedAt?: string;
   createdAt: string;
   commentCount: number;
 };
@@ -68,6 +69,7 @@ export type BlogDetailDto = {
   likeCount: number;
   liked: boolean;
   techStacks: string[];
+  publishedAt?: string;
   createdAt: string;
   updatedAt: string;
 };

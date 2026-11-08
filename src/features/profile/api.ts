@@ -49,7 +49,7 @@ const toProject = (dto: ProjectDto): Project => ({
 
 const toBlogPost = (dto: BlogSummaryDto): Post => ({
   title: dto.title,
-  date: formatShortDate(dto.createdAt),
+  date: formatShortDate(dto.publishedAt ?? dto.createdAt),
   href: `/blog/${dto.id}`,
 });
 
