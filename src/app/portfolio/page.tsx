@@ -1,5 +1,5 @@
 import Portfolio from '@/features/portfolio/components/Portfolio';
-import { getPortfolioProjects } from '@/features/portfolio/data';
+import { getPortfolioFirstPage } from '@/features/portfolio/data';
 
 export const revalidate = 60;
 
@@ -13,6 +13,6 @@ export const generateMetadata = () => {
 };
 
 export default async function PortfolioPage() {
-  const projects = await getPortfolioProjects();
-  return <Portfolio projects={projects} />;
+  const firstPage = await getPortfolioFirstPage();
+  return <Portfolio firstPage={firstPage} />;
 }

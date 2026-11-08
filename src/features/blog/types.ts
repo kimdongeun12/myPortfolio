@@ -18,3 +18,10 @@ export type BlogStats = {
   likes: number;
   comments: number;
 };
+
+export type BlogPage = {
+  items: BlogPost[];
+  page: number;
+  last: boolean;
+  total: number;
+};

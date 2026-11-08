@@ -3,13 +3,18 @@ import { Suspense } from 'react';
 import '@/styles/blog.scss';
 
 import BlogList from '@/features/blog/components/BlogList';
-import { getBlogStats, getBlogTags } from '@/features/blog/data';
-import type { BlogPost } from '@/features/blog/types';
+import type { BlogPage, BlogStats } from '@/features/blog/types';
 
-export default function Blog({ posts }: { posts: BlogPost[] }) {
+type BlogProps = {
+  firstPage: BlogPage;
+  tags: string[];
+  stats: BlogStats;
+};
+
+export default function Blog({ firstPage, tags, stats }: BlogProps) {
   return (
     <Suspense>
-      <BlogList posts={posts} tags={getBlogTags(posts)} stats={getBlogStats(posts)} />
+      <BlogList firstPage={firstPage} tags={tags} stats={stats} />
     </Suspense>
   );
 }

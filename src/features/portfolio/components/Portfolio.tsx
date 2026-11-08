@@ -1,11 +1,41 @@
+'use client';
+
 import '@/styles/portfolio.scss';
+
+import { useState } from 'react';
 
 import { AmbientCollectionBackground } from '@/components/backgrounds';
 
-import PortfolioCard from '@/features/portfolio/components/PortfolioCard';
-import type { PortfolioProject } from '@/features/portfolio/data';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { getErrorMessage } from '@/lib/api';
 
-export default function Portfolio({ projects }: { projects: PortfolioProject[] }) {
+import PortfolioCard from '@/features/portfolio/components/PortfolioCard';
+import { fetchPortfolioPage, type PortfolioPage, type PortfolioProject } from '@/features/portfolio/data';
+
+export default function Portfolio({ firstPage }: { firstPage: PortfolioPage }) {
+  const [projects, setProjects] = useState<PortfolioProject[]>(firstPage.items);
+  const [page, setPage] = useState(firstPage.page);
+  const [last, setLast] = useState(firstPage.last);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const loadMore = async () => {
+    if (loading || last) return;
+    setLoading(true);
+    try {
+      const next = await fetchPortfolioPage(page + 1);
+      setProjects((prev) => [...prev, ...next.items.filter((item) => !prev.some((p) => p.id === item.id))]);
+      setPage(next.page);
+      setLast(next.last);
+      setError('');
+    } catch (err) {
+      setError(getErrorMessage(err, '프로젝트를 더 불러오지 못했습니다.'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const sentinelRef = useInfiniteScroll({ hasMore: !last && !error, loading, onLoadMore: loadMore });
   const pinned = projects.filter((project) => project.pinned);
   const others = projects.filter((project) => !project.pinned);
 
@@ -45,6 +75,16 @@ export default function Portfolio({ projects }: { projects: PortfolioProject[] }
               </li>
             ))}
           </ul>
+          <div ref={sentinelRef} aria-hidden='true' />
+          {loading && <p className='list-status'>불러오는 중...</p>}
+          {error && (
+            <p className='list-status' role='alert'>
+              {error}{' '}
+              <button type='button' className='list-retry' onClick={() => setError('')}>
+                다시 시도
+              </button>
+            </p>
+          )}
         </section>
       </div>
     </div>

@@ -10,6 +10,7 @@ export default function GuestBoard() {
       className='guest-board'
       title='방명록'
       target={GUEST_TARGET}
+      pageSize={10}
       contentLabel='메세지'
       contentMinLength={2}
       placeholder='2자 이상 작성해주세요'

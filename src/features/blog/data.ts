@@ -1,9 +1,9 @@
-import { ApiError, fetchApi, fetchApiOr } from '@/lib/api';
-import type { BlogDetailDto, BlogSummaryDto, PageResponse } from '@/lib/api-types';
+import { ApiError, fetchApi, fetchApiOr, requestApi } from '@/lib/api';
+import type { BlogDetailDto, BlogOverviewDto, BlogSummaryDto, PageResponse } from '@/lib/api-types';
 import { formatDotDate } from '@/lib/format';
 import { SKILL_ICONS } from '@/data/skills';
 
-import type { BlogPost, BlogPostDetail, BlogStats } from './types';
+import type { BlogPage, BlogPost, BlogPostDetail, BlogStats } from './types';
 
 export const ALL_TAG = '전체';
 
@@ -21,6 +21,48 @@ const toBlogPost = (dto: BlogSummaryDto): BlogPost => ({
   comments: dto.commentCount,
   tags: dto.techStacks,
 });
+
+export const BLOG_PAGE_SIZE = 10;
+
+const EMPTY_OVERVIEW: BlogOverviewDto = { posts: 0, likes: 0, comments: 0, tags: [] };
+
+const toBlogPage = (page: PageResponse<BlogSummaryDto>): BlogPage => ({
+  items: page.content.map(toBlogPost),
+  page: page.page,
+  last: page.last,
+  total: page.totalElements,
+});
+
+const blogPagePath = (page: number, tag?: string, query?: string) => {
+  const params = new URLSearchParams({ page: String(page), size: String(BLOG_PAGE_SIZE) });
+  if (tag && tag !== ALL_TAG) params.set('tech', tag);
+  if (query && query.trim()) params.set('q', query.trim());
+  return `/api/blogs?${params.toString()}`;
+};
+
+export async function getBlogFirstPage(): Promise<BlogPage> {
+  return toBlogPage(await fetchApiOr<PageResponse<BlogSummaryDto>>(blogPagePath(0), EMPTY_PAGE));
+}
+
+export async function fetchBlogPage(page: number, tag?: string, query?: string): Promise<BlogPage> {
+  return toBlogPage(await requestApi<PageResponse<BlogSummaryDto>>(blogPagePath(page, tag, query)));
+}
+
+const sortTags = (tags: string[]) => {
+  const rank = (tag: string) => {
+    const index = ICON_ORDER.indexOf(tag);
+    return index === -1 ? ICON_ORDER.length : index;
+  };
+  return [...tags].sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
+};
+
+export async function getBlogOverview(): Promise<{ stats: BlogStats; tags: string[] }> {
+  const overview = await fetchApiOr<BlogOverviewDto>('/api/blogs/overview', EMPTY_OVERVIEW);
+  return {
+    stats: { posts: overview.posts, likes: overview.likes, comments: overview.comments },
+    tags: [ALL_TAG, ...sortTags(overview.tags)],
+  };
+}
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
   const page = await fetchApiOr<PageResponse<BlogSummaryDto>>(`/api/blogs?page=0&size=${LIST_SIZE}`, EMPTY_PAGE);
@@ -47,22 +89,6 @@ export async function getBlogPost(id: string, summary?: BlogPost): Promise<BlogP
     throw error;
   }
 }
-
-export const getBlogTags = (posts: BlogPost[]) => {
-  const tags = Array.from(new Set(posts.flatMap((post) => post.tags)));
-  const rank = (tag: string) => {
-    const index = ICON_ORDER.indexOf(tag);
-    return index === -1 ? ICON_ORDER.length : index;
-  };
-  tags.sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
-  return [ALL_TAG, ...tags];
-};
-
-export const getBlogStats = (posts: BlogPost[]): BlogStats => ({
-  posts: posts.length,
-  likes: posts.reduce((sum, post) => sum + post.likes, 0),
-  comments: posts.reduce((sum, post) => sum + post.comments, 0),
-});
 
 export const getAdjacentPosts = (posts: BlogPost[], id: string) => {
   const index = posts.findIndex((post) => post.id === id);

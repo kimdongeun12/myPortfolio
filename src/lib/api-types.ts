@@ -87,3 +87,15 @@ export type CommentDto = {
   updatedAt: string;
   replies: CommentDto[];
 };
+
+export type BlogOverviewDto = {
+  posts: number;
+  likes: number;
+  comments: number;
+  tags: string[];
+};
+
+export type CommentPageResponse = PageResponse<CommentDto> & {
+  totalCount: number;
+  todayCount: number;
+};

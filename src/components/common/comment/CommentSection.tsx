@@ -2,12 +2,13 @@
 
 import '@/styles/comment.scss';
 
-import { useCallback, useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import clsx from 'clsx';
 
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { getErrorMessage } from '@/lib/api';
 
-import { createComment, deleteComment, fetchComments, updateComment } from './api';
+import { createComment, deleteComment, fetchCommentPage, fetchComments, updateComment } from './api';
 import CommentForm, { type CommentFormOptions } from './CommentForm';
 import CommentItem, { type CommentActions } from './CommentItem';
 import type { CommentData, CommentInput, CommentTarget } from './types';
@@ -23,7 +24,10 @@ type CommentSectionProps = CommentFormOptions & {
   renderHeader?: (stats: CommentStats) => ReactNode;
   headerPosition?: 'above-form' | 'below-form';
   className?: string;
+  pageSize?: number;
 };
+
+const MAX_RELOAD_SIZE = 50;
 
 const flatten = (comments: CommentData[]): CommentData[] =>
   comments.flatMap((c) => [c, ...flatten(c.replies ?? [])]);
@@ -36,44 +40,81 @@ export default function CommentSection({
   renderHeader,
   headerPosition = 'above-form',
   className,
+  pageSize,
   ...formOptions
 }: CommentSectionProps) {
   const [comments, setComments] = useState<CommentData[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const [page, setPage] = useState(0);
+  const [last, setLast] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [moreError, setMoreError] = useState('');
+  const [serverStats, setServerStats] = useState<CommentStats | null>(null);
+  const loadedPages = useRef(1);
 
   const { type, id } = target;
+  const paged = pageSize !== undefined;
+
+  const fetchFromStart = useCallback(
+    async (pages: number) => {
+      if (!pageSize) {
+        setComments(await fetchComments({ type, id }));
+        return;
+      }
+      const size = Math.min(pageSize * pages, MAX_RELOAD_SIZE);
+      const result = await fetchCommentPage({ type, id }, 0, size);
+      const reloadedPages = Math.max(1, Math.floor(size / pageSize));
+      loadedPages.current = reloadedPages;
+      setComments(result.items);
+      setPage(reloadedPages - 1);
+      setLast(result.last);
+      setServerStats({ total: result.totalCount, today: result.todayCount });
+    },
+    [type, id, pageSize],
+  );
 
   const load = useCallback(async () => {
     try {
-      setComments(await fetchComments({ type, id }));
+      await fetchFromStart(loadedPages.current);
       setLoadError('');
     } catch (error) {
       setLoadError(getErrorMessage(error, '댓글을 불러오지 못했습니다.'));
     } finally {
       setLoading(false);
     }
-  }, [type, id]);
+  }, [fetchFromStart]);
 
   useEffect(() => {
-    let cancelled = false;
-    fetchComments({ type, id })
-      .then((list) => {
-        if (cancelled) return;
-        setComments(list);
-        setLoadError('');
-      })
-      .catch((error: unknown) => {
-        if (!cancelled) setLoadError(getErrorMessage(error, '댓글을 불러오지 못했습니다.'));
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [type, id]);
+    loadedPages.current = 1;
+    setLoading(true);
+    load();
+  }, [load]);
+
+  const loadMore = async () => {
+    if (!pageSize || loadingMore || last) return;
+    setLoadingMore(true);
+    try {
+      const result = await fetchCommentPage({ type, id }, page + 1, pageSize);
+      setComments((prev) => [...prev, ...result.items.filter((item) => !prev.some((c) => c.id === item.id))]);
+      setPage(result.page);
+      setLast(result.last);
+      setServerStats({ total: result.totalCount, today: result.todayCount });
+      loadedPages.current = result.page + 1;
+      setMoreError('');
+    } catch (error) {
+      setMoreError(getErrorMessage(error, '댓글을 더 불러오지 못했습니다.'));
+    } finally {
+      setLoadingMore(false);
+    }
+  };
+
+  const sentinelRef = useInfiniteScroll({
+    hasMore: paged && !loading && !last && !moreError,
+    loading: loadingMore,
+    onLoadMore: loadMore,
+  });
 
   const handleCreate = async (input: CommentInput) => {
     await createComment({ type, id }, input);
@@ -97,7 +138,8 @@ export default function CommentSection({
   };
 
   const all = flatten(comments).filter((c) => !c.deleted);
-  const stats: CommentStats = { total: all.length, today: all.filter((c) => isToday(c.createdAt)).length };
+  const stats: CommentStats =
+    paged && serverStats ? serverStats : { total: all.length, today: all.filter((c) => isToday(c.createdAt)).length };
 
   const header = (
     <h3 className='comment-title'>
@@ -139,6 +181,21 @@ export default function CommentSection({
         </ul>
       ) : (
         <p className='comment-empty'>첫 댓글을 남겨주세요.</p>
+      )}
+
+      {paged && (
+        <>
+          <div ref={sentinelRef} aria-hidden='true' />
+          {loadingMore && <p className='list-status'>불러오는 중...</p>}
+          {moreError && (
+            <p className='list-status' role='alert'>
+              {moreError}{' '}
+              <button type='button' className='list-retry' onClick={() => setMoreError('')}>
+                다시 시도
+              </button>
+            </p>
+          )}
+        </>
       )}
     </section>
   );

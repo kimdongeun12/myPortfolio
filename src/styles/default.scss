@@ -460,3 +460,20 @@ html:has(.visual-wrap.loading) body {
         }
     }
 }
+
+.list-status {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: $color-7;
+}
+
+.list-retry {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: $color-9;
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { FiSearch } from 'react-icons/fi';
 
@@ -9,36 +9,93 @@ import TagChip from '@/components/common/TagChip';
 
 import BlogSidebar from '@/features/blog/components/BlogSidebar';
 import PostCard from '@/features/blog/components/PostCard';
-import { ALL_TAG } from '@/features/blog/data';
-import type { BlogPost, BlogStats } from '@/features/blog/types';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { getErrorMessage } from '@/lib/api';
+
+import { ALL_TAG, fetchBlogPage } from '@/features/blog/data';
+import type { BlogPage, BlogPost, BlogStats } from '@/features/blog/types';
+
+const SEARCH_DELAY = 300;
 
 type BlogListProps = {
-  posts: BlogPost[];
+  firstPage: BlogPage;
   tags: string[];
   stats: BlogStats;
 };
 
-export default function BlogList({ posts: allPosts, tags, stats }: BlogListProps) {
+export default function BlogList({ firstPage, tags, stats }: BlogListProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const activeTag = searchParams.get('tag') ?? ALL_TAG;
   const [query, setQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [posts, setPosts] = useState<BlogPost[]>(firstPage.items);
+  const [page, setPage] = useState(firstPage.page);
+  const [last, setLast] = useState(firstPage.last);
+  const [total, setTotal] = useState(firstPage.total);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const requestId = useRef(0);
+  const isFirstFilter = useRef(true);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setSearchQuery(query.trim()), SEARCH_DELAY);
+    return () => window.clearTimeout(timer);
+  }, [query]);
+
+  useEffect(() => {
+    if (isFirstFilter.current) {
+      isFirstFilter.current = false;
+      if (activeTag === ALL_TAG && !searchQuery) return;
+    }
+    const id = ++requestId.current;
+    setLoading(true);
+    setError('');
+    fetchBlogPage(0, activeTag, searchQuery)
+      .then((result) => {
+        if (id !== requestId.current) return;
+        setPosts(result.items);
+        setPage(result.page);
+        setLast(result.last);
+        setTotal(result.total);
+      })
+      .catch((err: unknown) => {
+        if (id !== requestId.current) return;
+        setPosts([]);
+        setPage(-1);
+        setLast(false);
+        setError(getErrorMessage(err, '글 목록을 불러오지 못했습니다.'));
+      })
+      .finally(() => {
+        if (id === requestId.current) setLoading(false);
+      });
+  }, [activeTag, searchQuery]);
+
+  const loadMore = async () => {
+    if (loading || last) return;
+    const id = ++requestId.current;
+    setLoading(true);
+    try {
+      const result = await fetchBlogPage(page + 1, activeTag, searchQuery);
+      if (id !== requestId.current) return;
+      setPosts((prev) => [...prev, ...result.items.filter((item) => !prev.some((p) => p.id === item.id))]);
+      setPage(result.page);
+      setLast(result.last);
+      setTotal(result.total);
+    } catch (err) {
+      if (id === requestId.current) setError(getErrorMessage(err, '글을 더 불러오지 못했습니다.'));
+    } finally {
+      if (id === requestId.current) setLoading(false);
+    }
+  };
+
+  const sentinelRef = useInfiniteScroll({ hasMore: !last && !error, loading, onLoadMore: loadMore });
 
   const selectTag = (tag: string) => {
     const url = tag === ALL_TAG ? pathname : `${pathname}?tag=${encodeURIComponent(tag)}`;
     router.replace(url, { scroll: false });
   };
-
-  const posts = useMemo(() => {
-    const keyword = query.trim().toLowerCase();
-    return allPosts.filter((post) => {
-      const matchTag = activeTag === ALL_TAG || post.tags.includes(activeTag);
-      const matchQuery =
-        !keyword || post.title.toLowerCase().includes(keyword) || post.summary.toLowerCase().includes(keyword);
-      return matchTag && matchQuery;
-    });
-  }, [allPosts, activeTag, query]);
 
   return (
     <div className='contents-wrap blog-page'>
@@ -76,7 +133,7 @@ export default function BlogList({ posts: allPosts, tags, stats }: BlogListProps
 
         <div className='blog-main'>
           <h2 className='list-count' aria-live='polite'>
-            {activeTag} : {posts.length}
+            {activeTag} : {total}
           </h2>
           {posts.length > 0 ? (
             <ul className='post-grid'>
@@ -87,7 +144,17 @@ export default function BlogList({ posts: allPosts, tags, stats }: BlogListProps
               ))}
             </ul>
           ) : (
-            <p className='list-empty'>조건에 맞는 글이 없습니다.</p>
+            !loading && !error && <p className='list-empty'>조건에 맞는 글이 없습니다.</p>
+          )}
+          <div ref={sentinelRef} aria-hidden='true' />
+          {loading && <p className='list-status'>불러오는 중...</p>}
+          {error && (
+            <p className='list-status' role='alert'>
+              {error}{' '}
+              <button type='button' className='list-retry' onClick={() => setError('')}>
+                다시 시도
+              </button>
+            </p>
           )}
         </div>
       </div>

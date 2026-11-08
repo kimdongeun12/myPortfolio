@@ -1,5 +1,5 @@
 import { requestApi } from '@/lib/api';
-import type { CommentDto } from '@/lib/api-types';
+import type { CommentDto, CommentPageResponse } from '@/lib/api-types';
 import { toIsoString } from '@/lib/format';
 
 import type { CommentData, CommentInput, CommentTarget } from './types';
@@ -20,6 +20,27 @@ const toComment = (dto: CommentDto): CommentData => ({
 export async function fetchComments(target: CommentTarget): Promise<CommentData[]> {
   const list = await requestApi<CommentDto[]>(`/api/comments?targetType=${target.type}&targetId=${target.id}`);
   return list.map(toComment).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+export type CommentPage = {
+  items: CommentData[];
+  page: number;
+  last: boolean;
+  totalCount: number;
+  todayCount: number;
+};
+
+export async function fetchCommentPage(target: CommentTarget, page: number, size: number): Promise<CommentPage> {
+  const result = await requestApi<CommentPageResponse>(
+    `/api/comments/page?targetType=${target.type}&targetId=${target.id}&page=${page}&size=${size}`,
+  );
+  return {
+    items: result.content.map(toComment),
+    page: result.page,
+    last: result.last,
+    totalCount: result.totalCount,
+    todayCount: result.todayCount,
+  };
 }
 
 export async function createComment(target: CommentTarget, input: CommentInput, parentId?: string): Promise<void> {
