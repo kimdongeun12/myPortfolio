@@ -10,7 +10,7 @@ export const revalidate = 60;
 
 type PageProps = { params: Promise<{ id: string }> };
 
-export const generateStaticParams = async () => (await getBlogPosts()).map((post) => ({ id: post.id }));
+export const generateStaticParams = async (): Promise<{ id: string }[]> => [];
 
 export const generateMetadata = async ({ params }: PageProps) => {
   const { id } = await params;
