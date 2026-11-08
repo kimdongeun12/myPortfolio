@@ -34,3 +34,19 @@ export type VisitStats = {
   todayVisitors: number;
   daily: { date: string; pageViews: number; visitors: number }[];
 };
+
+export type VisitPageStat = {
+  path: string;
+  label: string;
+  pageViews: number;
+  visitors: number;
+  avgDurationMs: number | null;
+  measured: number;
+};
+
+export type VisitPageStats = {
+  from: string;
+  to: string;
+  avgDurationMs: number | null;
+  pages: VisitPageStat[];
+};
