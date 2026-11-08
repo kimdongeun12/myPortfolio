@@ -471,10 +471,6 @@ html:has(.visual-wrap.loading) body {
 .is-skeleton {
     pointer-events: none;
 
-    .ant-skeleton {
-        display: block;
-    }
-
     .img-box {
         position: relative;
     }
