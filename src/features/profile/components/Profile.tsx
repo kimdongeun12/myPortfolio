@@ -22,7 +22,7 @@ export default function Profile({ experiences, skillGroups, projects, postBoards
         </div>
         <div className='profile-intro flex-con gap-2 pb-15'>
           <div className='desc-box'>
-            <p>에이전시에서 쌓은 UI/UX 경험과 다양한 서비스 개발 경험을 바탕으로, 디자인과 기술 사이의 균형을 고민하며 더 나은 서비스를 만들어 가고 있습니다.</p>
+            <p>사용자는 화면으로 서비스를 만납니다. 금융 플랫폼에서 5년간 그 화면을 만들며, 쓰기 쉬운 흐름과 고치기 쉬운 코드를 함께 챙겨 왔습니다.</p>
           </div>
           <div className='profile-main'>
             <div className='about-wrap mb-10'>
