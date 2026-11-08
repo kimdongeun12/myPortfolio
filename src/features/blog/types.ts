@@ -11,6 +11,7 @@ export type BlogPost = {
 
 export type BlogPostDetail = BlogPost & {
   content: string;
+  views: number;
 };
 
 export type BlogStats = {

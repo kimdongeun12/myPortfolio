@@ -38,7 +38,7 @@ export default function BlogDetail({ post, toc, prev, next }: BlogDetailProps) {
             <h2 className='detail-title'>{post.title}</h2>
             <p className='detail-meta'>
               <span className='post-date'>{post.date}</span>
-              <PostStats likes={post.likes} comments={post.comments} />
+              <PostStats likes={post.likes} comments={post.comments} views={post.views} />
             </p>
           </header>
 

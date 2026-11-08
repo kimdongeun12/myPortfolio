@@ -89,6 +89,7 @@ export async function getBlogPost(id: string, summary?: BlogPost): Promise<BlogP
       comments: summary?.comments ?? 0,
       tags: dto.techStacks,
       content: dto.content,
+      views: dto.viewCount ?? 0,
     };
   } catch (error) {
     if (error instanceof ApiError && error.status === 404) return null;
