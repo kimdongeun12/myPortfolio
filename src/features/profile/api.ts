@@ -1,7 +1,7 @@
 import { fetchApiOr } from '@/lib/api';
 import type { BlogSummaryDto, CommentDto, ExperienceDto, PageResponse, ProjectDto, SkillGroupDto } from '@/lib/api-types';
 import { toAssetUrl } from '@/lib/api-url';
-import { formatCompactDate, formatPeriod, formatShortDate } from '@/lib/format';
+import { formatMonth, formatPeriod, formatShortDate } from '@/lib/format';
 import { formatSkill } from '@/data/skills';
 
 import type { Experience, Post, ProfileData, Project, SkillGroup } from './data';
@@ -17,8 +17,8 @@ const toLines = (text: string | null) =>
 
 const toExperience = (dto: ExperienceDto): Experience => ({
   id: dto.id,
-  startDate: formatCompactDate(dto.startDate),
-  endDate: dto.current || !dto.endDate ? '재직중' : formatCompactDate(dto.endDate),
+  startDate: formatMonth(dto.startDate),
+  endDate: dto.current || !dto.endDate ? '재직중' : formatMonth(dto.endDate),
   name: dto.formerName ? `${dto.companyName} | (전) ${dto.formerName}` : dto.companyName,
   job: [dto.department, dto.position].filter(Boolean).join(' · '),
   info: dto.role ?? '',

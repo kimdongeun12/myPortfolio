@@ -45,8 +45,6 @@ export const formatShortDate = (value: string) => {
   return `${y.slice(2)}.${m}.${d}`;
 };
 
-export const formatCompactDate = (value: string) => value.slice(0, 10).replace(/-/g, '');
-
 export const formatMonth = (value: string) => {
   const { y, m } = parts(value);
   return `${y}.${m}`;
