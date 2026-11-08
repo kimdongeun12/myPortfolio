@@ -1,7 +1,8 @@
 'use client';
 
 import { ArrowLeftOutlined, CloudUploadOutlined, SaveOutlined } from '@ant-design/icons';
-import { App, Button, Card, Col, Form, Input, Result, Row, Spin, Tag } from 'antd';
+import { App, Button, Card, Col, DatePicker, Form, Input, Result, Row, Spin, Tag } from 'antd';
+import dayjs, { type Dayjs } from 'dayjs';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -17,6 +18,7 @@ type FormValues = {
   title: string;
   techStacks: string[];
   thumbnailUrl?: string | null;
+  publishedAt?: Dayjs | null;
   content: string;
 };
 
@@ -44,6 +46,7 @@ export default function BlogForm({ blogId }: BlogFormProps) {
           title: blog.title,
           techStacks: blog.techStacks,
           thumbnailUrl: blog.thumbnailUrl,
+          publishedAt: dayjs(blog.publishedAt ?? blog.createdAt),
           content: blog.content,
         });
         setPublished(blog.published);
@@ -65,6 +68,7 @@ export default function BlogForm({ blogId }: BlogFormProps) {
       thumbnailUrl: values.thumbnailUrl?.trim() || null,
       published: publish,
       techStacks: values.techStacks ?? [],
+      publishedAt: values.publishedAt ? values.publishedAt.format('YYYY-MM-DDTHH:mm:ss') : undefined,
     };
 
     setSaving(publish ? 'publish' : 'draft');
@@ -132,12 +136,17 @@ export default function BlogForm({ blogId }: BlogFormProps) {
                   <Input size='large' placeholder='vue2 + vite + vuetify2 노트' />
                 </Form.Item>
               </Col>
-              <Col xs={24} md={12}>
+              <Col xs={24} md={8}>
                 <Form.Item name='techStacks' label='기술 스택 (태그)'>
                   <TechStackSelect />
                 </Form.Item>
               </Col>
-              <Col xs={24} md={12}>
+              <Col xs={24} md={8}>
+                <Form.Item name='publishedAt' label='게시일' extra='비워 두면 저장하는 시각으로 기록됩니다.'>
+                  <DatePicker showTime format='YYYY.MM.DD HH:mm' style={{ width: '100%' }} />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={8}>
                 <Form.Item name='thumbnailUrl' label='썸네일'>
                   <ThumbnailField target={uploadTarget} />
                 </Form.Item>

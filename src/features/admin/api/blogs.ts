@@ -9,6 +9,7 @@ export type BlogSummary = {
   likeCount: number;
   published: boolean;
   techStacks: string[];
+  publishedAt?: string;
   createdAt: string;
 };
 
@@ -21,6 +22,7 @@ export type BlogDetail = {
   liked: boolean;
   published: boolean;
   techStacks: string[];
+  publishedAt?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -31,11 +33,12 @@ export type BlogRequest = {
   thumbnailUrl: string | null;
   published: boolean;
   techStacks: string[];
+  publishedAt?: string;
 };
 
 export const fetchAdminBlogs = async (page: number, size = 20): Promise<PageResponse<BlogSummary>> => {
   const { data } = await adminApi.get<PageResponse<BlogSummary>>('/api/admin/blogs', {
-    params: { page, size, sort: 'createdAt,desc' },
+    params: { page, size, sort: 'publishedAt,desc' },
   });
   return data;
 };

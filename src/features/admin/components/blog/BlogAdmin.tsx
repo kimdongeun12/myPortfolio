@@ -92,7 +92,7 @@ export default function BlogAdmin() {
     },
     {
       title: '작성일',
-      dataIndex: 'createdAt',
+      dataIndex: 'publishedAt',
       width: 120,
       responsive: ['md'],
       render: (value: string) => dayjs(value).format('YYYY.MM.DD'),
