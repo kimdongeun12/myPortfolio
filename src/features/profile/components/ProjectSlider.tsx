@@ -18,6 +18,14 @@ type ProjectSliderProps = {
   children?: ReactNode;
 };
 
+const syncHiddenSlides = (instance: SwiperInstance) => {
+  instance.slides.forEach((slide, idx) => {
+    const hidden = idx !== instance.activeIndex;
+    slide.inert = hidden;
+    slide.setAttribute('aria-hidden', String(hidden));
+  });
+};
+
 export default function ProjectSlider({ projects, children }: ProjectSliderProps) {
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
   const [slideIndex, setSlideIndex] = useState(0);
@@ -52,7 +60,10 @@ export default function ProjectSlider({ projects, children }: ProjectSliderProps
           cardsEffect={{ rotate: false, perSlideOffset: 10, slideShadows: false }}
           keyboard={{ enabled: true, onlyInViewport: true }}
           a11y={{ prevSlideMessage: '이전 프로젝트', nextSlideMessage: '다음 프로젝트' }}
-          onSwiper={setSwiper}
+          onSwiper={(instance) => {
+            setSwiper(instance);
+            syncHiddenSlides(instance);
+          }}
           onProgress={(instance) => {
             instance.slides.forEach((slide) => {
               const progress = (slide as HTMLElement & { progress: number }).progress;
@@ -60,7 +71,10 @@ export default function ProjectSlider({ projects, children }: ProjectSliderProps
               slide.style.opacity = String(Math.min(1, Math.max(0, opacity)));
             });
           }}
-          onSlideChange={(instance) => setSlideIndex(instance.realIndex % total)}
+          onSlideChange={(instance) => {
+            setSlideIndex(instance.realIndex % total);
+            syncHiddenSlides(instance);
+          }}
         >
           {slides.map((project, idx) => (
             <SwiperSlide key={`${project.id}-${idx}`}>

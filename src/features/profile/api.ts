@@ -18,7 +18,7 @@ const toLines = (text: string | null) =>
 const toExperience = (dto: ExperienceDto): Experience => ({
   id: dto.id,
   startDate: formatMonth(dto.startDate),
-  endDate: dto.current || !dto.endDate ? '재직중' : formatMonth(dto.endDate),
+  endDate: dto.current || !dto.endDate ? '현재' : formatMonth(dto.endDate),
   name: dto.formerName ? `${dto.companyName} | (전) ${dto.formerName}` : dto.companyName,
   job: [dto.department, dto.position].filter(Boolean).join(' · '),
   info: dto.role ?? '',

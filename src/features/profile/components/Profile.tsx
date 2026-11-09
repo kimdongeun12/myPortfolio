@@ -18,7 +18,7 @@ export default function Profile({ experiences, skillGroups, projects, postBoards
       <AmbientBackground />
       <div className='content pt-10'>
         <div className='mb-5'>
-          <h2 className='font-28'>안녕하세요!<br/><span className='color-9'>프론트엔드 개발자</span> 김동은 입니다.</h2>
+          <h2 className='font-28'>안녕하세요!<br/><span className='color-9'>프론트엔드 개발자</span> 김동은입니다.</h2>
         </div>
         <div className='profile-intro flex-con gap-2 pb-15'>
           <div className='desc-box'>
@@ -106,7 +106,7 @@ export default function Profile({ experiences, skillGroups, projects, postBoards
         </div>
         <div className='project-wrap pb-15'>
           <ProjectSlider projects={projects}>
-            <h3 className='font-28 mb-3'>Project</h3>
+            <h3 className='font-28 mb-3'>PROJECT</h3>
             <p className='keep-all color-2'>
               에이전시에서 쌓은 UI/UX 경험과 다양한 서비스 개발 경험을 바탕으로,
               디자인과 기술 사이의 균형을 고민하며 더 나은 서비스를 만들어 가고 있습니다.
