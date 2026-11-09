@@ -245,6 +245,8 @@
         flex: 1;
         align-items: stretch;
         border: 1px solid rgba($color-1, 0.12);
+        padding-left: 1rem;
+        padding-right: 1rem;
         border-radius: 1.125rem;
         background-color: #24252c;
         > * {
@@ -327,8 +329,7 @@
 // ※ 전역 '.flex-con .col-N { width }'보다 우선하도록 선택자 앞에 .flex-con을 붙임
 // ------------------------------------------------------------
 
-// 1024px 이하: 소개 문구를 위로, 본문을 아래로 / About 2열
-@include bp(lg) {
+@media screen and (max-width: 1180px) {
     .project-deck {
         grid-template-columns: minmax(0, 1fr);
         gap: 2.5rem;
@@ -336,6 +337,10 @@
             margin-top: 1.5rem;
         }
     }
+}
+
+// 1024px 이하: 소개 문구를 위로, 본문을 아래로 / About 2열
+@include bp(lg) {
     .flex-con.profile-intro {
         flex-direction: column;
         > * {
