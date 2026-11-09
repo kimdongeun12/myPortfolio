@@ -35,6 +35,9 @@ type FormValues = {
   endDate?: Dayjs | null;
   ongoing: boolean;
   thumbnailUrl?: string | null;
+  coverLabel?: string;
+  coverTitle?: string;
+  coverSub?: string;
   pinned: boolean;
   sortOrder: number;
   techStacks: string[];
@@ -64,6 +67,9 @@ const toFormValues = (project: Project): FormValues => ({
   endDate: project.endDate ? dayjs(project.endDate) : null,
   ongoing: Boolean(project.startDate) && !project.endDate,
   thumbnailUrl: project.thumbnailUrl,
+  coverLabel: project.coverLabel ?? undefined,
+  coverTitle: project.coverTitle ?? undefined,
+  coverSub: project.coverSub ?? undefined,
   pinned: project.pinned,
   sortOrder: project.sortOrder,
   techStacks: project.techStacks,
@@ -81,6 +87,9 @@ const toRequest = (values: FormValues): ProjectRequest => ({
   startDate: values.startDate ? values.startDate.format(DATE_FORMAT) : null,
   endDate: values.ongoing || !values.endDate ? null : values.endDate.format(DATE_FORMAT),
   thumbnailUrl: emptyToNull(values.thumbnailUrl),
+  coverLabel: emptyToNull(values.coverLabel),
+  coverTitle: emptyToNull(values.coverTitle),
+  coverSub: emptyToNull(values.coverSub),
   pinned: values.pinned,
   sortOrder: values.sortOrder ?? 0,
   techStacks: values.techStacks ?? [],
@@ -267,6 +276,26 @@ export default function ProjectForm({ projectId }: ProjectFormProps) {
                   >
                     진행중
                   </Checkbox>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Card>
+
+          <Card title='커버 문구' className='admin-block'>
+            <Row gutter={16}>
+              <Col xs={24} md={6}>
+                <Form.Item name='coverLabel' label='분야 라벨' tooltip='커버 왼쪽 위 작은 라벨입니다. 예: Mobile Wallet'>
+                  <Input maxLength={40} placeholder='Mobile Wallet' />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={8}>
+                <Form.Item name='coverTitle' label='커버 제목' tooltip='비우면 프로젝트 제목이 표시됩니다.'>
+                  <Input maxLength={60} placeholder='국민지갑' />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={10}>
+                <Form.Item name='coverSub' label='보조 문구'>
+                  <Input maxLength={100} placeholder='공통 컴포넌트 · SSO 연계 · 결제' />
                 </Form.Item>
               </Col>
             </Row>

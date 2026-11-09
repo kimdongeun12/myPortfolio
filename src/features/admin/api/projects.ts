@@ -19,6 +19,9 @@ export type Project = {
   content: string | null;
   type: ProjectType;
   thumbnailUrl: string | null;
+  coverLabel: string | null;
+  coverTitle: string | null;
+  coverSub: string | null;
   pinned: boolean;
   sortOrder: number;
   startDate: string | null;
@@ -37,6 +40,9 @@ export type ProjectRequest = {
   content: string | null;
   type: ProjectType;
   thumbnailUrl: string | null;
+  coverLabel: string | null;
+  coverTitle: string | null;
+  coverSub: string | null;
   pinned: boolean;
   sortOrder: number;
   startDate: string | null;
