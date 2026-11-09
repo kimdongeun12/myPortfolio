@@ -105,14 +105,13 @@ export default function Profile({ experiences, skillGroups, projects, postBoards
           </div>
         </div>
         <div className='project-wrap pb-15'>
-          <div className='mb-5'>
+          <ProjectSlider projects={projects}>
             <h3 className='font-28 mb-3'>Project</h3>
-            <p className='keep-all m-w-3 color-2'>
+            <p className='keep-all color-2'>
               에이전시에서 쌓은 UI/UX 경험과 다양한 서비스 개발 경험을 바탕으로,
               디자인과 기술 사이의 균형을 고민하며 더 나은 서비스를 만들어 가고 있습니다.
             </p>
-          </div>
-          <ProjectSlider projects={projects} />
+          </ProjectSlider>
         </div>
         <div className='post-wrap'>
           <div className='mb-5'>

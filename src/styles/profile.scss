@@ -141,10 +141,6 @@
 .project-wrap {
     position: relative;
     .box { padding: 1.5rem 3rem 2.5rem 3rem; }
-    > .swipe-wrap {
-        width: 100vw;
-        margin-left: calc(50% - 50vw);
-    }
     .img-wrap {
         width: 100%;
     }
@@ -188,53 +184,75 @@
             }
         }
     }
-    .paging-wrap {
-        max-width: 54.25rem;
-        margin: 0 auto;
+}
+
+.project-deck {
+    display: grid;
+    grid-template-columns: 20rem minmax(0, 1fr);
+    gap: 4rem;
+    align-items: center;
+
+    .deck-intro {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+    }
+    .deck-controls {
+        display: flex;
         align-items: center;
-        // 버튼과 진행바 사이 간격
-        gap: 1.5rem;
-        // 진행바 위에 카운트를 겹침
-        .paging-progress {
-            position: relative;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            min-height: 2rem;
+        gap: 0.75rem;
+        margin-top: 2.5rem;
+        .btn-next.is-primary {
+            border-color: $color-9;
+            background-color: $color-9;
         }
-        // 01 / 02: 진행바 가운데에 겹쳐 표시
-        .paging-count {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            padding: 0 1rem;
-            background-color: $color-5;
-            white-space: nowrap;
+    }
+    .deck-count {
+        margin-left: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+        letter-spacing: 0.05em;
+        color: $color-3;
+        white-space: nowrap;
+        .current {
+            font-weight: bold;
+            color: $color-1;
+        }
+        .divider {
+            opacity: 0.5;
+        }
+    }
+    .deck-stage {
+        min-width: 0;
+        padding-right: 3.5rem;
+    }
+    .deck-swiper {
+        .swiper-wrapper {
+            align-items: stretch;
+        }
+        .swiper-slide {
+            height: auto;
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1rem;
-            letter-spacing: 0.05em;
-            color: $color-3;
-            .current {
-                font-weight: bold;
-                color: $color-9;
-            }
-            .divider {
-                opacity: 0.5;
+            border-radius: 1.125rem;
+            transition-property: transform, opacity;
+            &:not(.swiper-slide-active) .project-card > * {
+                opacity: 0.25;
             }
         }
-        .swiper-pagination {
-            width: 100%;
-            position: relative;
-            z-index: 0;
-            .swiper-pagination-progressbar-fill {
-                background-color: $color-9;
-            }
+    }
+    .flex-con.project-card {
+        flex: 1;
+        align-items: stretch;
+        border: 1px solid rgba($color-1, 0.12);
+        border-radius: 1.125rem;
+        background-color: #24252c;
+        > * {
+            transition: opacity 0.3s;
+        }
+        > .col-4 .img-wrap,
+        > .col-4 .img-box {
+            height: 100%;
         }
     }
 }
@@ -311,6 +329,13 @@
 
 // 1024px 이하: 소개 문구를 위로, 본문을 아래로 / About 2열
 @include bp(lg) {
+    .project-deck {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2.5rem;
+        .deck-controls {
+            margin-top: 1.5rem;
+        }
+    }
     .flex-con.profile-intro {
         flex-direction: column;
         > * {
@@ -359,17 +384,25 @@
         .box {
             padding: 1.25rem;
         }
-        .paging-wrap {
-            padding: 0 1.25rem;
-            gap: 1rem;
-        }
     }
-    .flex-con.project-card {
-        flex-direction: column;
-        gap: 1.25rem !important;
-        > div {
-            flex: none;
-            width: 100%;
+    .project-deck {
+        .deck-stage {
+            padding-right: 1.75rem;
+        }
+        .flex-con.project-card {
+            flex-direction: column;
+            gap: 1.25rem !important;
+            > div {
+                flex: none;
+                width: 100%;
+            }
+            > .col-4 .img-wrap,
+            > .col-4 .img-box {
+                height: auto;
+            }
+            .img-wrap.type-cover .img-box {
+                padding-top: 38% !important;
+            }
         }
     }
     .contact-wrap {

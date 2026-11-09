@@ -13,12 +13,12 @@ type ProjectCardProps = {
 export default function ProjectCard({ project, index }: ProjectCardProps) {
   return (
     <div className='project-card box gap-3 flex-con has-bg'>
-      <div className='col-5'>
+      <div className='col-4'>
         <ImgWrap type='cover' ratioObj={{ width: 1, height: 1 }}>
           <ProjectCover cover={project.cover} size='lg' />
         </ImgWrap>
       </div>
-      <div className='info-wrap col-7'>
+      <div className='info-wrap col-8'>
         <div className='info-top'>
           <span className='num'>{padNumber(index + 1)}</span>
           <div className='title-wrap'>
