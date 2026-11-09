@@ -1,4 +1,5 @@
 import ImgWrap from '@/components/common/box/ImgWrap';
+import ProjectCover from '@/components/common/box/ProjectCover';
 import DecoLink from '@/components/common/button/DecoLink';
 import { padNumber } from '@/lib/format';
 
@@ -13,13 +14,8 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
   return (
     <div className='project-card box gap-3 flex-con has-bg'>
       <div className='col-5'>
-        <ImgWrap ratioObj={{ width: 1, height: 1 }}>
-          {project.thumbnail ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={project.thumbnail} alt={`${project.title} 대표 이미지`} />
-          ) : (
-            <span></span>
-          )}
+        <ImgWrap type='cover' ratioObj={{ width: 1, height: 1 }}>
+          <ProjectCover cover={project.cover} size='lg' />
         </ImgWrap>
       </div>
       <div className='info-wrap col-7'>

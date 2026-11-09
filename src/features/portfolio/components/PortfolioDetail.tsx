@@ -2,6 +2,7 @@ import '@/styles/portfolio.scss';
 
 import { AmbientCollectionBackground } from '@/components/backgrounds';
 import ImgWrap from '@/components/common/box/ImgWrap';
+import ProjectCover from '@/components/common/box/ProjectCover';
 import BackLink from '@/components/common/button/BackLink';
 import SkillTags from '@/components/common/SkillTags';
 import MdxContent from '@/components/mdx/MdxContent';
@@ -46,11 +47,8 @@ export default function PortfolioDetail({ project }: { project: PortfolioProject
 
           <div className='detail-main col-8'>
             <div className='detail-thumb'>
-              <ImgWrap ratioObj={{ width: 864, height: 425 }}>
-                {project.thumbnail && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={project.thumbnail} alt={`${project.title} 대표 이미지`} />
-                )}
+              <ImgWrap type='cover' ratioObj={{ width: 864, height: 425 }}>
+                <ProjectCover cover={project.cover} size='lg' />
               </ImgWrap>
             </div>
             <MdxContent source={project.content} className='detail-section' />

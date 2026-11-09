@@ -42,6 +42,9 @@ export type ProjectDto = {
   content: string | null;
   type: 'COMPANY' | 'PERSONAL' | 'SIDE';
   thumbnailUrl: string | null;
+  coverLabel?: string | null;
+  coverTitle?: string | null;
+  coverSub?: string | null;
   pinned: boolean;
   sortOrder: number;
   startDate: string | null;

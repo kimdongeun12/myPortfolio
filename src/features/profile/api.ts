@@ -1,7 +1,7 @@
 import { fetchApiOr } from '@/lib/api';
 import type { BlogSummaryDto, CommentDto, ExperienceDto, PageResponse, ProjectDto, SkillGroupDto } from '@/lib/api-types';
-import { toAssetUrl } from '@/lib/api-url';
 import { formatMonth, formatPeriod, formatShortDate } from '@/lib/format';
+import { toProjectCover } from '@/lib/project-cover';
 import { formatSkill } from '@/data/skills';
 
 import type { Experience, Post, ProfileData, Project, SkillGroup } from './data';
@@ -37,7 +37,7 @@ const toProject = (dto: ProjectDto): Project => ({
   id: dto.id,
   title: dto.title,
   subtitle: dto.summary ?? dto.companyName ?? '',
-  thumbnail: toAssetUrl(dto.thumbnailUrl),
+  cover: toProjectCover(dto),
   roles: [
     { label: '기간', value: formatPeriod(dto.startDate, dto.endDate) },
     { label: '역할', value: dto.role ?? '' },

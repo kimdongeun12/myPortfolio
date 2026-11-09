@@ -2,6 +2,7 @@ import Link from 'next/link';
 import clsx from 'clsx';
 
 import ImgWrap from '@/components/common/box/ImgWrap';
+import ProjectCover from '@/components/common/box/ProjectCover';
 import SkillTags from '@/components/common/SkillTags';
 
 import type { PortfolioProject } from '@/features/portfolio/data';
@@ -16,11 +17,8 @@ export default function PortfolioCard({ project, layout = 'column' }: PortfolioC
   return (
     <Link href={`/portfolio/${project.id}`} className={clsx('portfolio-card', `is-${layout}`)}>
       <div className='card-thumb'>
-        <ImgWrap ratioObj={{ width: 3, height: 2 }}>
-          {project.thumbnail && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={project.thumbnail} alt='' />
-          )}
+        <ImgWrap type='cover' ratioObj={{ width: 3, height: 2 }}>
+          <ProjectCover cover={project.cover} size={layout === 'row' ? 'lg' : 'md'} />
         </ImgWrap>
       </div>
       <div className='card-info'>

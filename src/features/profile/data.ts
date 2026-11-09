@@ -1,3 +1,5 @@
+import type { ProjectCover } from '@/lib/project-cover';
+
 export type AboutItem = { title: string; desc: string };
 export type Experience = {
   id: number;
@@ -14,7 +16,7 @@ export type Project = {
   id: number;
   title: string;
   subtitle: string;
-  thumbnail: string;
+  cover: ProjectCover;
   roles: { label: string; value: string }[];
   highlights: string[];
   href: string;

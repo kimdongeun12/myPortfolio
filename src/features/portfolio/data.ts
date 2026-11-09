@@ -1,7 +1,7 @@
 import { ApiError, fetchApi, fetchApiOr, requestApi } from '@/lib/api';
 import type { PageResponse, ProjectDto } from '@/lib/api-types';
-import { toAssetUrl } from '@/lib/api-url';
 import { formatPeriod } from '@/lib/format';
+import { toProjectCover, type ProjectCover } from '@/lib/project-cover';
 
 export type PortfolioProject = {
   id: string;
@@ -14,7 +14,7 @@ export type PortfolioProject = {
   description: string;
   responsibilities: string[];
   content: string;
-  thumbnail: string;
+  cover: ProjectCover;
 };
 
 const splitLines = (text: string | null) =>
@@ -44,7 +44,7 @@ const toPortfolioProject = (dto: ProjectDto): PortfolioProject => ({
   description: dto.summary ?? '',
   responsibilities: splitLines(dto.responsibilities),
   content: dto.content ?? '',
-  thumbnail: toAssetUrl(dto.thumbnailUrl),
+  cover: toProjectCover(dto),
 });
 
 const toPortfolioPage = (page: PageResponse<ProjectDto>): PortfolioPage => ({
