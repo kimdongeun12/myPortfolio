@@ -204,6 +204,13 @@
         .btn-next.is-primary {
             border-color: $color-9;
             background-color: $color-9;
+            transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+            &:hover,
+            &:focus-visible {
+                border-color: $color-8;
+                background-color: $color-8;
+                color: $color-1;
+            }
         }
     }
     .deck-count {
