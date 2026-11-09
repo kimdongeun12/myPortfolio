@@ -23,10 +23,7 @@ export default function SmoothScroll() {
 
     if (window.matchMedia('(pointer: coarse)').matches) {
       ScrollTrigger.config({ ignoreMobileResize: true });
-      ScrollTrigger.normalizeScroll(true);
-      return () => {
-        ScrollTrigger.normalizeScroll(false);
-      };
+      return;
     }
 
     const lenis = new Lenis({
