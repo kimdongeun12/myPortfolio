@@ -53,10 +53,11 @@ export function useVisualScrollTrigger(
 
         // 계산에 필요한 값 (리사이즈 시 ScrollTrigger refresh 때 다시 측정)
         let ringBase = 1;       // 링 기본 지름(px)
-        let maxHole = 1;        // 구멍 최대 반지름(px) = 75vmax
+        let maxHole = 1;        // 구멍 최대 반지름(px) = 화면 대각선 절반 (진행도 1에서 화면을 딱 덮음)
         let revealDistance = 0; // 원이 커지는 스크롤 구간(px) = .visual-wrap 높이 - 화면 높이
         const measure = () => {
-          maxHole = Math.max(window.innerWidth, window.innerHeight) * 0.75;
+          maxHole = Math.hypot(window.innerWidth, window.innerHeight) / 2 + 2;
+          wrap.style.setProperty('--hole-max', `${maxHole.toFixed(1)}px`);
           revealDistance = Math.max(wrap.offsetHeight - window.innerHeight, 0);
           if (middle) ringBase = parseFloat(getComputedStyle(middle, '::before').width) || 1;
         };
