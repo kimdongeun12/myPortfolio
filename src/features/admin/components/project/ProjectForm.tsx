@@ -38,6 +38,7 @@ type FormValues = {
   coverLabel?: string;
   coverTitle?: string;
   coverSub?: string;
+  periodLabel?: string;
   pinned: boolean;
   sortOrder: number;
   techStacks: string[];
@@ -70,6 +71,7 @@ const toFormValues = (project: Project): FormValues => ({
   coverLabel: project.coverLabel ?? undefined,
   coverTitle: project.coverTitle ?? undefined,
   coverSub: project.coverSub ?? undefined,
+  periodLabel: project.periodLabel ?? undefined,
   pinned: project.pinned,
   sortOrder: project.sortOrder,
   techStacks: project.techStacks,
@@ -90,6 +92,7 @@ const toRequest = (values: FormValues): ProjectRequest => ({
   coverLabel: emptyToNull(values.coverLabel),
   coverTitle: emptyToNull(values.coverTitle),
   coverSub: emptyToNull(values.coverSub),
+  periodLabel: emptyToNull(values.periodLabel),
   pinned: values.pinned,
   sortOrder: values.sortOrder ?? 0,
   techStacks: values.techStacks ?? [],
@@ -276,6 +279,11 @@ export default function ProjectForm({ projectId }: ProjectFormProps) {
                   >
                     진행중
                   </Checkbox>
+                </Form.Item>
+              </Col>
+              <Col xs={24}>
+                <Form.Item name='periodLabel' label='기간 표기' tooltip='비우면 시작·종료일로 표시됩니다. 예: 2021.04 인증 · 2022.04 재인증'>
+                  <Input maxLength={40} placeholder='비우면 시작·종료일로 자동 표시' />
                 </Form.Item>
               </Col>
             </Row>

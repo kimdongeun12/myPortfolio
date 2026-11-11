@@ -22,6 +22,7 @@ export type Project = {
   coverLabel: string | null;
   coverTitle: string | null;
   coverSub: string | null;
+  periodLabel: string | null;
   pinned: boolean;
   sortOrder: number;
   startDate: string | null;
@@ -43,6 +44,7 @@ export type ProjectRequest = {
   coverLabel: string | null;
   coverTitle: string | null;
   coverSub: string | null;
+  periodLabel: string | null;
   pinned: boolean;
   sortOrder: number;
   startDate: string | null;
