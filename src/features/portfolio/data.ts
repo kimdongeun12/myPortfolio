@@ -39,7 +39,7 @@ const toPortfolioProject = (dto: ProjectDto): PortfolioProject => ({
   summary: dto.summary ?? '',
   pinned: dto.pinned,
   role: dto.role ?? '',
-  period: formatPeriod(dto.startDate, dto.endDate),
+  period: dto.periodLabel ?? formatPeriod(dto.startDate, dto.endDate),
   stack: dto.techStacks,
   description: dto.summary ?? '',
   responsibilities: splitLines(dto.responsibilities),

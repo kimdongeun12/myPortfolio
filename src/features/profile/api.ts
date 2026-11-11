@@ -39,7 +39,7 @@ const toProject = (dto: ProjectDto): Project => ({
   subtitle: dto.summary ?? dto.companyName ?? '',
   cover: toProjectCover(dto),
   roles: [
-    { label: '기간', value: formatPeriod(dto.startDate, dto.endDate) },
+    { label: '기간', value: dto.periodLabel ?? formatPeriod(dto.startDate, dto.endDate) },
     { label: '역할', value: dto.role ?? '' },
     { label: '기술', value: dto.techStacks.map(formatSkill).join(' · ') },
   ].filter((row) => row.value),
