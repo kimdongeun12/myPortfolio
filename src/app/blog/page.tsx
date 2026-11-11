@@ -7,7 +7,7 @@ export const revalidate = 60;
 export const generateMetadata = () => {
   return {
     ...pageMetadata({ title: '블로그', description: '프론트엔드 개발자 김동은이 공부하고 기록한 글', path: '/blog' }),
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     customMeta: {
       pageTitle: 'Blog',
     },

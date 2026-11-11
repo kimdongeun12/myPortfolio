@@ -24,7 +24,7 @@ export const generateMetadata = async ({ params }: PageProps) => {
       path: `/blog/${id}`,
       type: 'article',
     }),
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
   };
 };
 
