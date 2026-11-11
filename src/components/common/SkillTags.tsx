@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import { SKILL_ICONS } from '@/data/skills';
+import { SKILL_ICONS, formatSkill } from '@/data/skills';
 
 type SkillTagsProps = {
   skills: string[];
@@ -22,7 +22,7 @@ export default function SkillTags({ skills, size = 'md', className }: SkillTagsP
             // eslint-disable-next-line @next/next/no-img-element
             <img className='skill-icon' src={SKILL_ICONS[skill]} alt='' width={24} height={24} />
           )}
-          {skill}
+          {formatSkill(skill)}
         </span>
       ))}
     </div>

@@ -22,7 +22,7 @@ export default function Profile({ experiences, skillGroups, projects, postBoards
         </div>
         <div className='profile-intro flex-con gap-2 pb-15'>
           <div className='desc-box'>
-            <p>사용자는 화면으로 서비스를 만납니다. 금융 플랫폼에서 5년간 그 화면을 만들며, 쓰기 쉬운 흐름과 고치기 쉬운 코드를 함께 챙겨 왔습니다.</p>
+            <p>사용자는 화면으로 서비스를 만납니다. 금융 플랫폼을 중심으로 5년간 그 화면을 만들며, 쓰기 쉬운 흐름과 고치기 쉬운 코드를 함께 챙겨 왔습니다.</p>
           </div>
           <div className='profile-main'>
             <div className='about-wrap mb-10'>
