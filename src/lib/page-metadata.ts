@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-export const SITE_TITLE = '김동은 | 이력서';
+export const SITE_TITLE = '김동은 | 프로필';
 export const SITE_DESCRIPTION = '프론트엔드 개발자 김동은의 이력서와 포트폴리오';
 export const OG_IMAGE = { url: '/og_image.jpg', width: 2400, height: 1260, alt: SITE_TITLE };
 
