@@ -1,6 +1,7 @@
 import { API_URL } from '@/lib/api-url';
 
 export const REVALIDATE_SECONDS = 60;
+export const API_CACHE_TAG = 'api';
 
 export class ApiError extends Error {
   readonly status: number;
@@ -28,7 +29,7 @@ const parseBody = async <T>(res: Response): Promise<T> => {
 };
 
 export async function fetchApi<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_URL}${path}`, { next: { revalidate: REVALIDATE_SECONDS } });
+  const res = await fetch(`${API_URL}${path}`, { next: { revalidate: REVALIDATE_SECONDS, tags: [API_CACHE_TAG] } });
   if (!res.ok) throw await toError(res);
   return parseBody<T>(res);
 }
