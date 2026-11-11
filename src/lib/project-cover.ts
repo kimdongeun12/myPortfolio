@@ -1,3 +1,4 @@
+import { toAssetUrl } from '@/lib/api-url';
 import type { ProjectDto } from '@/lib/api-types';
 
 export type ProjectCover = {
@@ -5,6 +6,7 @@ export type ProjectCover = {
   title: string;
   sub: string;
   year: string;
+  image: string;
 };
 
 const TYPE_LABEL: Record<ProjectDto['type'], string> = {
@@ -28,4 +30,5 @@ export const toProjectCover = (dto: ProjectDto): ProjectCover => ({
   title: dto.coverTitle ?? dto.title,
   sub: dto.coverSub ?? dto.companyName ?? '',
   year: formatYearRange(dto.startDate, dto.endDate),
+  image: toAssetUrl(dto.thumbnailUrl),
 });
