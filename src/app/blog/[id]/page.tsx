@@ -5,6 +5,7 @@ import '@/styles/blog.scss';
 import { extractToc } from '@/components/mdx/headings';
 import BlogDetail from '@/features/blog/components/BlogDetail';
 import { getAdjacentPosts, getBlogPost, getBlogPosts } from '@/features/blog/data';
+import { pageMetadata } from '@/lib/page-metadata';
 
 export const revalidate = 60;
 
@@ -17,8 +18,12 @@ export const generateMetadata = async ({ params }: PageProps) => {
   const posts = await getBlogPosts();
   const post = await getBlogPost(id, posts.find((item) => item.id === id));
   return {
-    title: post ? post.title : '블로그',
-    description: post?.summary || undefined,
+    ...pageMetadata({
+      title: post ? post.title : '블로그',
+      description: post?.summary,
+      path: `/blog/${id}`,
+      type: 'article',
+    }),
     robots: { index: false, follow: true },
   };
 };

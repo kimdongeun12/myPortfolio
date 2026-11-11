@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 
 import PortfolioDetail from '@/features/portfolio/components/PortfolioDetail';
 import { getPortfolioProject, getPortfolioProjects } from '@/features/portfolio/data';
+import { pageMetadata } from '@/lib/page-metadata';
 
 export const revalidate = 60;
 
@@ -13,7 +14,12 @@ export const generateStaticParams = async () =>
 export const generateMetadata = async ({ params }: PageProps) => {
   const { id } = await params;
   const project = await getPortfolioProject(id);
-  return { title: project ? project.title : '포트폴리오' };
+  return pageMetadata({
+    title: project ? project.title : '포트폴리오',
+    description: project?.summary,
+    path: `/portfolio/${id}`,
+    type: 'article',
+  });
 };
 
 export default async function PortfolioDetailPage({ params }: PageProps) {
