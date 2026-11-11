@@ -1,5 +1,5 @@
 import { adminApi } from './client';
-import type { ImageTargetType, TechStack, UploadedImage, VisitPageStats, VisitStats } from './types';
+import type { ImageTargetType, TechStack, UploadedImage, VisitPageStats, VisitStats, VisitTrend, VisitUnit } from './types';
 
 export const fetchTechStacks = async (): Promise<TechStack[]> => {
   const { data } = await adminApi.get<TechStack[]>('/api/tech-stacks');
@@ -22,5 +22,10 @@ export const fetchVisitStats = async (params?: { from?: string; to?: string }): 
 
 export const fetchVisitPageStats = async (params?: { from?: string; to?: string }): Promise<VisitPageStats> => {
   const { data } = await adminApi.get<VisitPageStats>('/api/visits/pages', { params });
+  return data;
+};
+
+export const fetchVisitTrend = async (params: { from: string; to: string; unit: VisitUnit; path?: string }): Promise<VisitTrend> => {
+  const { data } = await adminApi.get<VisitTrend>('/api/visits/trend', { params });
   return data;
 };

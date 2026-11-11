@@ -35,6 +35,24 @@ export type VisitStats = {
   daily: { date: string; pageViews: number; visitors: number }[];
 };
 
+export type VisitUnit = 'day' | 'month';
+
+export type VisitPeriod = {
+  period: string;
+  pageViews: number;
+  visitors: number;
+  avgDurationMs: number | null;
+  measured: number;
+};
+
+export type VisitTrend = {
+  from: string;
+  to: string;
+  unit: VisitUnit;
+  path: string | null;
+  periods: VisitPeriod[];
+};
+
 export type VisitPageStat = {
   path: string;
   label: string;
