@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import { SKILL_ICONS, formatSkill } from '@/data/skills';
+import { formatSkill, skillIcon } from '@/data/skills';
 
 type SkillTagsProps = {
   skills: string[];
@@ -15,16 +15,19 @@ type SkillTagsProps = {
 export default function SkillTags({ skills, size = 'md', className }: SkillTagsProps) {
   return (
     <div className={clsx('skill-box', size === 'sm' && 'is-sm', className)}>
-      {skills.map((skill) => (
-        <span key={skill}>
-          {SKILL_ICONS[skill] && (
-            // 장식용 아이콘이라 alt는 비움 (이름은 옆 글자로 읽힘)
-            // eslint-disable-next-line @next/next/no-img-element
-            <img className='skill-icon' src={SKILL_ICONS[skill]} alt='' width={24} height={24} />
-          )}
-          {formatSkill(skill)}
-        </span>
-      ))}
+      {skills.map((skill) => {
+        const icon = skillIcon(skill);
+        return (
+          <span key={skill}>
+            {icon && (
+              // 장식용 아이콘이라 alt는 비움 (이름은 옆 글자로 읽힘)
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className='skill-icon' src={icon} alt='' width={24} height={24} />
+            )}
+            {formatSkill(skill)}
+          </span>
+        );
+      })}
     </div>
   );
 }

@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "skill-icons": "node scripts/copy-skill-icons.mjs",
+    "postinstall": "node scripts/copy-skill-icons.mjs",
+    "prebuild": "node scripts/copy-skill-icons.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -21,6 +24,7 @@
     "antd": "^5.25.3",
     "axios": "^1.4.0",
     "clsx": "^2.1.1",
+    "devicon": "2.18.0",
     "eslint": "^9",
     "eslint-config-next": "16.4.5",
     "gsap": "^3.15.0",

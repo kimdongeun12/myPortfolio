@@ -1,7 +1,7 @@
 import { ApiError, fetchApi, fetchApiOr, requestApi } from '@/lib/api';
 import type { BlogDetailDto, BlogOverviewDto, BlogSummaryDto, PageResponse } from '@/lib/api-types';
 import { formatDotDate } from '@/lib/format';
-import { SKILL_ICONS } from '@/data/skills';
+import { SKILL_ORDER } from '@/data/skills';
 
 import type { BlogPage, BlogPost, BlogPostDetail, BlogStats } from './types';
 
@@ -11,7 +11,7 @@ const LIST_SIZE = 200;
 const FAILED_PAGE: BlogPage = { items: [], page: -1, last: false, total: 0 };
 
 const EMPTY_PAGE: PageResponse<BlogSummaryDto> = { content: [], page: 0, size: 0, totalElements: 0, totalPages: 0, last: true };
-const ICON_ORDER = Object.keys(SKILL_ICONS);
+const ICON_ORDER = SKILL_ORDER;
 
 const toBlogPost = (dto: BlogSummaryDto): BlogPost => ({
   id: String(dto.id),

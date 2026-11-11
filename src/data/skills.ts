@@ -1,23 +1,9 @@
-// 기술 스택 아이콘 (public/images/skills), 여기에 없는 항목은 글자만 표시
-// 프로필 SKILLS, 포트폴리오 카드·상세 등 여러 곳에서 공용으로 사용
-export const SKILL_ICONS: Record<string, string> = {
-  Vue: '/images/skills/vue.svg',
-  React: '/images/skills/react.svg',
-  Next: '/images/skills/next.svg',
-  Javascript: '/images/skills/javascript.svg',
-  TypeScript: '/images/skills/typescript.svg',
-  Scss: '/images/skills/scss.svg',
-  Vuetify: '/images/skills/vuetify.svg',
-  Spring: '/images/skills/spring.svg',
-  MySQL: '/images/skills/mysql.svg',
-  AWS: '/images/skills/aws.svg',
-  Jenkins: '/images/skills/jenkins.svg',
-  Vite: '/images/skills/vite.svg',
-  Bitbucket: '/images/skills/bitbucket.svg',
-  Git: '/images/skills/git.svg',
-  Figma: '/images/skills/figma.svg',
-  Webpack: '/images/skills/webpack.svg',
-};
+import iconSlugs from '@/data/skill-icons.json';
+
+export const SKILL_ORDER = [
+  'Vue', 'React', 'Next', 'Javascript', 'TypeScript', 'Scss', 'Vuetify', 'Spring',
+  'MySQL', 'AWS', 'Jenkins', 'Vite', 'Bitbucket', 'Git', 'Figma', 'Webpack',
+];
 
 const SKILL_LABELS: Record<string, string> = {
   Scss: 'SCSS',
@@ -26,4 +12,20 @@ const SKILL_LABELS: Record<string, string> = {
   Spring: 'Spring Boot',
 };
 
+const ICON_ALIASES: Record<string, string> = {
+  scss: 'sass',
+  aws: 'amazonwebservices',
+  apolloclient: 'apollographql',
+  springboot: 'spring',
+  vite: 'vitejs',
+};
+
+const available = new Set<string>(iconSlugs);
+
 export const formatSkill = (skill: string) => SKILL_LABELS[skill] ?? skill;
+
+export const skillIcon = (skill: string) => {
+  const key = skill.toLowerCase().replace(/\.js$/, 'js').replace(/[^a-z0-9]/g, '');
+  const slug = [ICON_ALIASES[key], key, `${key}js`].find((name) => name && available.has(name));
+  return slug ? `/images/skills/${slug}.svg` : undefined;
+};
