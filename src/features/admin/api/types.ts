@@ -35,7 +35,7 @@ export type VisitStats = {
   daily: { date: string; pageViews: number; visitors: number }[];
 };
 
-export type VisitUnit = 'day' | 'month';
+export type VisitUnit = 'hour' | 'day' | 'month';
 
 export type VisitPeriod = {
   period: string;
@@ -67,4 +67,36 @@ export type VisitPageStats = {
   to: string;
   avgDurationMs: number | null;
   pages: VisitPageStat[];
+};
+
+export type VisitorVisit = {
+  visitedAt: string;
+  path: string;
+  label: string;
+  durationMs: number | null;
+  referrer: string | null;
+  sessionId: string;
+};
+
+export type Visitor = {
+  visitorId: string;
+  ipHash: string | null;
+  label: string | null;
+  device: string;
+  browser: string;
+  os: string;
+  firstReferrer: string | null;
+  firstVisitedAt: string;
+  lastVisitedAt: string;
+  pageViews: number;
+  sessions: number;
+  totalDurationMs: number;
+  visits: VisitorVisit[];
+};
+
+export type VisitorTimeline = {
+  from: string;
+  to: string;
+  truncated: boolean;
+  visitors: Visitor[];
 };

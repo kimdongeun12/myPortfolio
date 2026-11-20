@@ -195,3 +195,67 @@
     border: 1px solid #f0f0f0;
     background: #fafafa;
 }
+
+.visitor-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-bottom: 12px;
+}
+
+.visitor-head {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.visitor-head-meta {
+    font-size: 12px;
+}
+
+.visitor-visit {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 12px;
+}
+
+.visitor-visit-time {
+    font-variant-numeric: tabular-nums;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.visitor-visit-page {
+    flex: 1 1 200px;
+    min-width: 0;
+    word-break: break-all;
+}
+
+.visitor-visit-duration {
+    font-variant-numeric: tabular-nums;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.visit-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 120px;
+    height: 22px;
+}
+
+.visit-bar-fill {
+    position: absolute;
+    inset: 3px auto 3px 0;
+    border-radius: 3px;
+    background: rgba(200, 0, 79, 0.18);
+}
+
+.visit-bar-value {
+    position: relative;
+    padding-left: 8px;
+    font-variant-numeric: tabular-nums;
+}
