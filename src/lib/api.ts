@@ -42,13 +42,14 @@ export async function fetchApiOr<T>(path: string, fallback: T): Promise<T> {
   }
 }
 
-export async function requestApi<T>(path: string, init: { method?: 'GET' | 'POST' | 'PUT'; body?: unknown } = {}): Promise<T> {
+export async function requestApi<T>(path: string, init: { method?: 'GET' | 'POST' | 'PUT'; body?: unknown; credentials?: RequestCredentials } = {}): Promise<T> {
   const hasBody = init.body !== undefined;
   const res = await fetch(`${API_URL}${path}`, {
     method: init.method ?? (hasBody ? 'POST' : 'GET'),
     headers: hasBody ? { 'Content-Type': 'application/json' } : undefined,
     body: hasBody ? JSON.stringify(init.body) : undefined,
     cache: 'no-store',
+    credentials: init.credentials,
   });
   if (!res.ok) throw await toError(res);
   return parseBody<T>(res);

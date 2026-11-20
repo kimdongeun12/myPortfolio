@@ -71,7 +71,7 @@ export default function VisitTracker() {
     };
     const record = () => {
       recorded = true;
-      requestApi<{ id: number | null }>('/api/visits', { body: { sessionId, path: pathname, referrer } })
+      requestApi<{ id: number | null }>('/api/visits', { body: { sessionId, path: pathname, referrer }, credentials: 'include' })
         .then((res) => {
           visitId = res?.id ?? null;
         })
