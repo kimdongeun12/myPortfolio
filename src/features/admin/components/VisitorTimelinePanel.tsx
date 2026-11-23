@@ -1,6 +1,6 @@
 'use client';
 
-import { Alert, App, Button, Collapse, Empty, Input, Space, Spin, Switch, Tag, Timeline, Typography } from 'antd';
+import { Alert, App, Button, Collapse, Empty, Input, Space, Spin, Switch, Tag, Timeline, Tooltip, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
@@ -110,6 +110,7 @@ export default function VisitorTimelinePanel({ from, to }: VisitorTimelinePanelP
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [hideLabeled, setHideLabeled] = useState(false);
+  const [hideSuspected, setHideSuspected] = useState(false);
 
   useEffect(() => {
     let ignore = false;
@@ -141,18 +142,25 @@ export default function VisitorTimelinePanel({ from, to }: VisitorTimelinePanelP
   if (error) return <Alert type='error' title={error} showIcon />;
   if (loading) return <Spin style={{ display: 'block', margin: '32px auto' }} />;
 
-  const visitors = (data?.visitors ?? []).filter((v) => !hideLabeled || !v.label);
+  const visitors = (data?.visitors ?? []).filter((v) => (!hideLabeled || !v.label) && (!hideSuspected || !v.suspected));
   const labeledCount = (data?.visitors ?? []).filter((v) => v.label).length;
+  const suspectedCount = (data?.visitors ?? []).filter((v) => v.suspected).length;
 
   return (
     <>
       <div className='visitor-toolbar'>
         <Typography.Text type='secondary'>
-          방문자 {data?.visitors.length ?? 0}명 · 이름 붙인 방문자 {labeledCount}명 · 같은 IP를 한 사람으로 묶었습니다
+          방문자 {data?.visitors.length ?? 0}명 · 이름 붙인 방문자 {labeledCount}명 · 자동 방문 의심 {suspectedCount}명 · 같은 IP를 한 사람으로 묶었습니다
         </Typography.Text>
-        <Space>
-          <Typography.Text>이름 붙인 방문자 숨기기</Typography.Text>
-          <Switch checked={hideLabeled} onChange={setHideLabeled} />
+        <Space wrap size={[16, 8]}>
+          <Space>
+            <Typography.Text>자동 방문 의심 숨기기</Typography.Text>
+            <Switch checked={hideSuspected} onChange={setHideSuspected} />
+          </Space>
+          <Space>
+            <Typography.Text>이름 붙인 방문자 숨기기</Typography.Text>
+            <Switch checked={hideLabeled} onChange={setHideLabeled} />
+          </Space>
         </Space>
       </div>
       {data?.truncated && (
@@ -169,6 +177,11 @@ export default function VisitorTimelinePanel({ from, to }: VisitorTimelinePanelP
               <div className='visitor-head'>
                 <Space size={6} wrap>
                   {visitor.label ? <Tag color='magenta'>{visitor.label}</Tag> : <Tag>방문자 {visitor.visitorId.slice(0, 6)}</Tag>}
+                  {visitor.suspected && (
+                    <Tooltip title='페이지 3개 이상을 매번 새 접속으로 보고, 체류 시간이 한 번도 기록되지 않았습니다.'>
+                      <Tag color='orange'>자동 방문 의심</Tag>
+                    </Tooltip>
+                  )}
                   <Typography.Text>{visitor.device} · {visitor.os} · {visitor.browser}</Typography.Text>
                 </Space>
                 <Typography.Text type='secondary' className='visitor-head-meta'>
@@ -182,6 +195,14 @@ export default function VisitorTimelinePanel({ from, to }: VisitorTimelinePanelP
                 <div className='admin-block'>
                   <LabelEditor visitor={visitor} onSaved={(label) => visitor.ipHash && applyLabel(visitor.ipHash, label)} />
                 </div>
+                {visitor.userAgent && (
+                  <div className='admin-block visitor-ua'>
+                    <Typography.Text type='secondary' style={{ fontSize: 12 }}>브라우저 정보 (User-Agent)</Typography.Text>
+                    <Typography.Paragraph copyable code style={{ fontSize: 12, marginBottom: 0, wordBreak: 'break-all' }}>
+                      {visitor.userAgent}
+                    </Typography.Paragraph>
+                  </div>
+                )}
                 <VisitorVisits visitor={visitor} />
               </>
             ),
