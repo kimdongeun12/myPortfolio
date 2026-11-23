@@ -10,6 +10,7 @@ const SESSION_KEY = 'portfolio-visit-session';
 const NO_TRACK_KEY = 'portfolio-no-track';
 const RECORD_DELAY_MS = 2000;
 const MIN_DURATION_MS = 1000;
+const HEARTBEAT_MS = 15000;
 
 const getSessionId = () => {
   try {
@@ -43,12 +44,21 @@ const trySendBeacon = (url: string) => {
   }
 };
 
+const durationUrl = (id: number, sessionId: string, durationMs: number) => {
+  const params = new URLSearchParams({ id: String(id), sessionId, durationMs: String(Math.round(durationMs)) });
+  return `${API_URL}/api/visits/duration?${params.toString()}`;
+};
+
 const sendDuration = (id: number, sessionId: string, durationMs: number) => {
   if (durationMs < MIN_DURATION_MS) return;
-  const params = new URLSearchParams({ id: String(id), sessionId, durationMs: String(Math.round(durationMs)) });
-  const url = `${API_URL}/api/visits/duration?${params.toString()}`;
+  const url = durationUrl(id, sessionId, durationMs);
   if (trySendBeacon(url)) return;
   fetch(url, { method: 'POST', keepalive: true }).catch(() => undefined);
+};
+
+const sendHeartbeat = (id: number, sessionId: string, durationMs: number) => {
+  if (durationMs < MIN_DURATION_MS) return;
+  fetch(durationUrl(id, sessionId, durationMs), { method: 'POST' }).catch(() => undefined);
 };
 
 export default function VisitTracker() {
@@ -62,6 +72,7 @@ export default function VisitTracker() {
     let visitId: number | null = null;
     let recorded = false;
     let recordTimer: number | null = null;
+    let heartbeatTimer: number | null = null;
     let elapsed = 0;
     let startedAt: number | null = document.visibilityState === 'visible' ? performance.now() : null;
 
@@ -76,6 +87,17 @@ export default function VisitTracker() {
           visitId = res?.id ?? null;
         })
         .catch(() => undefined);
+    };
+    const startHeartbeat = () => {
+      if (heartbeatTimer !== null) return;
+      heartbeatTimer = window.setInterval(() => {
+        if (visitId !== null && document.visibilityState === 'visible') sendHeartbeat(visitId, sessionId, total());
+      }, HEARTBEAT_MS);
+    };
+    const stopHeartbeat = () => {
+      if (heartbeatTimer === null) return;
+      window.clearInterval(heartbeatTimer);
+      heartbeatTimer = null;
     };
     const scheduleRecord = () => {
       if (recorded || recordTimer !== null) return;
@@ -96,20 +118,26 @@ export default function VisitTracker() {
           startedAt = null;
         }
         cancelRecord();
+        stopHeartbeat();
         flush();
       } else {
         if (startedAt === null) startedAt = performance.now();
         scheduleRecord();
+        startHeartbeat();
       }
     };
 
-    if (startedAt !== null) scheduleRecord();
+    if (startedAt !== null) {
+      scheduleRecord();
+      startHeartbeat();
+    }
     document.addEventListener('visibilitychange', onVisibilityChange);
     window.addEventListener('pagehide', flush);
     return () => {
       document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('pagehide', flush);
       cancelRecord();
+      stopHeartbeat();
       flush();
     };
   }, [pathname]);
