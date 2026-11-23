@@ -85,7 +85,6 @@ export type Visitor = {
   device: string;
   browser: string;
   os: string;
-  userAgent: string | null;
   suspected: boolean;
   firstReferrer: string | null;
   firstVisitedAt: string;

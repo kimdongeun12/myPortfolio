@@ -178,7 +178,7 @@ export default function VisitorTimelinePanel({ from, to }: VisitorTimelinePanelP
                 <Space size={6} wrap>
                   {visitor.label ? <Tag color='magenta'>{visitor.label}</Tag> : <Tag>방문자 {visitor.visitorId.slice(0, 6)}</Tag>}
                   {visitor.suspected && (
-                    <Tooltip title='페이지 3개 이상을 매번 새 접속으로 보고, 체류 시간이 한 번도 기록되지 않았습니다.'>
+                    <Tooltip title='알려진 크롤러였거나, 페이지 3개 이상을 매번 새 접속으로 보고 체류 시간이 한 번도 기록되지 않았습니다.'>
                       <Tag color='orange'>자동 방문 의심</Tag>
                     </Tooltip>
                   )}
@@ -195,14 +195,6 @@ export default function VisitorTimelinePanel({ from, to }: VisitorTimelinePanelP
                 <div className='admin-block'>
                   <LabelEditor visitor={visitor} onSaved={(label) => visitor.ipHash && applyLabel(visitor.ipHash, label)} />
                 </div>
-                {visitor.userAgent && (
-                  <div className='admin-block visitor-ua'>
-                    <Typography.Text type='secondary' style={{ fontSize: 12 }}>브라우저 정보 (User-Agent)</Typography.Text>
-                    <Typography.Paragraph copyable code style={{ fontSize: 12, marginBottom: 0, wordBreak: 'break-all' }}>
-                      {visitor.userAgent}
-                    </Typography.Paragraph>
-                  </div>
-                )}
                 <VisitorVisits visitor={visitor} />
               </>
             ),
