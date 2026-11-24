@@ -6,7 +6,7 @@ import profile from '@/data/profile';
 export default function BlogSidebar({ children }: { children: ReactNode }) {
   return (
     <aside className='blog-sidebar'>
-      <div className='sidebar-profile'>
+      <div className='sidebar-profile' data-nosnippet>
         <p className='profile-name'>{profile.name}</p>
         <p className='profile-role'>Front-end Developer</p>
       </div>

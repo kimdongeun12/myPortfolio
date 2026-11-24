@@ -6,7 +6,7 @@ export const revalidate = 60;
 
 export const generateMetadata = () => {
   return {
-    ...pageMetadata({ title: '블로그', description: '공부하고 기록한 글', path: '/blog' }),
+    ...pageMetadata({ title: '블로그', description: '공부하고 기록한 글', path: '/blog', anonymous: true }),
     robots: { index: true, follow: true },
     customMeta: {
       pageTitle: 'Blog',

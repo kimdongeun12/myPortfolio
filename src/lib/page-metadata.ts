@@ -9,28 +9,31 @@ type PageMetadataOptions = {
   description?: string;
   path: string;
   type?: 'website' | 'article';
+  anonymous?: boolean;
 };
 
-const toDescription = (text?: string) => {
+const BLOG_BRAND = 'rloorn';
+
+const toDescription = (text?: string, fallback = SITE_DESCRIPTION) => {
   const clean = (text ?? '').replace(/\s+/g, ' ').trim();
-  if (!clean) return SITE_DESCRIPTION;
+  if (!clean) return fallback;
   return clean.length > 110 ? `${clean.slice(0, 109)}…` : clean;
 };
 
-export const pageMetadata = ({ title, description, path, type = 'website' }: PageMetadataOptions): Metadata => {
-  const fullTitle = title ? `김동은 | ${title}` : SITE_TITLE;
-  const desc = toDescription(description);
+export const pageMetadata = ({ title, description, path, type = 'website', anonymous = false }: PageMetadataOptions): Metadata => {
+  const fullTitle = anonymous ? `${title ?? '블로그'} | ${BLOG_BRAND}` : title ? `김동은 | ${title}` : SITE_TITLE;
+  const desc = toDescription(description, anonymous ? '공부하고 기록한 글' : SITE_DESCRIPTION);
   return {
-    ...(title && { title }),
+    ...(anonymous ? { title: { absolute: fullTitle } } : title && { title }),
     description: desc,
     openGraph: {
       type,
       locale: 'ko_KR',
       url: path,
-      siteName: '김동은 포트폴리오',
+      siteName: anonymous ? BLOG_BRAND : '김동은 포트폴리오',
       title: fullTitle,
       description: desc,
-      images: [OG_IMAGE],
+      images: [anonymous ? { ...OG_IMAGE, alt: BLOG_BRAND } : OG_IMAGE],
     },
     twitter: {
       card: 'summary_large_image',

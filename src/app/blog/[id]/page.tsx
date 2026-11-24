@@ -23,6 +23,7 @@ export const generateMetadata = async ({ params }: PageProps) => {
       description: post?.summary,
       path: `/blog/${id}`,
       type: 'article',
+      anonymous: true,
     }),
     robots: { index: true, follow: true },
   };
