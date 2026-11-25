@@ -124,27 +124,37 @@ export default function AdminDashboard() {
       {error && <Alert type='error' title={error} showIcon className='admin-block' />}
 
       <Row gutter={[12, 12]} className='admin-block'>
-        <Col xs={12} md={8} xl={4}>
+        <Col xs={12} md={6} xl={6}>
+          <Card size='small'>
+            <Statistic title='누적 방문자' value={stats?.allTimeVisitors ?? 0} loading={loading} />
+          </Card>
+        </Col>
+        <Col xs={12} md={6} xl={6}>
+          <Card size='small'>
+            <Statistic title='누적 페이지뷰' value={stats?.allTimePageViews ?? 0} loading={loading} />
+          </Card>
+        </Col>
+        <Col xs={12} md={6} xl={6}>
           <Card size='small'>
             <Statistic title='오늘 방문자' value={stats?.todayVisitors ?? 0} loading={loading} />
           </Card>
         </Col>
-        <Col xs={12} md={8} xl={4}>
+        <Col xs={12} md={6} xl={6}>
           <Card size='small'>
             <Statistic title='오늘 페이지뷰' value={stats?.todayPageViews ?? 0} loading={loading} />
           </Card>
         </Col>
-        <Col xs={12} md={8} xl={5}>
+        <Col xs={12} md={8} xl={8}>
           <Card size='small'>
             <Statistic title={`방문자 · ${label}`} value={stats?.totalVisitors ?? 0} loading={loading} />
           </Card>
         </Col>
-        <Col xs={12} md={12} xl={5}>
+        <Col xs={12} md={8} xl={8}>
           <Card size='small'>
             <Statistic title={`페이지뷰 · ${label}`} value={stats?.totalPageViews ?? 0} loading={loading} />
           </Card>
         </Col>
-        <Col xs={24} md={12} xl={6}>
+        <Col xs={24} md={8} xl={8}>
           <Card size='small'>
             <Statistic title={`평균 체류 · ${label}`} value={formatDuration(pageStats?.avgDurationMs)} loading={loading} />
           </Card>

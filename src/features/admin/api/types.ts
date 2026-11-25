@@ -32,6 +32,8 @@ export type VisitStats = {
   totalVisitors: number;
   todayPageViews: number;
   todayVisitors: number;
+  allTimePageViews: number;
+  allTimeVisitors: number;
   daily: { date: string; pageViews: number; visitors: number }[];
 };
 
